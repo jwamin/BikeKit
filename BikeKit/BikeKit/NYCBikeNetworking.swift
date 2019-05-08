@@ -26,6 +26,7 @@ public class NYCBikeNetworking : NSObject {
             print("changed time")
         }
     }
+
     
     public var delegate:NYCBikeNetworkingDelegate?
     
@@ -166,10 +167,13 @@ public class NYCBikeNetworking : NSObject {
         
         var matches = [NYCBikeStationInfo]()
         
-        let savedFavourites = UserDefaults.standard.array(forKey: "favourites") as? [Int]
-        
+        let savedFavourites = UserDefaults.standard.array(forKey: "favourites") as? [String] ?? []
+        let intsavedFavourites:[Int] = savedFavourites.compactMap {
+            Int($0)
+        }
+        print(savedFavourites)
         stationData.forEach {
-            for id in savedFavourites ?? dummyData {
+            for id in intsavedFavourites {
                 if $0.station_id == String(id){
                     matches.append($0)
                 }
@@ -179,13 +183,41 @@ public class NYCBikeNetworking : NSObject {
         self.favourites = matches
         
         DispatchQueue.main.async {
-            print(self.delegate)
             self.delegate?.updated()
         }
         
     }
     
+    public func toggleFavouriteForId(id:String)->Bool{
+        
+        guard let favourites = UserDefaults.standard.array(forKey: "favourites") as? [String] else {
+            return false
+        }
+        var newFavourites = favourites
+        var add = false
+        if(favourites.contains(id)){
+            //we are removing favourite
+            for (index,fav) in favourites.enumerated().reversed(){
+                if fav == id{
+                    newFavourites.remove(at: index)
+                }
+            }
+            
+        } else {
+            //we are adding a favourite
+            newFavourites.append(id)
+            add = true
+        }
+        
+        
+        UserDefaults.standard.set(newFavourites, forKey: "favourites")
+        
+        return add
+        
+    }
+    
     public func refresh(){
+        assembleDataForFavourites()
         self.getNYCBikeAPIData(task: .status)
     }
     

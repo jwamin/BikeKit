@@ -10,6 +10,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     var refreshed:UIRefreshControl!
     
     override func viewDidLoad() {
+        self.definesPresentationContext = true
         tableView.register(Cell.self, forCellReuseIdentifier: "cell")
         model.delegate = self
         model.getNYCBikeAPIData(task: .info)
@@ -17,6 +18,17 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         refreshed = UIRefreshControl(frame: .zero)
         refreshed.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.refreshControl = refreshed
+        
+        //search Init
+        
+        let searchTable = SearchTableViewController()
+        searchTable.restorationIdentifier = "searchTable"
+        let searchController = UISearchController(searchResultsController: searchTable)
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        self.navigationItem.searchController = searchController
+        
+        
     }
     
     @objc func refresh(){
@@ -49,6 +61,23 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        switch editingStyle {
+        case .delete:
+            guard let favourites = model.favourites  else {
+                return
+            }
+            let favouriteToBeDeleted = favourites[indexPath.row]
+            if(!model.toggleFavouriteForId(id: favouriteToBeDeleted.station_id)){
+                model.favourites?.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+            
+        default:
+            break
+        }
+    }
+    
     func updated() {
         
         guard let favs = model.favourites else {
@@ -58,19 +87,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         
         tableView.reloadData()
         refreshed.endRefreshing()
-        
-        //        tableView.beginUpdates()
-        //
-        //        var ips = [IndexPath]()
-        //
-        //        for (index,fav) in favs.enumerated() {
-        //            ips.append(IndexPath(item: index, section: 0))
-        //        }
-        //
-        //        tableView.insertRows(at: ips, with: .automatic)
-        //
-        //        tableView.endUpdates()
-        
+
         
     }
     

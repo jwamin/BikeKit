@@ -12,6 +12,7 @@ class ToastViewController: UIViewController, ToastDelegate {
 
     var toastLabel:UILabel!
     var toastInFlight:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

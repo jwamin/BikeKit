@@ -26,9 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mainToastView = ToastViewController()
         
         let tabViewController = UITabBarController(nibName: nil, bundle: nil)
-        
+        mainToastView.addChild(tabViewController)
         mainToastView.view.insertSubview(tabViewController.view, belowSubview: mainToastView.toastLabel)
-        
+        tabViewController.didMove(toParent: mainToastView)
+         
         let table = TableViewController()
         table.toastDelegate = mainToastView
         let map = MapViewController()

@@ -9,6 +9,8 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
     
+    var toastDelegate:ToastDelegate?
+    
     override func viewDidLoad() {
         self.definesPresentationContext = true
         tableView.register(Cell.self, forCellReuseIdentifier: "cell")
@@ -91,8 +93,12 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         
     }
     
-    func inCooldown() {
+    func inCooldown(str:String?) {
         refreshed.endRefreshing()
+        if let message = str {
+             toastDelegate?.flyToast(str: message)
+        }
+       
     }
     
 }

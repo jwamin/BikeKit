@@ -71,9 +71,10 @@ public class NYCBikeNetworking : NSObject {
             let timeout = NYCBikeNetworking.refreshThrottle + TimeInterval(60)
             print(now,timeout,timeout>now)
             if(now<timeout){
-                print("throttled, try again at \(timeout)")
+                let str = "throttled, try again at\n \(timeout)"
+                print(str)
                 DispatchQueue.main.async {
-                    self.delegate?.inCooldown()
+                    self.delegate?.inCooldown(str: str)
                 }
                 return
             }
@@ -142,15 +143,19 @@ public class NYCBikeNetworking : NSObject {
             $0.station_id
         }
         
+        var updatedStations = self.stationData
+        
         stationData.forEach{ (updatedStation) in
             
             for (index,savedStationID) in stationIDs.enumerated(){
                 if updatedStation.station_id == savedStationID {
-                    self.stationData![index].status = updatedStation
+                    updatedStations![index].status = updatedStation
                 }
             }
             
         }
+        
+        self.stationData = updatedStations
         
         NYCBikeNetworking.refreshThrottle = Date()
         assembleDataForFavourites()
@@ -287,5 +292,5 @@ public enum NYCBikeRequest{
 
 public protocol NYCBikeNetworkingDelegate{
     func updated()
-    func inCooldown()
+    func inCooldown(str:String?)
 }

@@ -17,13 +17,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var mainBikeModel = NYCBikeNetworking()
     static var locationManager = CLLocationManager()
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
+        [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let mainToastView = ToastViewController()
+        
         let tabViewController = UITabBarController(nibName: nil, bundle: nil)
         
+        mainToastView.view.insertSubview(tabViewController.view, belowSubview: mainToastView.toastLabel)
+        
         let table = TableViewController()
+        table.toastDelegate = mainToastView
         let map = MapViewController()
         
         let primaryNavigation = UINavigationController(rootViewController: table)
@@ -42,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //dummy.view.backgroundColor = .red
         //dummy.title = "dummy"
         
-        window?.rootViewController = tabViewController
+        window?.rootViewController = mainToastView
         window?.makeKeyAndVisible()
         
         return true

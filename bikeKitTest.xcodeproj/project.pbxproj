@@ -41,6 +41,7 @@
 		57FF72CC2283360F006F63E8 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF72D222833BD1006F63E8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		57FF72D422833CBC006F63E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		57FF72D822835C78006F63E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +80,7 @@
 				57FF728A22821544006F63E8 /* AppDelegate.swift */,
 				57FF72D222833BD1006F63E8 /* MapViewController.swift */,
 				57FF728C22821544006F63E8 /* ViewController.swift */,
+				57FF72D822835C78006F63E8 /* README.md */,
 				57FF729122821546006F63E8 /* Assets.xcassets */,
 				57FF729322821546006F63E8 /* LaunchScreen.storyboard */,
 				57FF729622821546006F63E8 /* Info.plist */,

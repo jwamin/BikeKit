@@ -53,13 +53,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         for station in model.locations{
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = station.value.coordinate
-            let point = MKMapPoint(annotation.coordinate)
-            if(!map.visibleMapRect.contains(point)){
-                continue
-            }
-            
             var mainStationObject:NYCBikeStationInfo?
             
             for savedStation in model.stationData!{
@@ -70,6 +63,26 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 }
                 
             }
+            
+            //Skip as often as possible!
+            
+            //if the point is outside of the map rect, skip!
+            let point = MKMapPoint(station.value.coordinate)
+            if(!map.visibleMapRect.contains(point)){
+                continue
+            }
+            
+            //if the existing pin coordinate is the same as the loop variable, skip
+            if pins.contains(where: { (pin) -> Bool in
+                MKMapPointEqualToPoint(point, MKMapPoint(pin.coordinate))
+            }){
+                continue
+            }
+            
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = point.coordinate
+
             
             guard let stationObjectForPoint = mainStationObject else {
                 print("continuing")

@@ -28,6 +28,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         let searchController = UISearchController(searchResultsController: searchTable)
         searchController.delegate = self
         searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Search to add stations to favourites"
         self.navigationItem.searchController = searchController
         
         

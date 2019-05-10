@@ -24,6 +24,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         super.viewDidLoad()
         self.title = "Map"
         map = MKMapView(frame: self.view.frame)
+        map.autoresizingMask = [.flexibleWidth,.flexibleWidth]
         view.addSubview(map)
         
         
@@ -112,10 +113,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         map.setRegion(region, animated: true)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
+    override func viewDidAppear(_ animated: Bool) {
         zoomToUser()
-        
     }
     
     

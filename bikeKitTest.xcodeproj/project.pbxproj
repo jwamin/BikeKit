@@ -34,7 +34,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		57FF728722821544006F63E8 /* bikeKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bikeKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57FF728722821544006F63E8 /* BikeKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikeKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF728A22821544006F63E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF728C22821544006F63E8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		57FF729122821546006F63E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		57FF728822821544006F63E8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				57FF728722821544006F63E8 /* bikeKitTest.app */,
+				57FF728722821544006F63E8 /* BikeKitTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,9 +106,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		57FF728622821544006F63E8 /* bikeKitTest */ = {
+		57FF728622821544006F63E8 /* BikeKitTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 57FF729922821546006F63E8 /* Build configuration list for PBXNativeTarget "bikeKitTest" */;
+			buildConfigurationList = 57FF729922821546006F63E8 /* Build configuration list for PBXNativeTarget "BikeKitTest" */;
 			buildPhases = (
 				57FF728322821544006F63E8 /* Sources */,
 				57FF728422821544006F63E8 /* Frameworks */,
@@ -119,9 +119,9 @@
 			);
 			dependencies = (
 			);
-			name = bikeKitTest;
+			name = BikeKitTest;
 			productName = bikeKitTest;
-			productReference = 57FF728722821544006F63E8 /* bikeKitTest.app */;
+			productReference = 57FF728722821544006F63E8 /* BikeKitTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -137,6 +137,9 @@
 					57FF728622821544006F63E8 = {
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
 							};
@@ -157,7 +160,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				57FF728622821544006F63E8 /* bikeKitTest */,
+				57FF728622821544006F63E8 /* BikeKitTest */,
 			);
 		};
 /* End PBXProject section */
@@ -365,7 +368,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		57FF729922821546006F63E8 /* Build configuration list for PBXNativeTarget "bikeKitTest" */ = {
+		57FF729922821546006F63E8 /* Build configuration list for PBXNativeTarget "BikeKitTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				57FF729A22821546006F63E8 /* Debug */,

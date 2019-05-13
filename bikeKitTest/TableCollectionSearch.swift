@@ -34,7 +34,7 @@ extension TableViewController : UISearchResultsUpdating{
 class SearchTableViewController : UITableViewController {
     
     private var stationInfoSubset = [NYCBikeStationInfo]()
-    private var favourites = UserDefaults.standard.array(forKey: "favourites") as? [String] ?? []
+    private var favourites = NYCBikeNetworking.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
     
     
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){

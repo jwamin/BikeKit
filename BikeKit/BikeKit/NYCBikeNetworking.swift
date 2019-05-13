@@ -20,9 +20,12 @@ public class NYCBikeNetworking : NSObject {
     static let STATION_INFO_URL = URL(string:"https://gbfs.citibikenyc.com/gbfs/en/station_information.json")!
     static let STATION_STATUS_URL = URL(string:"https://gbfs.citibikenyc.com/gbfs/en/station_status.json")!
     
-    public fileprivate(set) static var refreshThrottle:Date = Date() + TimeInterval(-65) {
+    public static var groupedUserDefaults:UserDefaults? = nil
+    
+    
+    public fileprivate(set) var refreshThrottle:Date = Date() + TimeInterval(-65) {
         didSet{
-            print("changed from \(oldValue) to \(NYCBikeNetworking.refreshThrottle)")
+            print("changed from \(oldValue) to \(refreshThrottle)")
             print("changed time")
         }
     }
@@ -56,6 +59,13 @@ public class NYCBikeNetworking : NSObject {
     public var locations = [String:CLLocation]()
     
     
+    public override init() {
+        super.init()
+        self.getNYCBikeAPIData(task: .info)
+    }
+    
+    
+    
     public func getNYCBikeAPIData(task:NYCBikeRequest){
         
         let url:URL
@@ -68,7 +78,7 @@ public class NYCBikeNetworking : NSObject {
             url = NYCBikeNetworking.STATION_STATUS_URL
             callback = self.handleStatusRequest
             let now = Date()
-            let timeout = NYCBikeNetworking.refreshThrottle + TimeInterval(60)
+            let timeout = refreshThrottle + TimeInterval(60)
             print(now,timeout,timeout>now)
             if(now<timeout){
                 let str = "throttled, try again at\n \(timeout)"
@@ -157,7 +167,7 @@ public class NYCBikeNetworking : NSObject {
         
         self.stationData = updatedStations
         
-        NYCBikeNetworking.refreshThrottle = Date()
+        refreshThrottle = Date()
         assembleDataForFavourites()
         DispatchQueue.main.async {
             self.delegate?.updated()
@@ -165,18 +175,28 @@ public class NYCBikeNetworking : NSObject {
         
     }
     
-    public func assembleDataForFavourites() {
+    
+    
+    
+    public func assembleDataForFavourites(_ callback:((BikeNetworkingError?)->Void)? = nil) {
+        
         guard let stationData = self.stationData else {
+            
+            if let callback = callback{
+                callback(.failed)
+            }
+            
             return
         }
         
         var matches = [NYCBikeStationInfo]()
         
-        let savedFavourites = UserDefaults.standard.array(forKey: "favourites") as? [String] ?? []
+        let savedFavourites = NYCBikeNetworking.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
         let intsavedFavourites:[Int] = savedFavourites.compactMap {
             Int($0)
         }
-        print(savedFavourites)
+        
+
         stationData.forEach {
             for id in intsavedFavourites {
                 if $0.station_id == String(id){
@@ -187,17 +207,20 @@ public class NYCBikeNetworking : NSObject {
         
         self.favourites = matches
         
-        DispatchQueue.main.async {
-            self.delegate?.updated()
+        guard let callback = callback else {
+            DispatchQueue.main.async {
+                self.delegate?.updated()
+            }
+            return
         }
+        
+       callback(nil)
         
     }
     
     public func toggleFavouriteForId(id:String)->Bool{
         
-        guard let favourites = UserDefaults.standard.array(forKey: "favourites") as? [String] else {
-            return false
-        }
+        let favourites:[String] = NYCBikeNetworking.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
         var newFavourites = favourites
         var add = false
         if(favourites.contains(id)){
@@ -215,7 +238,7 @@ public class NYCBikeNetworking : NSObject {
         }
         
         
-        UserDefaults.standard.set(newFavourites, forKey: "favourites")
+        NYCBikeNetworking.groupedUserDefaults!.set(newFavourites, forKey: "favourites")
         
         return add
         
@@ -226,6 +249,12 @@ public class NYCBikeNetworking : NSObject {
         self.getNYCBikeAPIData(task: .status)
     }
     
+}
+
+public enum BikeNetworkingError : Error{
+    case throttled
+    case newData
+    case failed
 }
 
 struct NYCStationInfoWrapper : Codable {

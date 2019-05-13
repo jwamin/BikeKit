@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 578676332286F9C600AA0072 /* NotificationCenter.framework */; };
+		578676372286F9C600AA0072 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578676362286F9C600AA0072 /* TodayViewController.swift */; };
+		5786763A2286F9C600AA0072 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 578676382286F9C600AA0072 /* MainInterface.storyboard */; };
+		5786763E2286F9C600AA0072 /* BikeKitTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		578676432286FB1100AA0072 /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72CC2283360F006F63E8 /* BikeKit.framework */; };
 		57FF728B22821544006F63E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728A22821544006F63E8 /* AppDelegate.swift */; };
 		57FF728D22821544006F63E8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728C22821544006F63E8 /* ViewController.swift */; };
 		57FF729222821546006F63E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57FF729122821546006F63E8 /* Assets.xcassets */; };
@@ -19,7 +24,28 @@
 		57FF72DC2283848B006F63E8 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF72DB2283848B006F63E8 /* ToastViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5786763C2286F9C600AA0072 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FF727F22821544006F63E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 578676312286F9C600AA0072;
+			remoteInfo = BikeKitTodayWidget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		578676422286F9C600AA0072 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5786763E2286F9C600AA0072 /* BikeKitTodayWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57FF72D1228336FC006F63E8 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -34,6 +60,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BikeKitTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		578676332286F9C600AA0072 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		578676362286F9C600AA0072 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		578676392286F9C600AA0072 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		5786763B2286F9C600AA0072 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		578676442286FEFE00AA0072 /* BikeKitTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BikeKitTodayWidget.entitlements; sourceTree = "<group>"; };
+		578676452286FFC600AA0072 /* BikeKitTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BikeKitTest.entitlements; path = BikeKitTest/BikeKitTest.entitlements; sourceTree = "<group>"; };
 		57FF728722821544006F63E8 /* BikeKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikeKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF728A22821544006F63E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF728C22821544006F63E8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +82,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5786762F2286F9C600AA0072 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				578676432286FB1100AA0072 /* BikeKit.framework in Frameworks */,
+				578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57FF728422821544006F63E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,10 +103,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		578676352286F9C600AA0072 /* BikeKitTodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				578676442286FEFE00AA0072 /* BikeKitTodayWidget.entitlements */,
+				578676362286F9C600AA0072 /* TodayViewController.swift */,
+				578676382286F9C600AA0072 /* MainInterface.storyboard */,
+				5786763B2286F9C600AA0072 /* Info.plist */,
+			);
+			path = BikeKitTodayWidget;
+			sourceTree = "<group>";
+		};
 		57FF727E22821544006F63E8 = {
 			isa = PBXGroup;
 			children = (
+				578676452286FFC600AA0072 /* BikeKitTest.entitlements */,
 				57FF728922821544006F63E8 /* bikeKitTest */,
+				578676352286F9C600AA0072 /* BikeKitTodayWidget */,
 				57FF728822821544006F63E8 /* Products */,
 				57FF72CB2283360F006F63E8 /* Frameworks */,
 			);
@@ -74,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				57FF728722821544006F63E8 /* BikeKitTest.app */,
+				578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,6 +155,7 @@
 			children = (
 				57FF72D422833CBC006F63E8 /* MapKit.framework */,
 				57FF72CC2283360F006F63E8 /* BikeKit.framework */,
+				578676332286F9C600AA0072 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,6 +163,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		578676312286F9C600AA0072 /* BikeKitTodayWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5786763F2286F9C600AA0072 /* Build configuration list for PBXNativeTarget "BikeKitTodayWidget" */;
+			buildPhases = (
+				5786762E2286F9C600AA0072 /* Sources */,
+				5786762F2286F9C600AA0072 /* Frameworks */,
+				578676302286F9C600AA0072 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BikeKitTodayWidget;
+			productName = BikeKitTodayWidget;
+			productReference = 578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		57FF728622821544006F63E8 /* BikeKitTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57FF729922821546006F63E8 /* Build configuration list for PBXNativeTarget "BikeKitTest" */;
@@ -114,10 +188,12 @@
 				57FF728422821544006F63E8 /* Frameworks */,
 				57FF728522821544006F63E8 /* Resources */,
 				57FF72D1228336FC006F63E8 /* Embed Frameworks */,
+				578676422286F9C600AA0072 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5786763D2286F9C600AA0072 /* PBXTargetDependency */,
 			);
 			name = BikeKitTest;
 			productName = bikeKitTest;
@@ -134,11 +210,19 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Joss Manger";
 				TargetAttributes = {
+					578676312286F9C600AA0072 = {
+						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					57FF728622821544006F63E8 = {
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -161,11 +245,20 @@
 			projectRoot = "";
 			targets = (
 				57FF728622821544006F63E8 /* BikeKitTest */,
+				578676312286F9C600AA0072 /* BikeKitTodayWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		578676302286F9C600AA0072 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5786763A2286F9C600AA0072 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57FF728522821544006F63E8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +271,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5786762E2286F9C600AA0072 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				578676372286F9C600AA0072 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57FF728322821544006F63E8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -192,7 +293,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5786763D2286F9C600AA0072 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 578676312286F9C600AA0072 /* BikeKitTodayWidget */;
+			targetProxy = 5786763C2286F9C600AA0072 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		578676382286F9C600AA0072 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				578676392286F9C600AA0072 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		57FF729322821546006F63E8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -204,6 +321,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		578676402286F9C600AA0072 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3C42F7N9CQ;
+				INFOPLIST_FILE = BikeKitTodayWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.bikeKitTest.BikeKitTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		578676412286F9C600AA0072 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3C42F7N9CQ;
+				INFOPLIST_FILE = BikeKitTodayWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.bikeKitTest.BikeKitTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		57FF729722821546006F63E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -323,7 +480,9 @@
 		57FF729A22821546006F63E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BikeKitTest/BikeKitTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
 				INFOPLIST_FILE = bikeKitTest/Info.plist;
@@ -341,7 +500,9 @@
 		57FF729B22821546006F63E8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BikeKitTest/BikeKitTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
 				INFOPLIST_FILE = bikeKitTest/Info.plist;
@@ -359,6 +520,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5786763F2286F9C600AA0072 /* Build configuration list for PBXNativeTarget "BikeKitTodayWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				578676402286F9C600AA0072 /* Debug */,
+				578676412286F9C600AA0072 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		57FF728222821544006F63E8 /* Build configuration list for PBXProject "bikeKitTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

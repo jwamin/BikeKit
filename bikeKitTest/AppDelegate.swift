@@ -16,10 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     static var mainBikeModel = NYCBikeNetworking()
     static var locationManager = CLLocationManager()
+    static var sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        NYCBikeNetworking.groupedUserDefaults = AppDelegate.sharedUserDefaults
         
         window = UIWindow(frame: UIScreen.main.bounds)
         

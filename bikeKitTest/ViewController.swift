@@ -15,7 +15,6 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         self.definesPresentationContext = true
         tableView.register(Cell.self, forCellReuseIdentifier: "cell")
         model.delegate = self
-        model.getNYCBikeAPIData(task: .info)
         self.title = "Favourites"
         refreshed = UIRefreshControl(frame: .zero)
         refreshed.addTarget(self, action: #selector(refresh), for: .valueChanged)

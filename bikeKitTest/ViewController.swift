@@ -1,5 +1,6 @@
 import UIKit
 import BikeKit
+import BikeKitUI
 
 
 //Test UI View
@@ -9,11 +10,13 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
     
+    let locator = Locator()
+    
     var toastDelegate:ToastDelegate?
     
     override func viewDidLoad() {
         self.definesPresentationContext = true
-        tableView.register(Cell.self, forCellReuseIdentifier: "cell")
+        tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: "cell")
         model.delegate = self
         self.title = "Favourites"
         refreshed = UIRefreshControl(frame: .zero)
@@ -52,15 +55,42 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BikeKitViewCell
         guard let favorites = model.favourites else {
             fatalError("errorrr")
         }
         let data = favorites[indexPath.row]
-        cell.textLabel!.text = data.name
-       cell.detailTextLabel?.text = data.statusString()
-       
+        cell.textLabel?.text = data.name
+        cell.detailTextLabel?.text = data.statusString()
+        cell.imageView?.image = UIImage(named: "Bike")
+        print(cell.imageView)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! BikeKitViewCell
+        
+        //load map image
+        
+        
+            
+            let data = model.favourites![indexPath.row]
+        
+        if(model.images[data.external_id] == nil){
+        
+            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
+                
+                    if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
+                        cell.imageView?.image = img
+                        self.model.images[data.external_id] = img
+                    }
+            
+            }
+            
+        } else {
+            cell.imageView?.image = model.images[data.external_id]
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -102,23 +132,3 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     }
     
 }
-
-class Cell : UITableViewCell{
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: "cell")
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.accessoryType = .none
-    }
-    
-}
-
-//let view = TableViewController()
-//PlaygroundPage.current.liveView = view
-

@@ -9,6 +9,7 @@
 import UIKit
 import NotificationCenter
 import BikeKit
+import BikeKitUI
 
 class TodayViewController: UIViewController, NCWidgetProviding,NYCBikeNetworkingDelegate {
     
@@ -21,7 +22,7 @@ class TodayViewController: UIViewController, NCWidgetProviding,NYCBikeNetworking
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         let expanded = activeDisplayMode == .expanded
-        preferredContentSize = expanded ? CGSize(width: maxSize.width, height: 200) : maxSize
+        preferredContentSize = expanded ? label.intrinsicContentSize : maxSize
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,14 @@ class TodayViewController: UIViewController, NCWidgetProviding,NYCBikeNetworking
        // bikeNetworking.refresh()
     }
     
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (context) in
+            print("animated")
+        }) { (context) in
+            print("context")
+        }
+    }
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.

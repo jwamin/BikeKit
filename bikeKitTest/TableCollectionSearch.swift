@@ -1,5 +1,6 @@
 import UIKit
 import BikeKit
+import BikeKitUI
 
 
 extension TableViewController : UISearchControllerDelegate{
@@ -43,7 +44,7 @@ class SearchTableViewController : UITableViewController {
     }
     
     override func viewDidLoad() {
-        tableView.register(Cell.self, forCellReuseIdentifier: "cell")
+        tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: "cell")
         tableView.dataSource = self
     }
     
@@ -57,7 +58,7 @@ class SearchTableViewController : UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! Cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BikeKitViewCell
         let data = stationInfoSubset[indexPath.row]
         cell.textLabel!.text = data.name
         
@@ -65,10 +66,42 @@ class SearchTableViewController : UITableViewController {
             cell.accessoryType = .checkmark
         }
         
-        
+        cell.imageView?.image = UIImage(named: "Bike")
         cell.detailTextLabel?.text = data.statusString()
         
         return cell
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = cell as! BikeKitViewCell
+        
+        //load map image
+        
+//        if(cell.imageView?.backgroundColor != .red){
+//            UIView.animate(withDuration: 1.0) {
+//                cell.imageView?.backgroundColor = .red
+//            }
+//        }
+        
+        let data = stationInfoSubset[indexPath.row]
+        let model = AppDelegate.mainBikeModel
+        if(model.images[data.external_id] == nil){
+            
+            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
+                
+                if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
+                    cell.imageView?.image = img
+                    model.images[data.external_id] = img
+                }
+                
+            }
+            
+        } else {
+            cell.imageView?.image = model.images[data.external_id]
+        }
+        
+        
         
     }
     

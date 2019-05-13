@@ -9,12 +9,14 @@
 import UIKit
 import MapKit
 import BikeKit
+import BikeKitUI
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     let model = AppDelegate.mainBikeModel
     let location = AppDelegate.locationManager
     var map:MKMapView!
+
     
     private var userInitialZoomSet:Bool = false
     

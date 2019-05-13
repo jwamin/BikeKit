@@ -57,7 +57,7 @@ public class NYCBikeNetworking : NSObject {
     public var favourites:[NYCBikeStationInfo]?
     
     public var locations = [String:CLLocation]()
-    
+    public var images = [String:UIImage]()
     
     public override init() {
         super.init()

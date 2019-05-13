@@ -10,6 +10,7 @@ import MapKit
 
 public class Locator : NSObject{
     
+    public static let defaultSize:CGSize = CGSize(width: 60, height: 35.5)
     
     public static func snapshotForLocation(size:CGSize?,location:CLLocation,callback:(@escaping (UIImage)->Void)){
         
@@ -18,7 +19,7 @@ public class Locator : NSObject{
         
         let options:MKMapSnapshotter.Options = MKMapSnapshotter.Options()
         options.mapType = .standard
-        options.size = size ?? CGSize(width: 60, height: 35.5)
+        options.size = size ?? Locator.defaultSize
         options.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
         
         let scrssnshotter = MKMapSnapshotter(options: options)

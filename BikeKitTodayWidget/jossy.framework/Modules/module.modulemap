@@ -1,0 +1,4 @@
+framework module jossy {
+  header "jossy-Swift.h"
+  requires objc
+}

@@ -16,7 +16,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     
     override func viewDidLoad() {
         self.definesPresentationContext = true
-        tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: "cell")
         model.delegate = self
         self.title = "Favourites"
         refreshed = UIRefreshControl(frame: .zero)
@@ -55,24 +55,41 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BikeKitViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DetailBikeKitViewCell
         guard let favorites = model.favourites else {
             fatalError("errorrr")
         }
         let data = favorites[indexPath.row]
-        cell.textLabel?.text = data.name
-        cell.detailTextLabel?.text = data.statusString()
-        cell.imageView?.image = UIImage(named: "Bike")
-        print(cell.imageView)
+        cell.nameLabel.text = data.name
+        cell.distanceLabel.text = data.statusString()
+        cell.distanceLabel.sizeToFit()
+        
+        
+        
+        if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
+            bikes.label.text = "\(status.num_bikes_available)\n Bikes"
+            bikes.layoutMarginsDidChange()
+            docks.label.text = "\(status.num_docks_available)\n Docks"
+            bikes.layoutMarginsDidChange()
+            electric.label.text = "\(status.num_ebikes_available)\n Electric"
+            bikes.layoutMarginsDidChange()
+            disabled.label.text = "\(status.num_bikes_disabled)\n Disabled"
+            bikes.layoutMarginsDidChange()
+        }
+            
+        
+        cell.layoutIfNeeded()
+        
+        
+//        cell.detailTextLabel?.text = data.statusString()
+//        cell.imageView?.image = UIImage(named: "Bike")
         return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cell = cell as! BikeKitViewCell
+        let cell = cell as! DetailBikeKitViewCell
         
         //load map image
-        
-        
             
             let data = model.favourites![indexPath.row]
         
@@ -82,15 +99,15 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
                 
                 self.model.images[data.external_id] = img
                 
-                    if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
-                        cell.imageView?.image = img
-                        
+                    if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
+                        cell.mapView.image = img
                     }
             
             }
             
         } else {
-            cell.imageView?.image = model.images[data.external_id]
+           
+            cell.mapView.image = model.images[data.external_id]
         }
         
     }

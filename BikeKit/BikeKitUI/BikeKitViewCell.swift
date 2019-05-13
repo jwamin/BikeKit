@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BikeKit
 
 public class BikeKitViewCell: UITableViewCell {
 
@@ -21,41 +22,41 @@ public class BikeKitViewCell: UITableViewCell {
         self.textLabel?.textAlignment = .right
         self.detailTextLabel?.textAlignment = .right
     
-        dataContainer = UIView()
-        dataContainer.translatesAutoresizingMaskIntoConstraints = false
-        dataContainer.backgroundColor = .red
-        self.contentView.addSubview(dataContainer)
+        imageView?.contentMode = .scaleAspectFill
         
-       self.updateConstraints()
+//        dataContainer = UIView()
+//        dataContainer.translatesAutoresizingMaskIntoConstraints = false
         
-
-        imageView?.backgroundColor = .green
+        //self.contentView.addSubview(dataContainer)
+        
+       //self.updateConstraints()
+    
 
             //print(mainLabel,detailLabel,textLabel,detailTextLabel)
     }
     
-    public override func updateConstraints() {
-        super.updateConstraints()
-        if (cellConstraints.count == 0){
-            let safeArea = self.safeAreaLayoutGuide
-
-            var constraints:[NSLayoutConstraint] = [
-            dataContainer.leftAnchor.constraint(equalToSystemSpacingAfter: safeArea.leftAnchor, multiplier: 1.0),
-            dataContainer.topAnchor.constraint(equalToSystemSpacingBelow: self.imageView!.bottomAnchor, multiplier: 1.0),
-            dataContainer.heightAnchor.constraint(equalToConstant: 50),
-            safeArea.bottomAnchor.constraint(equalToSystemSpacingBelow: dataContainer.bottomAnchor, multiplier: 1.0)
-            ]
-
-            cellConstraints = constraints
-
-            for constraint in cellConstraints{
-                constraint.identifier = "dodgy additional view constraint"
-            }
-
-            NSLayoutConstraint.activate(cellConstraints)
-
-        }
-    }
+//    public override func updateConstraints() {
+//        super.updateConstraints()
+//        if (cellConstraints.count == 0){
+//            let safeArea = self.safeAreaLayoutGuide
+//
+//            var constraints:[NSLayoutConstraint] = [
+//            dataContainer.leftAnchor.constraint(equalToSystemSpacingAfter: safeArea.leftAnchor, multiplier: 1.0),
+//            dataContainer.topAnchor.constraint(equalToSystemSpacingBelow: self.imageView!.bottomAnchor, multiplier: 1.0),
+//            dataContainer.heightAnchor.constraint(equalToConstant: 50),
+//            safeArea.bottomAnchor.constraint(equalToSystemSpacingBelow: dataContainer.bottomAnchor, multiplier: 1.0)
+//            ]
+//
+//            cellConstraints = constraints
+//
+//            for constraint in cellConstraints{
+//                constraint.identifier = "dodgy additional view constraint"
+//            }
+//
+//            NSLayoutConstraint.activate(cellConstraints)
+//
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -64,7 +65,7 @@ public class BikeKitViewCell: UITableViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.accessoryType = .none
-        imageView?.backgroundColor = .green
+        imageView?.image = nil
     }
     
     public override func awakeFromNib() {
@@ -108,16 +109,16 @@ public class DetailBikeKitViewCell: UITableViewCell {
         dataContainer.axis = .horizontal
         dataContainer.spacing = 8
         dataContainer.alignment = .center
-        dataContainer.distribution = .equalSpacing
+        dataContainer.distribution = .equalCentering
 
         for color:UIColor in [.red,.green,.blue,.red]{
             let view = DialView()
             translatesAutoresizingMaskIntoConstraints = false
             
-            view.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
+            //view.widthAnchor.constraint(equalToConstant: 60.0).isActive = true
             
             
-            view.backgroundColor = color
+            //view.backgroundColor = color
             dataContainer.addArrangedSubview(view)
             view.heightAnchor.constraint(equalTo: dataContainer.heightAnchor, multiplier: 1.0).isActive = true
         }
@@ -127,7 +128,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         self.contentView.addSubview(dataContainer)
         
         
-        mapView = UIImageView(frame: CGRect(origin: .zero, size: Locator.defaultSize))
+        mapView = UIImageView(frame: CGRect(origin: .zero, size: Locator.squareSize))
             mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .cyan
         self.contentView.addSubview(mapView)
@@ -152,7 +153,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
     }
     
     public override func updateConstraints() {
-        super.updateConstraints()
+        
         if (cellConstraints.count == 0){
             let safeArea = self.contentView.safeAreaLayoutGuide
             
@@ -163,7 +164,8 @@ public class DetailBikeKitViewCell: UITableViewCell {
             var constraints:[NSLayoutConstraint] = [
                 mapView.topAnchor.constraint(equalToSystemSpacingBelow: safeArea.topAnchor, multiplier: 1.0),
                 mapView.leadingAnchor.constraint(equalToSystemSpacingAfter: safeArea.leadingAnchor, multiplier: 1.0),
-                //mapView.heightAnchor.constraint(equalToConstant: Locator.defaultSize.height),
+                mapView.widthAnchor.constraint(equalToConstant: Locator.squareSize.width),
+                mapView.heightAnchor.constraint(equalTo: mapView.widthAnchor),
                 
                 nameLabel.topAnchor.constraint(equalToSystemSpacingBelow: safeArea.topAnchor, multiplier: 1.0),
                 nameLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: mapView.trailingAnchor, multiplier: 1.0),
@@ -174,7 +176,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
                 safeArea.trailingAnchor.constraint(equalToSystemSpacingAfter: distanceLabel.trailingAnchor, multiplier: 1.0),
                 
                 //dataContainer.heightAnchor.constraint(equalToConstant: 100),
-                dataContainer.heightAnchor.constraint(equalToConstant: 60),
+                //dataContainer.heightAnchor.constraint(equalToConstant: 60),
                 dataContainer.leftAnchor.constraint(equalToSystemSpacingAfter: safeArea.leftAnchor, multiplier: 1.0),
                 dataContainer.topAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: mapView.bottomAnchor, multiplier: 1.0),
                 dataContainer.topAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: distanceLabel.bottomAnchor, multiplier: 1.0),
@@ -185,7 +187,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             cellConstraints = constraints
             
             for constraint in cellConstraints{
-                constraint.identifier = "dodgy additional view constraint"
+                constraint.identifier = "custom cell contstraints"
             }
             
             NSLayoutConstraint.activate(cellConstraints)
@@ -194,13 +196,41 @@ public class DetailBikeKitViewCell: UITableViewCell {
             self.layoutIfNeeded()
             
         }
+        super.updateConstraints()
     }
+    
+    public func configureCell(indexPath:IndexPath, with data:NYCBikeStationInfo) -> DetailBikeKitViewCell{
+        let cell = self
+        cell.nameLabel.text = data.name
+        cell.distanceLabel.text = "\(data.capacity) docks in total."
+        cell.distanceLabel.sizeToFit()
+        
+        
+        
+        if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
+            bikes.label.text = "\(status.num_bikes_available)\nBikes"
+            bikes.layoutMarginsDidChange()
+            docks.label.text = "\(status.num_docks_available)\nDocks"
+            bikes.layoutMarginsDidChange()
+            electric.label.text = "\(status.num_ebikes_available)\nElectric"
+            bikes.layoutMarginsDidChange()
+            disabled.label.text = "\(status.num_bikes_disabled)\nDisabled"
+            bikes.layoutMarginsDidChange()
+        }
+        
+        
+        cell.layoutIfNeeded()
+        
+        return self
+        
+    }
+    
     
     public func getarrangedsubviews()->(DialView,DialView,DialView,DialView)?{
         guard let stack = dataContainer else {
             return nil
         }
-        return (stack.arrangedSubviews[0],stack.arrangedSubviews[1],stack.arrangedSubviews[2],stack.arrangedSubviews[3]) as! (DialView, DialView, DialView, DialView)
+        return (stack.arrangedSubviews[0],stack.arrangedSubviews[1],stack.arrangedSubviews[2],stack.arrangedSubviews[3]) as? (DialView, DialView, DialView, DialView)
         
     }
     
@@ -211,7 +241,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.accessoryType = .none
-        imageView?.backgroundColor = .green
+        imageView?.image = nil
     }
     
     public override func awakeFromNib() {

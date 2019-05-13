@@ -76,20 +76,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeNetworkin
             fatalError("errorrr")
         }
         let data = favorites[indexPath.row]
-        cell.nameLabel.text = data.name
-        cell.distanceLabel.text = "\(data.capacity) total docks"
-        cell.distanceLabel.sizeToFit()
-        
-        if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
-            bikes.label.text = "\(status.num_bikes_available)\n Bikes"
-            bikes.layoutMarginsDidChange()
-            docks.label.text = "\(status.num_docks_available)\n Docks"
-            bikes.layoutMarginsDidChange()
-            electric.label.text = "\(status.num_ebikes_available)\n Electric"
-            bikes.layoutMarginsDidChange()
-            disabled.label.text = "\(status.num_bikes_disabled)\n Disabled"
-            bikes.layoutMarginsDidChange()
-        }
+       
+        let configured = cell.configureCell(indexPath: indexPath, with: data)
         
         return cell
         

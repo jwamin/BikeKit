@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let tabViewController = UITabBarController(nibName: nil, bundle: nil)
         mainToastView.addChild(tabViewController)
-        mainToastView.view.insertSubview(tabViewController.view, belowSubview: mainToastView.toastLabel)
+        mainToastView.view.insertSubview(tabViewController.view, belowSubview: mainToastView.blurView)
         tabViewController.didMove(toParent: mainToastView)
          
         let table = TableViewController()

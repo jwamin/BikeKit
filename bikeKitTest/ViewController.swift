@@ -55,35 +55,20 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DetailBikeKitViewCell
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! DetailBikeKitViewCell
+
         guard let favorites = model.favourites else {
             fatalError("errorrr")
         }
+        
         let data = favorites[indexPath.row]
-        cell.nameLabel.text = data.name
-        cell.distanceLabel.text = data.statusString()
-        cell.distanceLabel.sizeToFit()
-        
-        
-        
-        if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
-            bikes.label.text = "\(status.num_bikes_available)\n Bikes"
-            bikes.layoutMarginsDidChange()
-            docks.label.text = "\(status.num_docks_available)\n Docks"
-            bikes.layoutMarginsDidChange()
-            electric.label.text = "\(status.num_ebikes_available)\n Electric"
-            bikes.layoutMarginsDidChange()
-            disabled.label.text = "\(status.num_bikes_disabled)\n Disabled"
-            bikes.layoutMarginsDidChange()
-        }
-            
-        
-        cell.layoutIfNeeded()
-        
+
+        let configured = cell.configureCell(indexPath: indexPath, with: data)
         
 //        cell.detailTextLabel?.text = data.statusString()
 //        cell.imageView?.image = UIImage(named: "Bike")
-        return cell
+        return configured
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -101,6 +86,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
                 
                     if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                         cell.mapView.image = img
+                        cell.mapView.layer.contentsScale = UIScreen.main.scale
                     }
             
             }

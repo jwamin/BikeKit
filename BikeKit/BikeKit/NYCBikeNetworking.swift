@@ -81,7 +81,12 @@ public class NYCBikeNetworking : NSObject {
             let timeout = refreshThrottle + TimeInterval(60)
             print(now,timeout,timeout>now)
             if(now<timeout){
-                let str = "throttled, try again at\n \(timeout)"
+                let formatter = DateComponentsFormatter()
+                formatter.allowedUnits = [.second]
+                formatter.unitsStyle = .full
+                formatter.includesApproximationPhrase = true
+                let datestr =  formatter.string(from: now, to: timeout)!.lowercased()
+                let str = "throttled, try again in \(datestr)"
                 print(str)
                 DispatchQueue.main.async {
                     self.delegate?.inCooldown(str: str)

@@ -67,7 +67,8 @@ class SearchTableViewController : UITableViewController {
         }
         
         cell.imageView?.image = UIImage(named: "Bike")
-        cell.detailTextLabel?.text = data.statusString()
+        cell.detailTextLabel?.text = "\(data.capacity) docks in total."
+
         
         return cell
         
@@ -88,13 +89,13 @@ class SearchTableViewController : UITableViewController {
         let model = AppDelegate.mainBikeModel
         if(model.images[data.external_id] == nil){
             
-            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
+            Locator.snapshotForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { (img) -> Void in
                 
                 model.images[data.external_id] = img
                 
                 if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
                     cell.imageView?.image = img
-                    
+                     cell.imageView?.contentMode = .scaleAspectFill
                 }
                 
             }
@@ -103,7 +104,7 @@ class SearchTableViewController : UITableViewController {
             cell.imageView?.image = model.images[data.external_id]
         }
         
-        
+        cell.imageView?.contentMode = .scaleAspectFill
         
     }
     

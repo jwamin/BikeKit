@@ -11,6 +11,7 @@ import MapKit
 public class Locator : NSObject{
     
     public static let defaultSize:CGSize = CGSize(width: 60, height: 35.5)
+    public static let squareSize:CGSize = CGSize(width: 60, height: 60)
     
     public static func snapshotForLocation(size:CGSize?,location:CLLocation,callback:(@escaping (UIImage)->Void)){
         
@@ -19,13 +20,21 @@ public class Locator : NSObject{
         
         let options:MKMapSnapshotter.Options = MKMapSnapshotter.Options()
         options.mapType = .standard
-        options.size = size ?? Locator.defaultSize
+        options.size = Locator.squareSize
         options.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
         
         let scrssnshotter = MKMapSnapshotter(options: options)
         scrssnshotter.start { (snapshot, err) in
             
-            guard let image = snapshot?.image else {
+            UIGraphicsBeginImageContext(options.size)
+            snapshot?.image.draw(at: .zero)
+            UIColor.blue.setFill()
+            let context = UIGraphicsGetCurrentContext()
+            context?.beginPath()
+            context?.addArc(center: CGPoint(x: options.size.width / 2, y: options.size.height / 2), radius: 5, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
+            context?.fillPath()
+            
+            guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
                 return
             }
             DispatchQueue.main.async {

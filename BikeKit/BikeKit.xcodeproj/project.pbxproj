@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5738D379228A27F200DAA2AE /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72A6228335B5006F63E8 /* BikeKit.framework */; };
 		57F193DD2289B28D000941A8 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F193D42289B28D000941A8 /* BikeKitUI.framework */; };
 		57F193E22289B28D000941A8 /* BikeKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193E12289B28D000941A8 /* BikeKitUITests.swift */; };
 		57F193E42289B28D000941A8 /* BikeKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F193D62289B28D000941A8 /* BikeKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5738D379228A27F200DAA2AE /* BikeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

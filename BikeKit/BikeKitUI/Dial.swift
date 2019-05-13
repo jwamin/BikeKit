@@ -29,6 +29,8 @@ public class DialView : UIView{
     public override func layoutMarginsDidChange() {
         print("layout changed")
         label.sizeToFit()
+        label.frame = self.frame
+        label.center = self.center
     }
     
     required init?(coder aDecoder: NSCoder) {

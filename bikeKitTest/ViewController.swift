@@ -80,9 +80,11 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         
             Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
                 
+                self.model.images[data.external_id] = img
+                
                     if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
                         cell.imageView?.image = img
-                        self.model.images[data.external_id] = img
+                        
                     }
             
             }

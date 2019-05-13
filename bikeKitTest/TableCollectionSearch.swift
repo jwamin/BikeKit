@@ -90,9 +90,11 @@ class SearchTableViewController : UITableViewController {
             
             Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
                 
+                model.images[data.external_id] = img
+                
                 if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
                     cell.imageView?.image = img
-                    model.images[data.external_id] = img
+                    
                 }
                 
             }

@@ -5,7 +5,9 @@ import BikeKitUI
 
 //Test UI View
 
-class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
+class TableViewController : UITableViewController, NYCBikeNetworkingDelegate, UITableViewDataSourcePrefetching{
+
+    
     
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
@@ -22,7 +24,8 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         refreshed = UIRefreshControl(frame: .zero)
         refreshed.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.refreshControl = refreshed
-        
+        tableView.estimatedRowHeight = 85.0
+        tableView.rowHeight = UITableView.automaticDimension
         //search Init
         
         let searchTable = SearchTableViewController()
@@ -72,6 +75,8 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         return configured
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = cell as! DetailBikeKitViewCell
         
@@ -88,7 +93,13 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
                     if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                         cell.mapView.image = img
                         cell.mapView.contentMode = .scaleAspectFill
-                        cell.layoutIfNeeded()
+                        
+                        DispatchQueue.main.async {
+                                
+                                cell.layoutIfNeeded()
+                            
+                        }
+                        
                     }
             
             }
@@ -97,7 +108,9 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
            
             cell.mapView.image = model.images[data.external_id]
             cell.mapView.contentMode = .scaleAspectFill
-            cell.layoutIfNeeded()
+            DispatchQueue.main.async {
+                cell.layoutIfNeeded()
+            }
         }
         
     }
@@ -117,6 +130,11 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         default:
             break
         }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        print("prefetching \(indexPaths)")
     }
     
     func updated() {

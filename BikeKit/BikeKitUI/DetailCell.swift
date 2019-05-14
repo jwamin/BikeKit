@@ -70,6 +70,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         mapView = UIImageView(frame: CGRect(origin: .zero, size: Locator.squareSize))
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .cyan
+        mapView.clipsToBounds = true
         mapView.contentMode = .scaleAspectFit
         //self.contentView.addSubview(mapView)
         
@@ -110,10 +111,11 @@ public class DetailBikeKitViewCell: UITableViewCell {
 //            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .horizontal)
 //            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .vertical)
             
+            let breakingConstraint = mapView.heightAnchor.constraint(equalTo: mapView.widthAnchor)
+            breakingConstraint.priority = UILayoutPriority(rawValue: 250)
             var constraints:[NSLayoutConstraint] = [
-                //mapView.widthAnchor.constraint(equalToConstant: Locator.squareSize.width),
-                //mapView.heightAnchor.constraint(greaterThanOrEqualTo: mapView.widthAnchor),
-                
+                mapView.widthAnchor.constraint(equalToConstant: Locator.squareSize.width),
+                breakingConstraint
                 ]
             
             let views = ["topStackView":topStackView,"detailStackView":dataContainer]

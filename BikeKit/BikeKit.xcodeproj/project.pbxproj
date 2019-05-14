@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5738D379228A27F200DAA2AE /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72A6228335B5006F63E8 /* BikeKit.framework */; };
 		5738D37B228A3C2100DAA2AE /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5738D37A228A3C2100DAA2AE /* DetailCell.swift */; };
+		57D67CD6228B094B003166A1 /* jossy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57DBA5D0228AF26A00593D79 /* jossy.framework */; };
 		57F193DD2289B28D000941A8 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F193D42289B28D000941A8 /* BikeKitUI.framework */; };
 		57F193E22289B28D000941A8 /* BikeKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193E12289B28D000941A8 /* BikeKitUITests.swift */; };
 		57F193E42289B28D000941A8 /* BikeKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F193D62289B28D000941A8 /* BikeKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		5738D37A228A3C2100DAA2AE /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
+		57DBA5D0228AF26A00593D79 /* jossy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = jossy.framework; sourceTree = "<group>"; };
 		57F193D42289B28D000941A8 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F193D62289B28D000941A8 /* BikeKitUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BikeKitUI.h; sourceTree = "<group>"; };
 		57F193D72289B28D000941A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,7 +53,6 @@
 		57F193FA2289C939000941A8 /* NYCLocatorMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCLocatorMap.swift; sourceTree = "<group>"; };
 		57F194022289E0CC000941A8 /* Scratch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scratch.storyboard; sourceTree = "<group>"; };
 		57F194042289F0F8000941A8 /* Dial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dial.swift; sourceTree = "<group>"; };
-		57F194072289F233000941A8 /* jossy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = jossy.framework; path = ../BikeKitTodayWidget/jossy.framework; sourceTree = "<group>"; };
 		57FF72A6228335B5006F63E8 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF72A9228335B5006F63E8 /* BikeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BikeKit.h; sourceTree = "<group>"; };
 		57FF72AA228335B5006F63E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57D67CD6228B094B003166A1 /* jossy.framework in Frameworks */,
 				5738D379228A27F200DAA2AE /* BikeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,7 +124,7 @@
 		57F194062289F232000941A8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				57F194072289F233000941A8 /* jossy.framework */,
+				57DBA5D0228AF26A00593D79 /* jossy.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -397,7 +399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
@@ -407,6 +409,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)TodayWidget",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BikeKitUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -415,6 +418,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.BikeKitUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -438,6 +442,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)TodayWidget",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BikeKitUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -446,6 +451,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.BikeKitUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -618,7 +624,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
@@ -628,6 +634,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)TodayWidget",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BikeKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -636,6 +643,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.BikeKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -659,6 +667,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)TodayWidget",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BikeKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -667,6 +676,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = co.jossy.BikeKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

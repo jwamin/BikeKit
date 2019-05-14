@@ -8,15 +8,37 @@
 
 import UIKit
 
+#if targetEnvironment(simulator)
+
+func degreesToRadians(degrees:CGFloat)->CGFloat{
+    return degrees * (.pi/180)
+}
+
+#else
+import jossy
+#endif
+
 
 public class DialView : UIView{
     
     public let label = UILabel()
     var dialConstraints = [NSLayoutConstraint]()
     
+    var total:Int = 0{
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    var current:Int = 0{
+        didSet{
+            self.setNeedsDisplay()
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
-        
+        self.isOpaque = false
+        self.clipsToBounds = false
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
         label.textAlignment = .center
@@ -36,6 +58,23 @@ public class DialView : UIView{
         super.init(coder: aDecoder)
     }
     
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        let context = UIGraphicsGetCurrentContext()
+        let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
+        let startAngle:CGFloat = degreesToRadians(degrees: 140)
+        let endAngle:CGFloat = degreesToRadians(degrees: 400)
+        context?.beginPath()
+        context?.setLineCap(.round)
+        context?.setLineWidth(5)
+        context?.setFillColor(UIColor.white.cgColor)
+        context?.setStrokeColor(UIColor.black.cgColor)
+        context?.addArc(center: center, radius: 10, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+        context?.strokePath()
+        
+        
+    }
     
    public override func updateConstraints() {
     

@@ -8,6 +8,6 @@
       location = "group:BikeKit/BikeKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:bikeKitTest.xcodeproj">
+      location = "group:bikeKitTest.xcodeproj">
    </FileRef>
 </Workspace>

@@ -7,13 +7,14 @@
 //
 
 import MapKit
+import BikeKit
 
 public class Locator : NSObject{
     
     public static let defaultSize:CGSize = CGSize(width: 60, height: 35.5)
     public static let squareSize:CGSize = CGSize(width: 60, height: 60)
     
-    public static func snapshotForLocation(size:CGSize?,location:CLLocation,callback:(@escaping (UIImage)->Void)){
+    public static func snapshotForLocation(size:CGSize?,location:CLLocation,_ data:NYCBikeStationInfo? = nil,callback:(@escaping (UIImage)->Void)){
         
         DispatchQueue.global().async {
         
@@ -28,9 +29,22 @@ public class Locator : NSObject{
             
         scrssnshotter.start { (snapshot, err) in
             
+            //this is very cool, if using the standard initialiser, the image and drawing will appear pixellated
             UIGraphicsBeginImageContextWithOptions(options.size, true, UIScreen.main.scale)
             snapshot?.image.draw(in: CGRect(origin: .zero, size: options.size))
-            UIColor.blue.setFill()
+            
+            //Color the dot
+            UIColor.gray.setFill()
+            
+            if let data = data,let status = data.status{
+                if(status.is_renting==1){
+                    UIColor.blue.setFill()
+                } else {
+                    UIColor.red.setFill()
+                }
+            }
+            
+            
             
             let context = UIGraphicsGetCurrentContext()
             context?.beginPath()

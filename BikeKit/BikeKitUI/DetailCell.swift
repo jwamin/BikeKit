@@ -24,7 +24,6 @@ public class DetailBikeKitViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: "cell")
-        print("cell!")
         
         self.textLabel?.textAlignment = .right
         self.detailTextLabel?.textAlignment = .right
@@ -48,7 +47,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         dataContainer.axis = .horizontal
         dataContainer.spacing = 8
         dataContainer.alignment = .center
-        dataContainer.distribution = .equalSpacing
+        dataContainer.distribution = .fillEqually
         
         for color:UIColor in [.red,.green,.blue,.red]{
             let view = DialView()
@@ -165,20 +164,28 @@ public class DetailBikeKitViewCell: UITableViewCell {
     public func configureCell(indexPath:IndexPath, with data:NYCBikeStationInfo) -> DetailBikeKitViewCell{
         let cell = self
         cell.nameLabel.text = data.name
-        cell.distanceLabel.text = "\(data.capacity) docks in total."
+        cell.distanceLabel.text = "\(data.capacity) docks."
         cell.distanceLabel.sizeToFit()
         
         
         
         if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
             bikes.label.text = "\(status.num_bikes_available)\nBikes"
-            bikes.layoutMarginsDidChange()
+            bikes.total = data.capacity
+            bikes.current = status.num_bikes_available
+            //bikes.layoutMarginsDidChange()
             docks.label.text = "\(status.num_docks_available)\nDocks"
-            bikes.layoutMarginsDidChange()
+            docks.total = data.capacity
+            docks.current = status.num_docks_available
+            //bikes.layoutMarginsDidChange()
             electric.label.text = "\(status.num_ebikes_available)\nElectric"
-            bikes.layoutMarginsDidChange()
+            electric.total = data.capacity
+            electric.current = status.num_ebikes_available
+            //bikes.layoutMarginsDidChange()
             disabled.label.text = "\(status.num_bikes_disabled)\nDisabled"
-            bikes.layoutMarginsDidChange()
+            disabled.total = data.capacity
+            disabled.current = status.num_bikes_disabled
+            //bikes.layoutMarginsDidChange()
         }
         
         

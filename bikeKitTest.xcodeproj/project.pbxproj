@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72D422833CBC006F63E8 /* MapKit.framework */; };
-		5738D376228A1D8200DAA2AE /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F194002289DF24000941A8 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5738D377228A1D9100DAA2AE /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72CC2283360F006F63E8 /* BikeKit.framework */; };
-		5738D378228A1D9100DAA2AE /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F194002289DF24000941A8 /* BikeKitUI.framework */; };
 		578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 578676332286F9C600AA0072 /* NotificationCenter.framework */; };
 		578676372286F9C600AA0072 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578676362286F9C600AA0072 /* TodayViewController.swift */; };
 		5786763A2286F9C600AA0072 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 578676382286F9C600AA0072 /* MainInterface.storyboard */; };
 		5786763E2286F9C600AA0072 /* BikeKitTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		57D67CCF228B085C003166A1 /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
+		57D67CD0228B085C003166A1 /* BikeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		57D67CD2228B085C003166A1 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; };
+		57D67CD3228B085C003166A1 /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		57D67CD8228B0971003166A1 /* jossy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD7228B0971003166A1 /* jossy.framework */; };
+		57D67CD9228B0971003166A1 /* jossy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD7228B0971003166A1 /* jossy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57FF728B22821544006F63E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728A22821544006F63E8 /* AppDelegate.swift */; };
 		57FF728D22821544006F63E8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728C22821544006F63E8 /* ViewController.swift */; };
 		57FF729222821546006F63E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57FF729122821546006F63E8 /* Assets.xcassets */; };
 		57FF729522821546006F63E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57FF729322821546006F63E8 /* LaunchScreen.storyboard */; };
 		57FF72D322833BD1006F63E8 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF72D222833BD1006F63E8 /* MapViewController.swift */; };
 		57FF72D522833CBC006F63E8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72D422833CBC006F63E8 /* MapKit.framework */; };
-		57FF72D72283474A006F63E8 /* BikeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72CC2283360F006F63E8 /* BikeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57FF72DA22836ADF006F63E8 /* TableCollectionSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF72D922836ADF006F63E8 /* TableCollectionSearch.swift */; };
 		57FF72DC2283848B006F63E8 /* ToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF72DB2283848B006F63E8 /* ToastViewController.swift */; };
 /* End PBXBuildFile section */
@@ -48,14 +50,15 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		57FF72D1228336FC006F63E8 /* Embed Frameworks */ = {
+		57D67CC3228B067C003166A1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5738D376228A1D8200DAA2AE /* BikeKitUI.framework in Embed Frameworks */,
-				57FF72D72283474A006F63E8 /* BikeKit.framework in Embed Frameworks */,
+				57D67CD9228B0971003166A1 /* jossy.framework in Embed Frameworks */,
+				57D67CD3228B085C003166A1 /* BikeKitUI.framework in Embed Frameworks */,
+				57D67CD0228B085C003166A1 /* BikeKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,15 +73,17 @@
 		5786763B2286F9C600AA0072 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		578676442286FEFE00AA0072 /* BikeKitTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BikeKitTodayWidget.entitlements; sourceTree = "<group>"; };
 		578676452286FFC600AA0072 /* BikeKitTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BikeKitTest.entitlements; path = BikeKitTest/BikeKitTest.entitlements; sourceTree = "<group>"; };
-		57F193FD2289DA18000941A8 /* jossy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = jossy.framework; path = /Users/jwamin/Documents/sandbox.nosync/github/BikeKit/BikeKitTodayWidget/jossy.framework; sourceTree = "<absolute>"; };
-		57F194002289DF24000941A8 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57D67CCE228B085C003166A1 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57D67CD1228B085C003166A1 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57D67CD4228B0894003166A1 /* BikeKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BikeKitUI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BikeKit-cfjhqiewwyizzgajmyzwxxopuvea/Build/Products/Debug-iphoneos/BikeKitUI.framework"; sourceTree = "<group>"; };
+		57D67CD5228B0894003166A1 /* BikeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BikeKit.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BikeKit-cfjhqiewwyizzgajmyzwxxopuvea/Build/Products/Debug-iphoneos/BikeKit.framework"; sourceTree = "<group>"; };
+		57D67CD7228B0971003166A1 /* jossy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = jossy.framework; path = BikeKit/jossy.framework; sourceTree = "<group>"; };
 		57FF728722821544006F63E8 /* BikeKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikeKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF728A22821544006F63E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF728C22821544006F63E8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		57FF729122821546006F63E8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57FF729422821546006F63E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57FF729622821546006F63E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		57FF72CC2283360F006F63E8 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF72D222833BD1006F63E8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		57FF72D422833CBC006F63E8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		57FF72D822835C78006F63E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -91,8 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5738D377228A1D9100DAA2AE /* BikeKit.framework in Frameworks */,
-				5738D378228A1D9100DAA2AE /* BikeKitUI.framework in Frameworks */,
 				5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */,
 				578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */,
 			);
@@ -102,7 +105,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57D67CCF228B085C003166A1 /* BikeKit.framework in Frameworks */,
 				57FF72D522833CBC006F63E8 /* MapKit.framework in Frameworks */,
+				57D67CD2228B085C003166A1 /* BikeKitUI.framework in Frameworks */,
+				57D67CD8228B0971003166A1 /* jossy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +129,9 @@
 		57FF727E22821544006F63E8 = {
 			isa = PBXGroup;
 			children = (
+				57D67CD7228B0971003166A1 /* jossy.framework */,
+				57D67CD1228B085C003166A1 /* BikeKitUI.framework */,
+				57D67CCE228B085C003166A1 /* BikeKit.framework */,
 				578676452286FFC600AA0072 /* BikeKitTest.entitlements */,
 				57FF728922821544006F63E8 /* bikeKitTest */,
 				578676352286F9C600AA0072 /* BikeKitTodayWidget */,
@@ -159,10 +168,9 @@
 		57FF72CB2283360F006F63E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				57F194002289DF24000941A8 /* BikeKitUI.framework */,
-				57F193FD2289DA18000941A8 /* jossy.framework */,
+				57D67CD4228B0894003166A1 /* BikeKitUI.framework */,
+				57D67CD5228B0894003166A1 /* BikeKit.framework */,
 				57FF72D422833CBC006F63E8 /* MapKit.framework */,
-				57FF72CC2283360F006F63E8 /* BikeKit.framework */,
 				578676332286F9C600AA0072 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -195,8 +203,8 @@
 				57FF728322821544006F63E8 /* Sources */,
 				57FF728422821544006F63E8 /* Frameworks */,
 				57FF728522821544006F63E8 /* Resources */,
-				57FF72D1228336FC006F63E8 /* Embed Frameworks */,
 				578676422286F9C600AA0072 /* Embed App Extensions */,
+				57D67CC3228B067C003166A1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -335,6 +343,11 @@
 				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BikeKitTodayWidget",
+					"$(PROJECT_DIR)/**",
+				);
 				INFOPLIST_FILE = BikeKitTodayWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -355,6 +368,11 @@
 				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BikeKitTodayWidget",
+					"$(PROJECT_DIR)/**",
+				);
 				INFOPLIST_FILE = BikeKitTodayWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -496,6 +514,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BikeKitTodayWidget",
+					"$(PROJECT_DIR)/BikeKit",
 				);
 				INFOPLIST_FILE = bikeKitTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -520,6 +539,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BikeKitTodayWidget",
+					"$(PROJECT_DIR)/BikeKit",
 				);
 				INFOPLIST_FILE = bikeKitTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

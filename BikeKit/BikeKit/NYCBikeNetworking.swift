@@ -168,6 +168,7 @@ public class NYCBikeNetworking : NSObject {
                 }
             }
             
+
         }
         
         self.stationData = updatedStations
@@ -206,6 +207,7 @@ public class NYCBikeNetworking : NSObject {
             for id in intsavedFavourites {
                 if $0.station_id == String(id){
                     matches.append($0)
+                    images.removeValue(forKey: $0.external_id)
                 }
             }
         }
@@ -225,7 +227,11 @@ public class NYCBikeNetworking : NSObject {
     
     public func toggleFavouriteForId(id:String)->Bool{
         
-        let favourites:[String] = NYCBikeNetworking.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
+        guard let groupDefaults = NYCBikeNetworking.groupedUserDefaults else {
+            fatalError()
+        }
+        
+        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
         var newFavourites = favourites
         var add = false
         if(favourites.contains(id)){
@@ -243,7 +249,8 @@ public class NYCBikeNetworking : NSObject {
         }
         
         
-        NYCBikeNetworking.groupedUserDefaults!.set(newFavourites, forKey: "favourites")
+        groupDefaults.set(newFavourites, forKey: "favourites")
+        groupDefaults.synchronize()
         
         return add
         

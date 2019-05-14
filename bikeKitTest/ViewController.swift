@@ -86,19 +86,13 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate, UI
         
         if(model.images[data.external_id] == nil){
         
-            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!) { (img) -> Void in
+            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!,data) { (img) -> Void in
                 
                 self.model.images[data.external_id] = img
                 
                     if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                         cell.mapView.image = img
                         cell.mapView.contentMode = .scaleAspectFill
-                        
-                        DispatchQueue.main.async {
-                                
-                                cell.layoutIfNeeded()
-                            
-                        }
                         
                     }
             
@@ -108,9 +102,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate, UI
            
             cell.mapView.image = model.images[data.external_id]
             cell.mapView.contentMode = .scaleAspectFill
-            DispatchQueue.main.async {
-                cell.layoutIfNeeded()
-            }
+
         }
         
     }

@@ -18,7 +18,7 @@ class ToastViewController: UIViewController, ToastDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         blurView.translatesAutoresizingMaskIntoConstraints = false
         
         toastLabel = UILabel()

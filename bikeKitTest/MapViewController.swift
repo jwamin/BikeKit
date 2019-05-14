@@ -17,6 +17,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     let location = AppDelegate.locationManager
     var map:MKMapView!
 
+    var zoomToLocation = false
     
     private var userInitialZoomSet:Bool = false
     
@@ -108,22 +109,41 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
     }
     
+    func zoomToStation(station:NYCBikeStationInfo){
+        guard let location = model.locations[station.external_id] else {
+            return
+        }
+        zoomToLocation = true
+        print("zoom to station")
+        zoomToLocation(location: location.coordinate)
+    }
+    
     func zoomToUser(){
+        print("zoom to user")
+        zoomToLocation(location: map.userLocation.coordinate)
+    }
+    
+    func zoomToLocation(location:CLLocationCoordinate2D){
+        //self.loadViewIfNeeded()
         var region = MKCoordinateRegion()
-        region.center = map.userLocation.coordinate
+        region.center = location
         region.span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         map.setRegion(region, animated: true)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        zoomToUser()
+        if(!zoomToLocation){
+            zoomToUser()
+        }
+        zoomToLocation = false
     }
     
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         
         if(!userInitialZoomSet){
-        
+        print("initial zoom to user")
             userInitialZoomSet = true
             zoomToUser()
             

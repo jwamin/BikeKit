@@ -129,6 +129,19 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate, UI
         print("prefetching \(indexPaths)")
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+        self.tabBarController?.selectedIndex = 1
+        let navigationSibling = self.tabBarController?.viewControllers![1] as! UINavigationController
+        let mapController = navigationSibling.topViewController as! MapViewController
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        var station = model.favourites![indexPath.row]
+        
+        mapController.zoomToStation(station: station)
+        
+    }
+    
     func updated() {
         
         guard let _ = model.favourites else {

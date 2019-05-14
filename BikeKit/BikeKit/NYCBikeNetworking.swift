@@ -78,7 +78,7 @@ public class NYCBikeNetworking : NSObject {
             url = NYCBikeNetworking.STATION_STATUS_URL
             callback = self.handleStatusRequest
             let now = Date()
-            let timeout = refreshThrottle + TimeInterval(60)
+            let timeout = refreshThrottle + TimeInterval(20)
             print(now,timeout,timeout>now)
             if(now<timeout){
                 let formatter = DateComponentsFormatter()

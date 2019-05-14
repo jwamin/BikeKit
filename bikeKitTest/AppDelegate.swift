@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let table = TableViewController()
         table.toastDelegate = mainToastView
         let map = MapViewController()
-        
+        map.loadViewIfNeeded()
         let primaryNavigation = UINavigationController(rootViewController: table)
         let secondaryNavigation = UINavigationController(rootViewController: map)
         

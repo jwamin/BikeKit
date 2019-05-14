@@ -38,8 +38,8 @@ public class DialView : UIView{
     
     let startAngle:CGFloat = degreesToRadians(degrees: 140)
     let endAngle:CGFloat = degreesToRadians(degrees: 400)
-    let radius:CGFloat = 20
-    let lineWidth:CGFloat = 10
+    let radius:CGFloat = 14
+    let lineWidth:CGFloat = 7
     
     init() {
         super.init(frame: .zero)
@@ -66,12 +66,10 @@ public class DialView : UIView{
     
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
-        
+       
         let context = UIGraphicsGetCurrentContext()
         //let drawrect = rect.insetBy(dx: -10, dy: -10)
         let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-
-        
         
         let swing = endAngle - startAngle
         
@@ -99,10 +97,8 @@ public class DialView : UIView{
             context?.addArc(center: center, radius: radius, startAngle: startAngle, endAngle: finalEndAngle, clockwise: !anticlockwise)
         }
         
-
         context?.strokePath()
-        
-        
+    
     }
     
    public override func updateConstraints() {

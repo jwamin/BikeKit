@@ -68,6 +68,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         
 //        cell.detailTextLabel?.text = data.statusString()
 //        cell.imageView?.image = UIImage(named: "Bike")
+
         return configured
     }
     
@@ -86,7 +87,8 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
                 
                     if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                         cell.mapView.image = img
-                        cell.mapView.layer.contentsScale = UIScreen.main.scale
+                        cell.mapView.contentMode = .scaleAspectFill
+                        cell.layoutIfNeeded()
                     }
             
             }
@@ -94,6 +96,8 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
         } else {
            
             cell.mapView.image = model.images[data.external_id]
+            cell.mapView.contentMode = .scaleAspectFill
+            cell.layoutIfNeeded()
         }
         
     }
@@ -117,7 +121,7 @@ class TableViewController : UITableViewController, NYCBikeNetworkingDelegate{
     
     func updated() {
         
-        guard let favs = model.favourites else {
+        guard let _ = model.favourites else {
             return
         }
         

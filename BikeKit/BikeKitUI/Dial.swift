@@ -38,16 +38,18 @@ public class DialView : UIView{
     
     
    public override func updateConstraints() {
-        super.updateConstraints()
+    
         if(dialConstraints.count == 0){
             
-            var constraints = [
-            label.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1.0),
-            label.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0)
-            ]
+//var constraints =             [
+//            self.widthAnchor.constraint(equalToConstant: Locator.squareSize.height),
+//            //self.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0),
+//            label.centerXAnchor.constraint(equalToSystemSpacingAfter: self.centerXAnchor, multiplier: 1.0),
+//            label.centerYAnchor.constraint(equalToSystemSpacingBelow: self.centerYAnchor, multiplier: 1.0)
+//            ]
             
-            constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[label(==height)]-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
-            constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[label(==height)]-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
+            var constraints = NSLayoutConstraint.constraints(withVisualFormat: "|-0-[label]-0-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
+            constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[label]-0-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
             
             for (index, cons) in constraints.enumerated(){
                 cons.identifier = "dial constraint \(index)"
@@ -55,10 +57,11 @@ public class DialView : UIView{
             
             NSLayoutConstraint.activate(constraints)
             dialConstraints = constraints
-            
+            self.layoutIfNeeded()
         }
         
-        self.layoutIfNeeded()
+    
+    super.updateConstraints()
     }
     
 }

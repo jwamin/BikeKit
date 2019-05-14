@@ -34,7 +34,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         topStackView.axis = .horizontal
         topStackView.spacing = 8
         topStackView.alignment = .leading
-        
+        topStackView.distribution = .fill
         
         headingsContainer = UIStackView()
         headingsContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +48,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         dataContainer.axis = .horizontal
         dataContainer.spacing = 8
         dataContainer.alignment = .center
-        dataContainer.distribution = .equalCentering
+        dataContainer.distribution = .equalSpacing
         
         for color:UIColor in [.red,.green,.blue,.red]{
             let view = DialView()
@@ -59,7 +59,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             
             //view.backgroundColor = color
             dataContainer.addArrangedSubview(view)
-            view.heightAnchor.constraint(equalTo: dataContainer.heightAnchor, multiplier: 1.0).isActive = true
+            //view.heightAnchor.constraint(equalTo: dataContainer.heightAnchor, multiplier: 1.0).isActive = true
         }
         
         
@@ -70,6 +70,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         mapView = UIImageView(frame: CGRect(origin: .zero, size: Locator.squareSize))
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .cyan
+        mapView.contentMode = .scaleAspectFit
         //self.contentView.addSubview(mapView)
         
         nameLabel = UILabel()
@@ -91,10 +92,10 @@ public class DetailBikeKitViewCell: UITableViewCell {
         self.contentView.addSubview(topStackView)
         self.contentView.addSubview(dataContainer)
         
-        self.updateConstraints()
+        //self.updateConstraints()
+        self.setNeedsUpdateConstraints()
         
         
-        imageView?.backgroundColor = .green
         
         //print(mainLabel,detailLabel,textLabel,detailTextLabel)
     }
@@ -104,13 +105,14 @@ public class DetailBikeKitViewCell: UITableViewCell {
         if (cellConstraints.count == 0){
             let safeArea = self.contentView.safeAreaLayoutGuide
             
-            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .horizontal)
-            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .vertical)
+//            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .horizontal)
+//            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .vertical)
+//            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .horizontal)
+//            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .vertical)
             
-            
-            var constraints = [
-                mapView.widthAnchor.constraint(equalToConstant: Locator.squareSize.width),
-                mapView.heightAnchor.constraint(greaterThanOrEqualTo: mapView.widthAnchor),
+            var constraints:[NSLayoutConstraint] = [
+                //mapView.widthAnchor.constraint(equalToConstant: Locator.squareSize.width),
+                //mapView.heightAnchor.constraint(greaterThanOrEqualTo: mapView.widthAnchor),
                 
                 ]
             

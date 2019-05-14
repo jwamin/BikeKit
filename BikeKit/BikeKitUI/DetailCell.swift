@@ -176,6 +176,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             //bikes.layoutMarginsDidChange()
             docks.label.text = "\(status.num_docks_available)\nDocks"
             docks.total = data.capacity
+            docks.anticlockwise = false
             docks.current = status.num_docks_available
             //bikes.layoutMarginsDidChange()
             electric.label.text = "\(status.num_ebikes_available)\nElectric"
@@ -183,6 +184,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             electric.current = status.num_ebikes_available
             //bikes.layoutMarginsDidChange()
             disabled.label.text = "\(status.num_bikes_disabled)\nDisabled"
+            disabled.anticlockwise = false
             disabled.total = data.capacity
             disabled.current = status.num_bikes_disabled
             //bikes.layoutMarginsDidChange()

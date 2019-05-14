@@ -34,6 +34,12 @@ public class DialView : UIView{
             self.setNeedsDisplay()
         }
     }
+    var anticlockwise:Bool = true
+    
+    let startAngle:CGFloat = degreesToRadians(degrees: 140)
+    let endAngle:CGFloat = degreesToRadians(degrees: 400)
+    let radius:CGFloat = 20
+    let lineWidth:CGFloat = 10
     
     init() {
         super.init(frame: .zero)
@@ -45,7 +51,7 @@ public class DialView : UIView{
         label.numberOfLines = 0
         label.text = String(0)
         label.center = self.center
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         
     }
     
@@ -62,15 +68,38 @@ public class DialView : UIView{
         super.draw(rect)
         
         let context = UIGraphicsGetCurrentContext()
+        //let drawrect = rect.insetBy(dx: -10, dy: -10)
         let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-        let startAngle:CGFloat = degreesToRadians(degrees: 140)
-        let endAngle:CGFloat = degreesToRadians(degrees: 400)
+
+        
+        
+        let swing = endAngle - startAngle
+        
+        var fraction = CGFloat(current) / CGFloat(total)
+        
+        var finalEndAngle:CGFloat = 0
+        
+        if(!anticlockwise){
+           finalEndAngle = endAngle - (swing * fraction)
+        } else {
+            finalEndAngle = startAngle + (swing * fraction)
+        }
+        
         context?.beginPath()
         context?.setLineCap(.round)
-        context?.setLineWidth(5)
+        context?.setLineWidth(lineWidth)
         context?.setFillColor(UIColor.white.cgColor)
-        context?.setStrokeColor(UIColor.black.cgColor)
-        context?.addArc(center: center, radius: 10, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+        
+        
+        if(!anticlockwise){
+            context?.setStrokeColor(UIColor.red.cgColor)
+            context?.addArc(center: center, radius: radius, startAngle: endAngle, endAngle: finalEndAngle, clockwise: !anticlockwise)
+        } else {
+            context?.setStrokeColor(UIColor.green.cgColor)
+            context?.addArc(center: center, radius: radius, startAngle: startAngle, endAngle: finalEndAngle, clockwise: !anticlockwise)
+        }
+        
+
         context?.strokePath()
         
         

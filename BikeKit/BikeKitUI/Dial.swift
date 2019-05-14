@@ -23,14 +23,13 @@ public class DialView : UIView{
         label.numberOfLines = 0
         label.text = String(0)
         label.center = self.center
+        label.font = UIFont.preferredFont(forTextStyle: .callout)
         
     }
     
     public override func layoutMarginsDidChange() {
-        print("layout changed")
+        super.layoutMarginsDidChange()
         label.sizeToFit()
-        label.frame = self.frame
-        label.center = self.center
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,10 +41,13 @@ public class DialView : UIView{
         super.updateConstraints()
         if(dialConstraints.count == 0){
             
-            let constraints = [
+            var constraints = [
             label.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1.0),
             label.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0)
             ]
+            
+            constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[label(==height)]-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
+            constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[label(==height)]-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
             
             for (index, cons) in constraints.enumerated(){
                 cons.identifier = "dial constraint \(index)"

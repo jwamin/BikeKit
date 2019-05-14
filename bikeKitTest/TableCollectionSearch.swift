@@ -9,6 +9,10 @@ extension TableViewController : UISearchControllerDelegate{
         self.refresh()
     }
     
+    func willPresentSearchController(_ searchController: UISearchController) {
+        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+    }
+    
 }
 
 extension TableViewController : UISearchResultsUpdating{
@@ -16,9 +20,20 @@ extension TableViewController : UISearchResultsUpdating{
     
     func updateSearchResults(for searchController: UISearchController) {
         
+       
+        
+        guard let stationData = model.stationData,  let resultsController = (searchController.searchResultsController as? SearchTableViewController) else {
+            return
+        }
+        
         let searchString = searchController.searchBar.text!.lowercased()
-        print(searchString)
-        let resultsController = (searchController.searchResultsController as! SearchTableViewController)
+        
+        if searchString.count == 0{
+            resultsController.setStationInfoSubset(newSet: stationData)
+            return
+        }
+        
+       
         
         let filtered = model.stationData!.filter {
             $0.name.lowercased().contains(searchString)
@@ -28,7 +43,6 @@ extension TableViewController : UISearchResultsUpdating{
         
         
     }
-    
     
 }
 
@@ -78,12 +92,6 @@ class SearchTableViewController : UITableViewController {
         let cell = cell as! BikeKitViewCell
         
         //load map image
-        
-//        if(cell.imageView?.backgroundColor != .red){
-//            UIView.animate(withDuration: 1.0) {
-//                cell.imageView?.backgroundColor = .red
-//            }
-//        }
         
         let data = stationInfoSubset[indexPath.row]
         let model = AppDelegate.mainBikeModel

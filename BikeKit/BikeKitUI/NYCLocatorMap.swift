@@ -17,18 +17,21 @@ public class Locator : NSObject{
         
         DispatchQueue.global().async {
         
-        
         let options:MKMapSnapshotter.Options = MKMapSnapshotter.Options()
-        options.mapType = .standard
+        options.mapType = .mutedStandard
         options.size = Locator.squareSize
         options.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
-        
+        options.showsPointsOfInterest = true
+        options.showsBuildings = false
+            
         let scrssnshotter = MKMapSnapshotter(options: options)
+            
         scrssnshotter.start { (snapshot, err) in
             
-            UIGraphicsBeginImageContext(options.size)
-            snapshot?.image.draw(at: .zero)
+            UIGraphicsBeginImageContextWithOptions(options.size, true, UIScreen.main.scale)
+            snapshot?.image.draw(in: CGRect(origin: .zero, size: options.size))
             UIColor.blue.setFill()
+            
             let context = UIGraphicsGetCurrentContext()
             context?.beginPath()
             context?.addArc(center: CGPoint(x: options.size.width / 2, y: options.size.height / 2), radius: 5, startAngle: 0, endAngle: 2 * .pi, clockwise: false)
@@ -37,8 +40,11 @@ public class Locator : NSObject{
             guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
                 return
             }
+            
+            UIGraphicsEndImageContext()
+            
             DispatchQueue.main.async {
-            callback(image)
+                callback(image)
             }
             
         }

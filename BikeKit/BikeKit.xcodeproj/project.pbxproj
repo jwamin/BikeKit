@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5738D379228A27F200DAA2AE /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72A6228335B5006F63E8 /* BikeKit.framework */; };
+		5738D37B228A3C2100DAA2AE /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5738D37A228A3C2100DAA2AE /* DetailCell.swift */; };
 		57F193DD2289B28D000941A8 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F193D42289B28D000941A8 /* BikeKitUI.framework */; };
 		57F193E22289B28D000941A8 /* BikeKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193E12289B28D000941A8 /* BikeKitUITests.swift */; };
 		57F193E42289B28D000941A8 /* BikeKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F193D62289B28D000941A8 /* BikeKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5738D37A228A3C2100DAA2AE /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		57F193D42289B28D000941A8 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F193D62289B28D000941A8 /* BikeKitUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BikeKitUI.h; sourceTree = "<group>"; };
 		57F193D72289B28D000941A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				57F193EB2289B2BA000941A8 /* BikeKitViewCell.swift */,
+				5738D37A228A3C2100DAA2AE /* DetailCell.swift */,
 				57F194042289F0F8000941A8 /* Dial.swift */,
 				57F194022289E0CC000941A8 /* Scratch.storyboard */,
 				57F193FA2289C939000941A8 /* NYCLocatorMap.swift */,
@@ -345,6 +348,7 @@
 			files = (
 				57F193FB2289C939000941A8 /* NYCLocatorMap.swift in Sources */,
 				57F194052289F0F8000941A8 /* Dial.swift in Sources */,
+				5738D37B228A3C2100DAA2AE /* DetailCell.swift in Sources */,
 				57F193EC2289B2BA000941A8 /* BikeKitViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

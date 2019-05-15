@@ -11,13 +11,13 @@ import NotificationCenter
 import BikeKit
 import BikeKitUI
 
-class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeNetworkingDelegate,UITableViewDelegate,UITableViewDataSource {
+class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegate,UITableViewDelegate,UITableViewDataSource {
     
 
     var tableView:UITableView!
     
     
-    let bikeNetworking = NYCBikeNetworking()
+    let bikeNetworking = NYCBikeModel()
     var label:UILabel!
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -56,7 +56,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeNetworkin
         let sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
-        NYCBikeNetworking.groupedUserDefaults = sharedUserDefaults
+        NYCBikeModel.groupedUserDefaults = sharedUserDefaults
         //bikeNetworking.assembleDataForFavourites()
         bikeNetworking.delegate = self
         label = self.view.subviews[0] as? UILabel

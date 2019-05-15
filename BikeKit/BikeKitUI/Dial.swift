@@ -8,15 +8,15 @@
 
 import UIKit
 
-#if targetEnvironment(simulator)
+//#if targetEnvironment(simulator)
 
 func degreesToRadians(degrees:CGFloat)->CGFloat{
     return degrees * (.pi/180)
 }
 
-#else
-import jossy
-#endif
+//#else
+//import jossy
+//#endif
 
 
 public class DialView : UIView{

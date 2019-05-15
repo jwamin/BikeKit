@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57069F87228B261F00E714FD /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
+		57069F88228B261F00E714FD /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; };
+		57069F8A228B26A800E714FD /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72D422833CBC006F63E8 /* MapKit.framework */; };
 		578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 578676332286F9C600AA0072 /* NotificationCenter.framework */; };
 		578676372286F9C600AA0072 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578676362286F9C600AA0072 /* TodayViewController.swift */; };
@@ -14,10 +17,6 @@
 		5786763E2286F9C600AA0072 /* BikeKitTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		57D67CCF228B085C003166A1 /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
 		57D67CD0228B085C003166A1 /* BikeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		57D67CD2228B085C003166A1 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; };
-		57D67CD3228B085C003166A1 /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		57D67CD8228B0971003166A1 /* jossy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD7228B0971003166A1 /* jossy.framework */; };
-		57D67CD9228B0971003166A1 /* jossy.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD7228B0971003166A1 /* jossy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57FF728B22821544006F63E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728A22821544006F63E8 /* AppDelegate.swift */; };
 		57FF728D22821544006F63E8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF728C22821544006F63E8 /* ViewController.swift */; };
 		57FF729222821546006F63E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57FF729122821546006F63E8 /* Assets.xcassets */; };
@@ -56,8 +55,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				57D67CD9228B0971003166A1 /* jossy.framework in Embed Frameworks */,
-				57D67CD3228B085C003166A1 /* BikeKitUI.framework in Embed Frameworks */,
+				57069F8A228B26A800E714FD /* BikeKitUI.framework in Embed Frameworks */,
 				57D67CD0228B085C003166A1 /* BikeKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -77,7 +75,6 @@
 		57D67CD1228B085C003166A1 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57D67CD4228B0894003166A1 /* BikeKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BikeKitUI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BikeKit-cfjhqiewwyizzgajmyzwxxopuvea/Build/Products/Debug-iphoneos/BikeKitUI.framework"; sourceTree = "<group>"; };
 		57D67CD5228B0894003166A1 /* BikeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BikeKit.framework; path = "../../../../Library/Developer/Xcode/DerivedData/BikeKit-cfjhqiewwyizzgajmyzwxxopuvea/Build/Products/Debug-iphoneos/BikeKit.framework"; sourceTree = "<group>"; };
-		57D67CD7228B0971003166A1 /* jossy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = jossy.framework; path = BikeKit/jossy.framework; sourceTree = "<group>"; };
 		57FF728722821544006F63E8 /* BikeKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikeKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF728A22821544006F63E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF728C22821544006F63E8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +93,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57069F87228B261F00E714FD /* BikeKit.framework in Frameworks */,
+				57069F88228B261F00E714FD /* BikeKitUI.framework in Frameworks */,
 				5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */,
 				578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */,
 			);
@@ -107,8 +106,6 @@
 			files = (
 				57D67CCF228B085C003166A1 /* BikeKit.framework in Frameworks */,
 				57FF72D522833CBC006F63E8 /* MapKit.framework in Frameworks */,
-				57D67CD2228B085C003166A1 /* BikeKitUI.framework in Frameworks */,
-				57D67CD8228B0971003166A1 /* jossy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +126,6 @@
 		57FF727E22821544006F63E8 = {
 			isa = PBXGroup;
 			children = (
-				57D67CD7228B0971003166A1 /* jossy.framework */,
 				57D67CD1228B085C003166A1 /* BikeKitUI.framework */,
 				57D67CCE228B085C003166A1 /* BikeKit.framework */,
 				578676452286FFC600AA0072 /* BikeKitTest.entitlements */,

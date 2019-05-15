@@ -14,7 +14,7 @@ import CoreLocation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    static var mainBikeModel = NYCBikeNetworking()
+    static var mainBikeModel = NYCBikeModel()
     static var locationManager = CLLocationManager()
     static var sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
 
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        NYCBikeNetworking.groupedUserDefaults = AppDelegate.sharedUserDefaults
+        NYCBikeModel.groupedUserDefaults = AppDelegate.sharedUserDefaults
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
@@ -49,9 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(CLLocationManager.locationServicesEnabled())
         
         AppDelegate.locationManager.requestWhenInUseAuthorization()
-        
-        //dummy.view.backgroundColor = .red
-        //dummy.title = "dummy"
         
         window?.rootViewController = mainToastView
         window?.makeKeyAndVisible()

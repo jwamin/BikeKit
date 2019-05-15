@@ -5,10 +5,8 @@ import BikeKitUI
 
 //Test UI View
 
-class TableViewController : UITableViewController, NYCBikeNetworkingDelegate, UITableViewDataSourcePrefetching{
+class TableViewController : UITableViewController, NYCBikeUIDelegate, UITableViewDataSourcePrefetching{
 
-    
-    
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
     

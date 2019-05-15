@@ -101,6 +101,12 @@ public class DialView : UIView{
     
     }
     
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        //invalidate drawing when
+        super.traitCollectionDidChange(previousTraitCollection)
+        self.setNeedsDisplay()
+    }
+    
    public override func updateConstraints() {
     
         if(dialConstraints.count == 0){

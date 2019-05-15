@@ -15,9 +15,9 @@ public class Locator : NSObject{
     public static let squareSize:CGSize = CGSize(width: 60, height: 60)
     
     //return screenshotter then call stop in prepare for reuse
-    public static func snapshotForLocation(size:CGSize?,location:CLLocation,_ data:NYCBikeStationInfo? = nil,callback:(@escaping (UIImage)->Void)){
+    public static func snapshotterForLocation(size:CGSize?,location:CLLocation,_ data:NYCBikeStationInfo? = nil,callback:(@escaping (UIImage)->Void)) -> MKMapSnapshotter{
         
-        DispatchQueue.global().async {
+        
         
         let options:MKMapSnapshotter.Options = MKMapSnapshotter.Options()
         options.mapType = .mutedStandard
@@ -27,8 +27,10 @@ public class Locator : NSObject{
         options.showsBuildings = false
             
         let scrssnshotter = MKMapSnapshotter(options: options)
-            
+        
+        DispatchQueue.global().async {
         scrssnshotter.start { (snapshot, err) in
+            
             
             //this is very cool, if using the standard initialiser, the image and drawing will appear pixellated
             UIGraphicsBeginImageContextWithOptions(options.size, true, UIScreen.main.scale)
@@ -63,9 +65,9 @@ public class Locator : NSObject{
             }
             
         }
-        
-        }
             
+        }
+        return scrssnshotter
     }
     
     

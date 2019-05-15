@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mainToastView.view.insertSubview(tabViewController.view, belowSubview: mainToastView.blurView)
         tabViewController.didMove(toParent: mainToastView)
          
-        let table = TableViewController()
+        let table = MainTableViewController()
         table.toastDelegate = mainToastView
         let map = MapViewController()
         map.loadViewIfNeeded()

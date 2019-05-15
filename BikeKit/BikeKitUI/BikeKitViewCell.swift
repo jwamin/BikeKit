@@ -8,12 +8,16 @@
 
 import UIKit
 import BikeKit
+import MapKit
 
 public class BikeKitViewCell: UITableViewCell {
 
     private var cellConstraints = [NSLayoutConstraint]()
     public var localImg:UIImage?
     public var dataContainer:UIView!
+    
+    //retain reference to map shotter, so we can shut that shit down if we move out of view
+    public var screenshotter:MKMapSnapshotter?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: "cell")
@@ -33,6 +37,12 @@ public class BikeKitViewCell: UITableViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.accessoryType = .none
+        print("Reuse")
+        if let screenshotter = self.screenshotter{
+            print("halting snapshotter")
+            screenshotter.cancel()
+            self.screenshotter = nil
+        }
         imageView?.image = nil
     }
     

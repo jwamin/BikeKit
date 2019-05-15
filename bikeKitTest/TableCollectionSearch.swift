@@ -3,7 +3,7 @@ import BikeKit
 import BikeKitUI
 
 
-extension TableViewController : UISearchControllerDelegate{
+extension MainTableViewController : UISearchControllerDelegate{
     
     func willDismissSearchController(_ searchController: UISearchController) {
         self.refresh()
@@ -15,7 +15,7 @@ extension TableViewController : UISearchControllerDelegate{
     
 }
 
-extension TableViewController : UISearchResultsUpdating{
+extension MainTableViewController : UISearchResultsUpdating{
     
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -97,7 +97,7 @@ class SearchTableViewController : UITableViewController {
         let model = AppDelegate.mainBikeModel
         if(model.images[data.external_id] == nil){
             
-            Locator.snapshotForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { (img) -> Void in
+            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { (img) -> Void in
                 
                 model.images[data.external_id] = img
                 

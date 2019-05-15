@@ -5,7 +5,7 @@ import BikeKitUI
 
 //Test UI View
 
-class TableViewController : UITableViewController, NYCBikeUIDelegate, UITableViewDataSourcePrefetching{
+class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITableViewDataSourcePrefetching{
 
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
@@ -84,7 +84,7 @@ class TableViewController : UITableViewController, NYCBikeUIDelegate, UITableVie
         
         if(model.images[data.external_id] == nil){
         
-            Locator.snapshotForLocation(size: nil, location: model.locations[data.external_id]!,data) { (img) -> Void in
+            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: model.locations[data.external_id]!,data) { (img) -> Void in
                 
                 self.model.images[data.external_id] = img
                 

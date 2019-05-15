@@ -8,11 +8,21 @@
 
 import UIKit
 import BikeKit
+import MapKit
 
 public class DetailBikeKitViewCell: UITableViewCell {
     
     private var cellConstraints = [NSLayoutConstraint]()
     
+    public var screenshotHandler:MKMapSnapshotter? {
+        didSet{
+            
+            guard let screenshotter = screenshotHandler else {
+                return
+            }
+            print("assigned screenshotter")
+        }
+    }
     
     public var mapView:UIImageView!
     public var nameLabel:UILabel!
@@ -212,6 +222,12 @@ public class DetailBikeKitViewCell: UITableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
+        
+        if(screenshotHandler != nil){
+            screenshotHandler?.cancel()
+            screenshotHandler = nil
+        }
+        
         self.accessoryType = .none
         imageView?.image = nil
     }
@@ -220,6 +236,8 @@ public class DetailBikeKitViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    
     
     public override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -93,7 +93,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
         if(bikeNetworking.images[data.external_id] == nil){
             
-            Locator.snapshotForLocation(size: nil, location: bikeNetworking.locations[data.external_id]!) { (img) -> Void in
+            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: bikeNetworking.locations[data.external_id]!) { (img) -> Void in
                 
                 self.bikeNetworking.images[data.external_id] = img
                 

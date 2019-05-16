@@ -13,9 +13,7 @@ import BikeKitUI
 
 class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegate,UITableViewDelegate,UITableViewDataSource {
     
-
     var tableView:UITableView!
-    
     
     let bikeNetworking = NYCBikeModel()
     var label:UILabel!
@@ -33,6 +31,9 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         print("view did load")
+        
+        //setup User defaults
+        NYCBikeModel.groupedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
         
         tableView = UITableView(frame: self.view.bounds)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,11 +53,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         ]
         NSLayoutConstraint.activate(constraints)
         
+        self.extensionContext?.widgetLargestAvailableDisplayMode = .compact
         
-        let sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
-        self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
-        
-        NYCBikeModel.groupedUserDefaults = sharedUserDefaults
         //bikeNetworking.assembleDataForFavourites()
         bikeNetworking.delegate = self
         label = self.view.subviews[0] as? UILabel
@@ -79,7 +77,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
        
         let configured = cell.configureCell(indexPath: indexPath, with: data)
         
-        return cell
+        return configured
         
     }
     

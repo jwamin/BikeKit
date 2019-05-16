@@ -16,13 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     static var mainBikeModel = NYCBikeModel()
     static var locationManager = CLLocationManager()
-    static var sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
+    private var sharedUserDefaults:UserDefaults!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        NYCBikeModel.groupedUserDefaults = AppDelegate.sharedUserDefaults
+        sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
+        
+        NYCBikeModel.groupedUserDefaults = sharedUserDefaults
         
         window = UIWindow(frame: UIScreen.main.bounds)
         

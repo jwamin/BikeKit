@@ -73,7 +73,7 @@ public class DialView : UIView{
         
         let swing = endAngle - startAngle
         
-        var fraction = CGFloat(current) / CGFloat(total)
+        let fraction = CGFloat(current) / CGFloat(total)
         
         var finalEndAngle:CGFloat = 0
         

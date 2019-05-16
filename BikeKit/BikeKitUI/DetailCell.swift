@@ -14,15 +14,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
     
     private var cellConstraints = [NSLayoutConstraint]()
     
-    public var screenshotHandler:MKMapSnapshotter? {
-        didSet{
-            
-            guard let screenshotter = screenshotHandler else {
-                return
-            }
-            print("assigned screenshotter")
-        }
-    }
+    public var screenshotHandler:MKMapSnapshotter?
     
     public var mapView:UIImageView!
     public var nameLabel:UILabel!
@@ -59,7 +51,9 @@ public class DetailBikeKitViewCell: UITableViewCell {
         dataContainer.alignment = .center
         dataContainer.distribution = .fillEqually
         
-        for color:UIColor in [.red,.green,.blue,.red]{
+        
+        //get rid of this!
+        for _:UIColor in [.red,.green,.blue,.red]{
             let view = DialView()
             translatesAutoresizingMaskIntoConstraints = false
             
@@ -78,7 +72,10 @@ public class DetailBikeKitViewCell: UITableViewCell {
         
         mapView = UIImageView(frame: CGRect(origin: .zero, size: Locator.squareSize))
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.backgroundColor = .cyan
+        
+        mapView.layer.borderColor = UIColor.black.cgColor
+        mapView.layer.borderWidth = 1
+        
         mapView.clipsToBounds = true
         mapView.contentMode = .scaleAspectFit
         //self.contentView.addSubview(mapView)
@@ -113,12 +110,16 @@ public class DetailBikeKitViewCell: UITableViewCell {
     public override func updateConstraints() {
         
         if (cellConstraints.count == 0){
-            let safeArea = self.contentView.safeAreaLayoutGuide
+            //let safeArea = self.contentView.safeAreaLayoutGuide
             
 //            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .horizontal)
 //            mapView.setContentHuggingPriority(UILayoutPriority(999), for: .vertical)
 //            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .horizontal)
 //            mapView.setContentCompressionResistancePriority(UILayoutPriority(999), for: .vertical)
+            
+            guard let topStackView = topStackView, let dataContainer = dataContainer else {
+                return
+            }
             
             let breakingConstraint = mapView.heightAnchor.constraint(equalTo: mapView.widthAnchor)
             breakingConstraint.priority = UILayoutPriority(rawValue: 250)
@@ -127,7 +128,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
                 breakingConstraint
                 ]
             
-            let views = ["topStackView":topStackView,"detailStackView":dataContainer]
+            let views:[String:Any] = ["topStackView":topStackView,"detailStackView":dataContainer]
             
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[topStackView]-|", options: [], metrics: nil, views: views)
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[detailStackView]-|", options: [], metrics: nil, views: views)

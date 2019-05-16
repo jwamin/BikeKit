@@ -38,8 +38,10 @@ class ToastViewController: UIViewController, ToastDelegate {
         toastLabel.centerXAnchor.constraint(equalTo: blurView.centerXAnchor).isActive = true
         toastLabel.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true
         
-        var pinConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-[toastlabel]-|", options: [], metrics: nil, views: ["toastlabel":toastLabel])
-        pinConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[toastlabel]-|", options: [], metrics: nil, views: ["toastlabel":toastLabel])
+        let views:[String:Any] = ["toastlabel":toastLabel!]
+        
+        var pinConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-[toastlabel]-|", options: [], metrics: nil, views: views)
+        pinConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[toastlabel]-|", options: [], metrics: nil, views: views)
         
         NSLayoutConstraint.activate(pinConstraints)
         

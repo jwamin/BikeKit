@@ -336,6 +336,7 @@
 		578676402286F9C600AA0072 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;
@@ -361,6 +362,7 @@
 		578676412286F9C600AA0072 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_ENTITLEMENTS = BikeKitTodayWidget/BikeKitTodayWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3C42F7N9CQ;

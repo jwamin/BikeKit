@@ -132,7 +132,8 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
                     if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                         cell.mapView.image = img
                         cell.mapView.contentMode = .scaleAspectFill
-                        
+                        cell.mapView.layer.borderColor = nil
+                        cell.mapView.layer.borderWidth = 0
                     }
             
             }
@@ -175,7 +176,7 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         let mapController = navigationSibling.topViewController as! MapViewController
         tableView.deselectRow(at: indexPath, animated: true)
         
-        var station = model.favourites![indexPath.row]
+        let station = model.favourites![indexPath.row]
         
         mapController.zoomToStation(station: station)
         

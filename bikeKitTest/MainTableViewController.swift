@@ -14,6 +14,9 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
     
     var toastDelegate:ToastDelegate?
     
+    //let editButtonItem:UIBarButtonItem!
+    var doneButtonItem:UIBarButtonItem!
+    
     override func viewDidLoad() {
         self.definesPresentationContext = true
         tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: "cell")
@@ -26,6 +29,12 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         tableView.rowHeight = UITableView.automaticDimension
         //search Init
         
+        self.editButtonItem.action = #selector(beginEditing)
+        doneButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(beginEditing))
+        
+        self.navigationItem.rightBarButtonItem = editButtonItem
+        
+        
         let searchTable = SearchTableViewController()
         searchTable.restorationIdentifier = "searchTable"
         let searchController = UISearchController(searchResultsController: searchTable)
@@ -34,6 +43,38 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         searchController.searchBar.placeholder = "Search to add stations to favourites"
         self.navigationItem.searchController = searchController
         
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    
+    @objc func beginEditing(){
+        if(!tableView.isEditing){
+            tableView.setEditing(true, animated: true)
+            self.navigationItem.rightBarButtonItem = doneButtonItem
+        } else {
+            tableView.setEditing(false, animated: true)
+            self.navigationItem.rightBarButtonItem = editButtonItem
+        }
+        
+        
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        guard let favs = model.favourites else {
+            return
+        }
+        print(sourceIndexPath,destinationIndexPath)
+        let fav = favs[sourceIndexPath.row]
+        
+        let success = model.updateFavouriteToRow(id: fav.station_id, newRowIndex: destinationIndexPath.row)
+        
+        print("moved row \(sourceIndexPath.row) to \(destinationIndexPath.row), \(success)")
         
     }
     
@@ -146,9 +187,10 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
             return
         }
         
-        
-        tableView.reloadData()
-        refreshed.endRefreshing()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.refreshed.endRefreshing()
+        }
 
         
     }

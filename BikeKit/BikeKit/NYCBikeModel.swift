@@ -123,20 +123,37 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
         var matches = [NYCBikeStationInfo]()
         
         let savedFavourites = NYCBikeModel.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
-        let intsavedFavourites:[Int] = savedFavourites.compactMap {
-            Int($0)
-        }
+//        let intsavedFavourites:[Int] = savedFavourites.compactMap {
+//            Int($0)
+//        }
         
-        
-        stationData.forEach {
-            for id in intsavedFavourites {
-                if $0.station_id == String(id){
-                    matches.append($0)
-                    images.removeValue(forKey: $0.external_id)
-                }
+        for id in savedFavourites{
+            
+            if let stationHit = stationData.first(where: { (info) -> Bool in
+                info.station_id == id }) {
+                matches.append(stationHit)
+                images.removeValue(forKey: id)
             }
+            
         }
         
+//        stationData.forEach {
+//            for id in intsavedFavourites {
+//                if $0.station_id == String(id){
+//                    matches.append($0)
+//                    images.removeValue(forKey: $0.external_id)
+//                }
+//            }
+//        }
+        
+        let testorder = matches.map{
+            $0.station_id
+        }
+        
+        print(savedFavourites)
+        print(testorder)
+        
+        //order by saved favourites
         self.favourites = matches
         
         guard let callback = callback else {
@@ -179,6 +196,32 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
         
         return add
         
+    }
+    
+    public func updateFavouriteToRow(id:String,newRowIndex:Int)->Bool{
+        
+        guard let groupDefaults = NYCBikeModel.groupedUserDefaults else {
+            fatalError()
+        }
+        
+        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
+        var newFavourites = favourites
+        guard let index = newFavourites.firstIndex(of: id) else {
+            return false
+        }
+        
+        newFavourites.remove(at: index)
+        
+        newFavourites.insert(id, at: newRowIndex)
+        
+        
+        groupDefaults.set(newFavourites, forKey: "favourites")
+        groupDefaults.synchronize()
+        
+        print(favourites, id)
+        print(newFavourites)
+        
+        return true
     }
     
     public func refresh(){

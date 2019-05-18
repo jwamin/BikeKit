@@ -33,13 +33,13 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         print("view did load")
         
         //setup User defaults
-        NYCBikeModel.groupedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
+        NYCBikeModel.groupedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
         
         tableView = UITableView(frame: self.view.bounds)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: "detailCell")
+        tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: Constants.identifiers.detailCellIdentifier)
         view.addSubview(tableView)
         tableView.isHidden = true
         
@@ -55,13 +55,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
         self.extensionContext?.widgetLargestAvailableDisplayMode = .compact
         
-        //bikeNetworking.assembleDataForFavourites()
         bikeNetworking.delegate = self
         label = self.view.subviews[0] as? UILabel
-        label.text = "loading..."
-        //label.removeFromSuperview()
-        // Do any additional setup after loading the view.
-        print("hello world")
+        label.text = Constants.strings.loadingLabelText
+        label.removeFromSuperview()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,7 +66,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! DetailBikeKitViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier, for: indexPath) as! DetailBikeKitViewCell
         guard let favorites = bikeNetworking.favourites else {
             fatalError("errorrr")
         }
@@ -108,20 +105,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-       // bikeNetworking.refresh()
-    }
-    
-    
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        coordinator.animate(alongsideTransition: { (context) in
-//            print("animated")
-//        }) { (context) in
-//            print("context")
-//        }
-//    }
-    
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
         print("widget perform uodate")
@@ -154,13 +137,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     }
     
     func updated() {
-//        label.text = ""
-//        var str = ""
-//        for station  in bikeNetworking.favourites!{
-//            str += station.name+": "+station.statusString()+"\n\n"
-//        }
-//        label.text = str
-//        label.sizeToFit()
+
         tableView.isHidden = false
         label.removeFromSuperview()
         tableView.reloadData()

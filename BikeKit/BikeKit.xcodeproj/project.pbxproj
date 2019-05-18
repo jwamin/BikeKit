@@ -19,7 +19,7 @@
 		57F193E42289B28D000941A8 /* BikeKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F193D62289B28D000941A8 /* BikeKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		57F193EC2289B2BA000941A8 /* BikeKitViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193EB2289B2BA000941A8 /* BikeKitViewCell.swift */; };
 		57F193FB2289C939000941A8 /* NYCLocatorMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193FA2289C939000941A8 /* NYCLocatorMap.swift */; };
-		57F194032289E0CC000941A8 /* Scratch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57F194022289E0CC000941A8 /* Scratch.storyboard */; };
+		57F194032289E0CC000941A8 /* _UNUSED_.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57F194022289E0CC000941A8 /* _UNUSED_.storyboard */; };
 		57F194052289F0F8000941A8 /* Dial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F194042289F0F8000941A8 /* Dial.swift */; };
 		57FF72B0228335B5006F63E8 /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72A6228335B5006F63E8 /* BikeKit.framework */; };
 		57FF72B5228335B5006F63E8 /* BikeKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF72B4228335B5006F63E8 /* BikeKitTests.swift */; };
@@ -59,7 +59,7 @@
 		57F193E32289B28D000941A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57F193EB2289B2BA000941A8 /* BikeKitViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeKitViewCell.swift; sourceTree = "<group>"; };
 		57F193FA2289C939000941A8 /* NYCLocatorMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCLocatorMap.swift; sourceTree = "<group>"; };
-		57F194022289E0CC000941A8 /* Scratch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Scratch.storyboard; sourceTree = "<group>"; };
+		57F194022289E0CC000941A8 /* _UNUSED_.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = _UNUSED_.storyboard; sourceTree = "<group>"; };
 		57F194042289F0F8000941A8 /* Dial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dial.swift; sourceTree = "<group>"; };
 		57FF72A6228335B5006F63E8 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF72A9228335B5006F63E8 /* BikeKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BikeKit.h; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 				57F193EB2289B2BA000941A8 /* BikeKitViewCell.swift */,
 				5738D37A228A3C2100DAA2AE /* DetailCell.swift */,
 				57F194042289F0F8000941A8 /* Dial.swift */,
-				57F194022289E0CC000941A8 /* Scratch.storyboard */,
+				57F194022289E0CC000941A8 /* _UNUSED_.storyboard */,
 				57F193FA2289C939000941A8 /* NYCLocatorMap.swift */,
 				57F193D62289B28D000941A8 /* BikeKitUI.h */,
 				57F193D72289B28D000941A8 /* Info.plist */,
@@ -327,7 +327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57F194032289E0CC000941A8 /* Scratch.storyboard in Resources */,
+				57F194032289E0CC000941A8 /* _UNUSED_.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

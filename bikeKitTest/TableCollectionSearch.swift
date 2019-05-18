@@ -49,7 +49,7 @@ extension MainTableViewController : UISearchResultsUpdating{
 class SearchTableViewController : UITableViewController {
     
     private var stationInfoSubset = [NYCBikeStationInfo]()
-    private var favourites = NYCBikeModel.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
+    private var favourites = [String]()
     
     
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){
@@ -58,8 +58,16 @@ class SearchTableViewController : UITableViewController {
     }
     
     override func viewDidLoad() {
-        tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: Constants.identifiers.basicCellIdentifier)
         tableView.dataSource = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        guard let userDefaults = NYCBikeModel.groupedUserDefaults else {
+            fatalError()
+        }
+        
+        favourites = userDefaults.array(forKey: "favourites") as? [String] ?? []
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -72,7 +80,7 @@ class SearchTableViewController : UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BikeKitViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.basicCellIdentifier, for: indexPath) as! BikeKitViewCell
         let data = stationInfoSubset[indexPath.row]
         cell.textLabel!.text = data.name
         
@@ -80,7 +88,8 @@ class SearchTableViewController : UITableViewController {
             cell.accessoryType = .checkmark
         }
         
-        cell.imageView?.image = UIImage(named: "Bike")
+        cell.imageView?.image = UIImage(named: Constants.identifiers.bikeImageName)
+        cell.imageView?.contentMode = .scaleAspectFill
         cell.detailTextLabel?.text = "\(data.capacity) docks in total."
 
         
@@ -97,13 +106,13 @@ class SearchTableViewController : UITableViewController {
         let model = AppDelegate.mainBikeModel
         if(model.images[data.external_id] == nil){
             
-            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { (img) -> Void in
+            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { [weak cell] (img) -> Void in
                 
                 model.images[data.external_id] = img
                 
-                if let cell = tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
+                if let cell = cell {
                     cell.imageView?.image = img
-                     cell.imageView?.contentMode = .scaleAspectFill
+                    cell.imageView?.contentMode = .scaleAspectFill
                 }
                 
             }
@@ -131,7 +140,6 @@ class SearchTableViewController : UITableViewController {
         let id = stationInfoSubset[indexPath.row].station_id
         
         cell.accessoryType = (AppDelegate.mainBikeModel.toggleFavouriteForId(id: id)) ? .checkmark : .none
-        
         
         
     }

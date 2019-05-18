@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        sharedUserDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup")
+        sharedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
         
         NYCBikeModel.groupedUserDefaults = sharedUserDefaults
         
@@ -37,18 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          
         let table = MainTableViewController()
         table.toastDelegate = mainToastView
+        
+        //Map view initialisation
         let map = MapViewController()
         map.loadViewIfNeeded()
+        
+        
         let primaryNavigation = UINavigationController(rootViewController: table)
         let secondaryNavigation = UINavigationController(rootViewController: map)
         
+        //System Tabs for tab bar
         table.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         map.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
-        map.tabBarItem.title = "Map"
         
         tabViewController.viewControllers = [primaryNavigation,secondaryNavigation]
-        
-        print(CLLocationManager.locationServicesEnabled())
         
         AppDelegate.locationManager.requestWhenInUseAuthorization()
         

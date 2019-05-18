@@ -5,7 +5,7 @@ import BikeKitUI
 
 //Test UI View
 
-class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITableViewDataSourcePrefetching{
+class MainTableViewController : UITableViewController {
 
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
@@ -18,38 +18,42 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
     var doneButtonItem:UIBarButtonItem!
     
     override func viewDidLoad() {
+        
+        self.title = Constants.strings.favouritesTitle
         self.definesPresentationContext = true
-        tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: "cell")
+        
+        tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: Constants.identifiers.detailCellIdentifier)
         model.delegate = self
-        self.title = "Favourites"
+        
+        //Refresh Control
         refreshed = UIRefreshControl(frame: .zero)
         refreshed.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.refreshControl = refreshed
         tableView.estimatedRowHeight = 85.0
         tableView.rowHeight = UITableView.automaticDimension
-        //search Init
-        
+  
+        //Reordering of table view
         self.editButtonItem.action = #selector(beginEditing)
         doneButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(beginEditing))
         
         self.navigationItem.rightBarButtonItem = editButtonItem
         
-        
+        //Basic Searching
         let searchTable = SearchTableViewController()
-        searchTable.restorationIdentifier = "searchTable"
+        searchTable.restorationIdentifier = Constants.identifiers.searchRestoration
         let searchController = UISearchController(searchResultsController: searchTable)
         searchController.delegate = self
         searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search to add stations to favourites"
+        searchController.searchBar.placeholder = Constants.strings.searchingPlaceholder
         self.navigationItem.searchController = searchController
         
         
     }
     
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true
+    @objc func refresh(){
+        refreshed.beginRefreshing()
+        model.refresh()
     }
-    
     
     @objc func beginEditing(){
         if(!tableView.isEditing){
@@ -63,6 +67,11 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         
     }
     
+    //Table View Datasource and delegate methods
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
@@ -76,11 +85,6 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         
         print("moved row \(sourceIndexPath.row) to \(destinationIndexPath.row), \(success)")
         
-    }
-    
-    @objc func refresh(){
-        refreshed.beginRefreshing()
-        model.refresh()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -97,39 +101,33 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! DetailBikeKitViewCell
 
-        guard let favorites = model.favourites else {
+        guard let favorites = model.favourites, let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier) as? DetailBikeKitViewCell else {
             fatalError("errorrr")
         }
         
         let data = favorites[indexPath.row]
 
         let configured = cell.configureCell(indexPath: indexPath, with: data)
-        
-//        cell.detailTextLabel?.text = data.statusString()
-//        cell.imageView?.image = UIImage(named: "Bike")
 
         return configured
+        
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cell = cell as! DetailBikeKitViewCell
         
         //load map image
             
-            let data = model.favourites![indexPath.row]
+        let data = model.favourites![indexPath.row]
         
         if(model.images[data.external_id] == nil){
         
-            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: model.locations[data.external_id]!,data) { (img) -> Void in
+            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: model.locations[data.external_id]!,data) { [weak cell] (img) -> Void in
                 
                 self.model.images[data.external_id] = img
                 
-                    if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
+                    if let cell = cell {
                         cell.mapView.image = img
                         cell.mapView.contentMode = .scaleAspectFill
                         cell.mapView.layer.borderColor = nil
@@ -165,10 +163,6 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
     }
     
     
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        print("prefetching \(indexPaths)")
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
         self.tabBarController?.selectedIndex = 1
@@ -181,6 +175,11 @@ class MainTableViewController : UITableViewController, NYCBikeUIDelegate, UITabl
         mapController.zoomToStation(station: station)
         
     }
+    
+    
+}
+
+extension MainTableViewController : NYCBikeUIDelegate {
     
     func updated() {
         

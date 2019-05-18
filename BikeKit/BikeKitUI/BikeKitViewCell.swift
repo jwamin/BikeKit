@@ -37,7 +37,6 @@ public class BikeKitViewCell: UITableViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.accessoryType = .none
-        print("Reuse")
         if let screenshotter = self.screenshotter{
             print("halting snapshotter")
             screenshotter.cancel()

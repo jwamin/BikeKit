@@ -48,7 +48,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         dataContainer.translatesAutoresizingMaskIntoConstraints = false
         dataContainer.axis = .horizontal
         dataContainer.spacing = 8
-        dataContainer.alignment = .center
+        dataContainer.alignment = .fill
         dataContainer.distribution = .fillEqually
         
         
@@ -132,7 +132,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[topStackView]-|", options: [], metrics: nil, views: views)
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "|-[detailStackView]-|", options: [], metrics: nil, views: views)
-            constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[topStackView]-[detailStackView]-|", options: [], metrics: nil, views: views)
+            constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-[topStackView(>=1@250)]-[detailStackView(>=1@250)]-|", options: [], metrics: nil, views: views)
             
 //            var constraints:[NSLayoutConstraint] = [
 //                mapView.topAnchor.constraint(equalToSystemSpacingBelow: safeArea.topAnchor, multiplier: 1.0),

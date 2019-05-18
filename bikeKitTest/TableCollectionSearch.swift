@@ -89,9 +89,8 @@ class SearchTableViewController : UITableViewController {
         }
         
         cell.imageView?.image = UIImage(named: Constants.identifiers.bikeImageName)
-        cell.imageView?.contentMode = .scaleAspectFill
+        cell.imageView?.bounds.size = Locator.squareSize
         cell.detailTextLabel?.text = "\(data.capacity) docks in total."
-
         
         return cell
         
@@ -106,22 +105,30 @@ class SearchTableViewController : UITableViewController {
         let model = AppDelegate.mainBikeModel
         if(model.images[data.external_id] == nil){
             
-            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.defaultSize, location: model.locations[data.external_id]!) { [weak cell] (img) -> Void in
+            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.squareSize, location: model.locations[data.external_id]!) { [weak cell] (img) -> Void in
                 
                 model.images[data.external_id] = img
                 
                 if let cell = cell {
+                    
                     cell.imageView?.image = img
-                    cell.imageView?.contentMode = .scaleAspectFill
+                    
+                    cell.setNeedsLayout()
+                    cell.layoutIfNeeded()
                 }
                 
             }
             
         } else {
             cell.imageView?.image = model.images[data.external_id]
+            
+            cell.setNeedsLayout()
+            cell.layoutIfNeeded()
+          
         }
         
-        cell.imageView?.contentMode = .scaleAspectFill
+        
+    
         
     }
     

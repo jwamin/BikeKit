@@ -99,7 +99,7 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
         
         self.stationData = updatedStations
         
-        assembleDataForFavourites()
+        refreshFavourites()
         DispatchQueue.main.async {
             self.delegate?.updated()
         }
@@ -109,7 +109,7 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
 
     
     
-    public func assembleDataForFavourites(_ callback:((BikeNetworkingError?)->Void)? = nil) {
+    public func refreshFavourites(_ callback:((BikeNetworkingError?)->Void)? = nil) {
         
         guard let stationData = self.stationData else {
             
@@ -123,9 +123,6 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
         var matches = [NYCBikeStationInfo]()
         
         let savedFavourites = NYCBikeModel.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
-//        let intsavedFavourites:[Int] = savedFavourites.compactMap {
-//            Int($0)
-//        }
         
         for id in savedFavourites{
             
@@ -137,21 +134,9 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
             
         }
         
-//        stationData.forEach {
-//            for id in intsavedFavourites {
-//                if $0.station_id == String(id){
-//                    matches.append($0)
-//                    images.removeValue(forKey: $0.external_id)
-//                }
-//            }
-//        }
-        
         let testorder = matches.map{
             $0.station_id
         }
-        
-        print(savedFavourites)
-        print(testorder)
         
         //order by saved favourites
         self.favourites = matches
@@ -225,7 +210,7 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
     }
     
     public func refresh(){
-        assembleDataForFavourites()
+        refreshFavourites()
         self.networking.getNYCBikeAPIData(task: .status)
     }
     

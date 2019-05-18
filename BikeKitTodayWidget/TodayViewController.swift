@@ -53,12 +53,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         ]
         NSLayoutConstraint.activate(constraints)
         
-        self.extensionContext?.widgetLargestAvailableDisplayMode = .compact
+        self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
         bikeNetworking.delegate = self
         label = self.view.subviews[0] as? UILabel
         label.text = Constants.strings.loadingLabelText
-        label.removeFromSuperview()
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,6 +94,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
                 
                 if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                     cell.mapView.image = img
+                    cell.layer.borderWidth = 0
                 }
                 
             }
@@ -107,8 +108,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
-        print("widget perform uodate")
-        bikeNetworking.assembleDataForFavourites{ error in
+        print("widget perform update")
+        bikeNetworking.refreshFavourites{ error in
             
             if let error = error{
                 switch(error){

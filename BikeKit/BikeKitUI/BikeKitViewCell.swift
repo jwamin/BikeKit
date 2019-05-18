@@ -25,7 +25,7 @@ public class BikeKitViewCell: UITableViewCell {
         self.textLabel?.textAlignment = .right
         self.detailTextLabel?.textAlignment = .right
     
-        imageView?.contentMode = .scaleAspectFill
+        imageView?.contentMode = .scaleAspectFit
         
 
     }

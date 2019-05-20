@@ -17,10 +17,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     static var mainBikeModel = NYCBikeModel()
     static var locationManager = CLLocationManager()
     private var sharedUserDefaults:UserDefaults!
+    private var location:CLLocationManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        let locationManager = AppDelegate.locationManager
+        locationManager.delegate = self
+        locationManager.allowsBackgroundLocationUpdates = true
+        
+        
+        locationManager.requestAlwaysAuthorization()
+        print(CLLocationManager.significantLocationChangeMonitoringAvailable())
+        let authorizationStatus = CLLocationManager.authorizationStatus()
+        
+        switch authorizationStatus {
+        case .authorizedAlways:
+            print("always")
+            locationManager.pausesLocationUpdatesAutomatically = true
+            locationManager.startMonitoringSignificantLocationChanges()
+            location = locationManager
+        case .authorizedWhenInUse:
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.activityType = .otherNavigation
+            locationManager.startUpdatingLocation()
+            location = locationManager
+        default:
+            break
+        }
+        
         
         sharedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
         
@@ -52,15 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         tabViewController.viewControllers = [primaryNavigation,secondaryNavigation]
         
-        AppDelegate.locationManager.requestWhenInUseAuthorization()
         
-        let locationManager = AppDelegate.locationManager
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.activityType = .otherNavigation
-        locationManager.delegate = self
-        locationManager.startMonitoringSignificantLocationChanges()
+
         
-        AppDelegate.mainBikeModel.updateLocation(userLocation: locationManager.location)
+        //AppDelegate.mainBikeModel.updateLocation(userLocation: locationManager.location)
         
         window?.rootViewController = mainToastView
         window?.makeKeyAndVisible()
@@ -71,37 +93,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        print("resigning active")
+
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        print("backgrounded")
+
+        location?.stopUpdatingLocation()
+        location?.startMonitoringSignificantLocationChanges()
+        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        print("foregrounded")
+        location?.startUpdatingLocation()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        print("became active")
+
+        location?.stopUpdatingLocation()
+        
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+        
+        print("about to terminate")
+
+        
+        location?.stopUpdatingLocation()
+        location?.stopMonitoringSignificantLocationChanges()
+        
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
 
-    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways:
+            print("always")
+        case .authorizedWhenInUse:
+            print("when in use")
+        default:
+            print("something else \(status.rawValue)")
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         print("significant location changed")
         
-        if(locations.indices.contains(locations.endIndex-1)){
-            AppDelegate.mainBikeModel.updateLocation(userLocation: locations[locations.endIndex-1])
-        } else {
-            print("nothing at index \(locations.endIndex-1)")
+        guard let mostRecentLocation = locations.last else {
+            return
         }
+        
+        AppDelegate.mainBikeModel.updateLocation(userLocation: mostRecentLocation)
         
     }
     

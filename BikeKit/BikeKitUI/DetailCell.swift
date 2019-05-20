@@ -222,7 +222,6 @@ public class DetailBikeKitViewCell: UITableViewCell {
             let label = self.distanceLabel
             self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed) \(str)"
             
-            
             switch(status){
                 case .empty:
                     label?.backgroundColor = .red

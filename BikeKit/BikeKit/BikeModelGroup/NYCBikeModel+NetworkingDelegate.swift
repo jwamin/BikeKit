@@ -10,6 +10,10 @@ import Foundation
 
 extension NYCBikeModel : NYCBikeNetworkingDelegate{
     
+    func error(description: String) {
+        delegate?.error(str: description)
+    }
+    
     func setStations(stationsData: Data) {
         
         // reminder - this is how to wind up with [String:Any] from json data

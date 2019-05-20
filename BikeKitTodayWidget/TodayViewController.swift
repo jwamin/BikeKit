@@ -137,6 +137,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
+    func error(str: String?) {
+        bikeNetworking.restartAfterError()
+    }
+    
     func updated() {
 
         tableView.isHidden = false

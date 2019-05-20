@@ -47,6 +47,7 @@ class MainTableViewController : UITableViewController {
         dockSwitch = UISwitch()
         dockSwitch.addTarget(self, action: #selector(dockSwitchUpdated(_:)), for: .valueChanged)
         dockLabel = UILabel()
+        dockLabel.font = UIFont.preferredFont(forTextStyle: .body)
         dockLabel.text = "Bikes"
         
         let customView = UIStackView(arrangedSubviews: [dockSwitch,dockLabel])
@@ -78,12 +79,16 @@ class MainTableViewController : UITableViewController {
         if(!tableView.isEditing){
             tableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem = doneButtonItem
+            
         } else {
             tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem = editButtonItem
+            
         }
         
     }
+    
+    
     
     @objc func dockSwitchUpdated(_ sender:Any){
         
@@ -212,6 +217,16 @@ class MainTableViewController : UITableViewController {
 }
 
 extension MainTableViewController : NYCBikeUIDelegate {
+    func error(str: String?) {
+        let errorView = UIAlertController(title: "Network Error", message: str, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Retry", style: .default) { (action) in
+            self.model.restartAfterError()
+        }
+        errorView.addAction(action)
+        self.present(errorView, animated: true, completion: nil)
+        
+    }
+    
     
     func updated() {
         
@@ -236,6 +251,7 @@ extension MainTableViewController : NYCBikeUIDelegate {
     }
     
     func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){
+        
         guard let cell = self.tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell else {
             return
         }
@@ -244,10 +260,14 @@ extension MainTableViewController : NYCBikeUIDelegate {
     
     func distancesUpdated(nearestStations: [Nearest]) {
         
-        guard let favourites = self.model.favourites, let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
+        if(nearestStations.count == 0){
             return
         }
         
+        guard let favourites = self.model.favourites, let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
+            return
+        }
+        print("updating distances for \(visibleCellIndexPaths.count)")
         DispatchQueue.global().async {
             
                 for visible in visibleCellIndexPaths{

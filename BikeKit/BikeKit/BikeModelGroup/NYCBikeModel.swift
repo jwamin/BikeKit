@@ -54,11 +54,11 @@ public class NYCBikeModel : NSObject{
         }
     }
     
-
-    
-    
-
-    
+    public func restartAfterError(){
+        if(stationData==nil){
+            networking.getNYCBikeAPIData(task: .info)
+        }
+    }
     
     public func refreshFavourites(_ callback:((BikeNetworkingError?)->Void)? = nil) {
         
@@ -83,10 +83,6 @@ public class NYCBikeModel : NSObject{
                 images.removeValue(forKey: id)
             }
             
-        }
-        
-        let testorder = matches.map{
-            $0.station_id
         }
         
         //order by saved favourites
@@ -130,6 +126,10 @@ public class NYCBikeModel : NSObject{
         groupDefaults.set(newFavourites, forKey: "favourites")
         groupDefaults.synchronize()
         
+        refreshFavourites { (error) in
+            print("success?")
+        }
+        
         return add
         
     }
@@ -150,12 +150,15 @@ public class NYCBikeModel : NSObject{
         
         newFavourites.insert(id, at: newRowIndex)
         
-        
         groupDefaults.set(newFavourites, forKey: "favourites")
         groupDefaults.synchronize()
         
         print(favourites, id)
         print(newFavourites)
+        
+        refreshFavourites { (error) in
+            print("success?")
+        }
         
         return true
     }

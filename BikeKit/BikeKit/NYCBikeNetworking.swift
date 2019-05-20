@@ -48,7 +48,7 @@ class NYCBikeNetworking : NSObject {
         let stationInfoTask:URLSessionDataTask = URLSession.shared.dataTask(with: url, completionHandler:{
             (data,request,error) in
             if (error != nil){
-                fatalError(error?.localizedDescription ?? "error")
+                self.delegate?.error(description: error!.localizedDescription)
             }
             
             guard let data = data else {
@@ -77,6 +77,12 @@ class NYCBikeNetworking : NSObject {
         case .status:
              delegate?.setStationsStatus?(statusData: data)
         }
+        
+    }
+    
+    func handleError(error:Error){
+        
+        self.delegate?.error(description: error.localizedDescription)
         
     }
 

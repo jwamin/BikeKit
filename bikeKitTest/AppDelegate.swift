@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("did update locations",locations)
+        
         if(locations.indices.contains(locations.endIndex-1)){
             AppDelegate.mainBikeModel.updateLocation(userLocation: locations[locations.endIndex-1])
         } else {

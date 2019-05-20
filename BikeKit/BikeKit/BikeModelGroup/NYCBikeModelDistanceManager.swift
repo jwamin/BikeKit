@@ -49,6 +49,7 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
             
         }
         DispatchQueue.main.async {
+            self.nearestStations = nearestStations
             self.delegate?.distancesUpdated(nearestStations:nearestStations)
         }
     }

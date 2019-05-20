@@ -14,6 +14,10 @@ class MainTableViewController : UITableViewController {
     
     var toastDelegate:ToastDelegate?
     
+    var dockSwitch:UISwitch!
+    var dockLabel:UILabel!
+    var dockStatus:NYCBikeStationCapacityQuery = .bikes
+    
     //let editButtonItem:UIBarButtonItem!
     var doneButtonItem:UIBarButtonItem!
     
@@ -37,6 +41,18 @@ class MainTableViewController : UITableViewController {
         doneButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(beginEditing))
         
         self.navigationItem.rightBarButtonItem = editButtonItem
+        
+        
+        dockSwitch = UISwitch()
+        dockSwitch.addTarget(self, action: #selector(switchUpdated(_:)), for: .valueChanged)
+        dockLabel = UILabel()
+        dockLabel.text = "Bikes"
+        
+        let customView = UIStackView(arrangedSubviews: [dockSwitch,dockLabel])
+        customView.spacing = 8
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: customView)
+        
         
         //Basic Searching
         let searchTable = SearchTableViewController()
@@ -65,6 +81,21 @@ class MainTableViewController : UITableViewController {
         }
         
         
+    }
+    
+    @objc func switchUpdated(_ sender:Any){
+    
+        switch dockSwitch.isOn {
+        case true:
+            dockLabel.text = "Docks"
+            dockStatus = .docks
+        default:
+            dockLabel.text = "Bikes"
+            dockStatus = .bikes
+        }
+        
+        self.distancesUpdated(nearestStations: model.nearestStations)
+    
     }
     
     //Table View Datasource and delegate methods
@@ -108,7 +139,7 @@ class MainTableViewController : UITableViewController {
         
         let data = favorites[indexPath.row]
         
-        let configured = cell.configureCell(indexPath: indexPath, with: data)
+        let configured = cell.configureCell(indexPath: indexPath, with: data, query:dockStatus)
         
         return configured
         
@@ -141,6 +172,9 @@ class MainTableViewController : UITableViewController {
             cell.mapView.image = model.images[data.external_id]
             cell.mapView.contentMode = .scaleAspectFill
             
+        }
+        DispatchQueue.main.async {
+            self.distancesUpdated(nearestStations: self.model.nearestStations)
         }
         
     }
@@ -203,6 +237,11 @@ extension MainTableViewController : NYCBikeUIDelegate {
         
     }
     
+    func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){
+        let cell = self.tableView.cellForRow(at: indexPath) as! DetailBikeKitViewCell
+        cell.updateDistance(data: data, distanceString: distanceString,query: dockStatus)
+    }
+    
     func distancesUpdated(nearestStations: [Nearest]) {
         
         
@@ -226,16 +265,14 @@ extension MainTableViewController : NYCBikeUIDelegate {
                         nearest.externalID == favourite.external_id
                     }) else {
                         DispatchQueue.main.async {
-                            let cell = self.tableView.cellForRow(at: visible) as! DetailBikeKitViewCell
-                            cell.updateDistance(data: favourite, distanceString: nil)
+                            self.updateCellWithDistance(indexPath: visible, data: favourite, distanceString: nil)
                         }
                         continue
                     }
                     
                     
                     DispatchQueue.main.async {
-                        let cell = self.tableView.cellForRow(at: visible) as! DetailBikeKitViewCell
-                        cell.updateDistance(data: favourite, distanceString: matchedStation.distanceString)
+                        self.updateCellWithDistance(indexPath: visible, data: favourite, distanceString: matchedStation.distanceString)
                     }
                     
                     

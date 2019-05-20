@@ -172,10 +172,10 @@ public class DetailBikeKitViewCell: UITableViewCell {
         super.updateConstraints()
     }
     
-    public func configureCell(indexPath:IndexPath, with data:NYCBikeStationInfo) -> DetailBikeKitViewCell{
+    public func configureCell(indexPath:IndexPath, with data:NYCBikeStationInfo,query:NYCBikeStationCapacityQuery = .bikes) -> DetailBikeKitViewCell{
         let cell = self
         cell.nameLabel.text = data.name
-        updateDistance(data: data, distanceString: nil)
+        updateDistance(data: data, distanceString: nil,query: query)
         cell.distanceLabel.sizeToFit()
         
         
@@ -208,9 +208,9 @@ public class DetailBikeKitViewCell: UITableViewCell {
         
     }
     
-    public func updateDistance(data:NYCBikeStationInfo,distanceString:String?){
+    public func updateDistance(data:NYCBikeStationInfo,distanceString:String?,query:NYCBikeStationCapacityQuery){
         if let distanceComputed = distanceString{
-            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed)"
+            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed) \(data.smartCapacityAssesmentString(type: query))"
         } else {
             self.distanceLabel.text = "\(data.capacity) docks"
         }

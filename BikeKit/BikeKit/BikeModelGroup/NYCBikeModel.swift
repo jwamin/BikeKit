@@ -19,6 +19,7 @@ public class NYCBikeModel : NSObject{
     public var distanceManager:NYCBikeStationDistanceManager?
     public var images = [String:UIImage]()
 
+    public var nearestStations = [Nearest]()
     
     public var delegate:NYCBikeUIDelegate?
     

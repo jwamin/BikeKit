@@ -26,24 +26,11 @@ extension NYCBikeStationInfo {
     }
     
     
-    public func smartCapacityAssesmentString(type:NYCBikeStationCapacityQuery)->String{
+    public func smartCapacityAssesmentString(type:NYCBikeStationCapacityQuery)->(String,NYCStationCapacityAssessment){
         
         let indicativeFloat = smartCapacityAssessment(type: type)
-        
-        
-        switch indicativeFloat {
-        case 0.0:
-            return "Bad for \(type.rawValue.capitalized)"
-        case let _ where indicativeFloat > 0.50:
-            return "Good for \(type.rawValue.capitalized)"
-        case let _ where indicativeFloat > 0.25:
-            return "Not Great for \(type.rawValue.capitalized)"
-        case let _ where indicativeFloat < 0.25:
-            return "Try another station for \(type.rawValue.capitalized)"
-        default:
-            return "Unknown for \(type.rawValue.capitalized)"
-        }
-        
+    
+        return NYCStationCapacityAssessment.calculateResponse(type: type, indicativeFloat: indicativeFloat)
         
     }
     
@@ -55,8 +42,24 @@ public enum NYCBikeStationCapacityQuery : String{
     case docks = "docks"
 }
 
-enum NYCStationCapacityAssessment{
+public enum NYCStationCapacityAssessment{
     case good
     case low
     case empty
+    case unknown
+    static func calculateResponse(type:NYCBikeStationCapacityQuery,indicativeFloat:Float)->(String,NYCStationCapacityAssessment){
+        switch indicativeFloat {
+        case 0.0:
+            return ("Bad for \(type.rawValue.capitalized)",.empty)
+        case _ where indicativeFloat > 0.50:
+            return ("Good for \(type.rawValue.capitalized)",.good)
+        case _ where indicativeFloat > 0.25:
+            return ("Not Great for \(type.rawValue.capitalized)",.low)
+        case _ where indicativeFloat < 0.25:
+            return ("Try another station for \(type.rawValue.capitalized)",.low)
+        default:
+            return ("Unknown for \(type.rawValue.capitalized)",.unknown)
+        }
+    }
+    
 }

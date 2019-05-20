@@ -58,7 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.activityType = .otherNavigation
         locationManager.delegate = self
-        locationManager.startUpdatingLocation()
+        locationManager.startMonitoringSignificantLocationChanges()
+        
+        AppDelegate.mainBikeModel.updateLocation(userLocation: locationManager.location)
         
         window?.rootViewController = mainToastView
         window?.makeKeyAndVisible()
@@ -93,6 +95,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
+        print("significant location changed")
+        
         if(locations.indices.contains(locations.endIndex-1)){
             AppDelegate.mainBikeModel.updateLocation(userLocation: locations[locations.endIndex-1])
         } else {
@@ -101,9 +105,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//
-//    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
     
     
 }

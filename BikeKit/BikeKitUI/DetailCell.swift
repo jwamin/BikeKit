@@ -208,11 +208,35 @@ public class DetailBikeKitViewCell: UITableViewCell {
         
     }
     
+    public func setCellImage(image:UIImage){
+        mapView.image = image
+        mapView.contentMode = .scaleAspectFill
+        mapView.layer.borderColor = nil
+        mapView.layer.borderWidth = 0
+    }
+    
     public func updateDistance(data:NYCBikeStationInfo,distanceString:String?,query:NYCBikeStationCapacityQuery){
         if let distanceComputed = distanceString{
-            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed) \(data.smartCapacityAssesmentString(type: query))"
+            
+            let (str,status) = data.smartCapacityAssesmentString(type: query)
+            let label = self.distanceLabel
+            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed) \(str)"
+            
+            
+            switch(status){
+                case .empty:
+                    label?.backgroundColor = .red
+                case .good:
+                    label?.backgroundColor = .green
+                case .low:
+                    label?.backgroundColor = .orange
+                case .unknown:
+                    label?.backgroundColor = .lightGray
+            }
+            
         } else {
             self.distanceLabel.text = "\(data.capacity) docks"
+            self.distanceLabel.backgroundColor = .clear
         }
         
     }

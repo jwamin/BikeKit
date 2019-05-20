@@ -23,9 +23,11 @@ class MainTableViewController : UITableViewController {
     
     override func viewDidLoad() {
         
+        //initial controller setup
         self.title = Constants.strings.favouritesTitle
         self.definesPresentationContext = true
         
+        //register cells
         tableView.register(DetailBikeKitViewCell.self, forCellReuseIdentifier: Constants.identifiers.detailCellIdentifier)
         model.delegate = self
         
@@ -39,18 +41,16 @@ class MainTableViewController : UITableViewController {
         //Reordering of table view
         self.editButtonItem.action = #selector(beginEditing)
         doneButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(beginEditing))
-        
         self.navigationItem.rightBarButtonItem = editButtonItem
         
-        
+        //Left bar button item
         dockSwitch = UISwitch()
-        dockSwitch.addTarget(self, action: #selector(switchUpdated(_:)), for: .valueChanged)
+        dockSwitch.addTarget(self, action: #selector(dockSwitchUpdated(_:)), for: .valueChanged)
         dockLabel = UILabel()
         dockLabel.text = "Bikes"
         
         let customView = UIStackView(arrangedSubviews: [dockSwitch,dockLabel])
         customView.spacing = 8
-        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: customView)
         
         
@@ -66,12 +66,15 @@ class MainTableViewController : UITableViewController {
         
     }
     
+    //UI Actions
+    
     @objc func refresh(){
         refreshed.beginRefreshing()
         model.refresh()
     }
     
     @objc func beginEditing(){
+        
         if(!tableView.isEditing){
             tableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem = doneButtonItem
@@ -80,11 +83,10 @@ class MainTableViewController : UITableViewController {
             self.navigationItem.rightBarButtonItem = editButtonItem
         }
         
-        
     }
     
-    @objc func switchUpdated(_ sender:Any){
-    
+    @objc func dockSwitchUpdated(_ sender:Any){
+        
         switch dockSwitch.isOn {
         case true:
             dockLabel.text = "Docks"
@@ -95,7 +97,7 @@ class MainTableViewController : UITableViewController {
         }
         
         self.distancesUpdated(nearestStations: model.nearestStations)
-    
+        
     }
     
     //Table View Datasource and delegate methods
@@ -159,18 +161,14 @@ class MainTableViewController : UITableViewController {
                 self.model.images[data.external_id] = img
                 
                 if let cell = cell {
-                    cell.mapView.image = img
-                    cell.mapView.contentMode = .scaleAspectFill
-                    cell.mapView.layer.borderColor = nil
-                    cell.mapView.layer.borderWidth = 0
+                    cell.setCellImage(image: img)
                 }
                 
             }
             
         } else {
             
-            cell.mapView.image = model.images[data.external_id]
-            cell.mapView.contentMode = .scaleAspectFill
+            cell.setCellImage(image: model.images[data.external_id]!)
             
         }
         DispatchQueue.main.async {
@@ -238,14 +236,13 @@ extension MainTableViewController : NYCBikeUIDelegate {
     }
     
     func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){
-        let cell = self.tableView.cellForRow(at: indexPath) as! DetailBikeKitViewCell
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell else {
+            return
+        }
         cell.updateDistance(data: data, distanceString: distanceString,query: dockStatus)
     }
     
     func distancesUpdated(nearestStations: [Nearest]) {
-        
-        
-        
         
         guard let favourites = self.model.favourites, let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
             return

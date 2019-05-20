@@ -11,7 +11,7 @@ import BikeKit
 import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
     static var mainBikeModel = NYCBikeModel()
@@ -54,6 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AppDelegate.locationManager.requestWhenInUseAuthorization()
         
+        let locationManager = AppDelegate.locationManager
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.activityType = .otherNavigation
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+        
         window?.rootViewController = mainToastView
         window?.makeKeyAndVisible()
         
@@ -83,5 +89,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("did update locations",locations)
+        if(locations.indices.contains(locations.endIndex-1)){
+            AppDelegate.mainBikeModel.updateLocation(userLocation: locations[locations.endIndex-1])
+        } else {
+            print("nothing at index \(locations.endIndex-1)")
+        }
+        
+    }
+    
+//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+//
+//    }
+    
+    
 }
 

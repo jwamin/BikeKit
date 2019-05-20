@@ -9,3 +9,4 @@
 import Foundation
 
 let TIMEOUT_THROTTLE:TimeInterval = 20
+let calculateNearestMax:Int = 5

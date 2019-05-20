@@ -6,7 +6,7 @@ import BikeKitUI
 //Test UI View
 
 class MainTableViewController : UITableViewController {
-
+    
     let model = AppDelegate.mainBikeModel
     var refreshed:UIRefreshControl!
     
@@ -31,7 +31,7 @@ class MainTableViewController : UITableViewController {
         tableView.refreshControl = refreshed
         tableView.estimatedRowHeight = 85.0
         tableView.rowHeight = UITableView.automaticDimension
-  
+        
         //Reordering of table view
         self.editButtonItem.action = #selector(beginEditing)
         doneButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(beginEditing))
@@ -101,15 +101,15 @@ class MainTableViewController : UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         guard let favorites = model.favourites, let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier) as? DetailBikeKitViewCell else {
             fatalError("errorrr")
         }
         
         let data = favorites[indexPath.row]
-
+        
         let configured = cell.configureCell(indexPath: indexPath, with: data)
-
+        
         return configured
         
     }
@@ -118,29 +118,29 @@ class MainTableViewController : UITableViewController {
         let cell = cell as! DetailBikeKitViewCell
         
         //load map image
-            
+        
         let data = model.favourites![indexPath.row]
         
         if(model.images[data.external_id] == nil){
-        
+            
             cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: model.locations[data.external_id]!,data) { [weak cell] (img) -> Void in
                 
                 self.model.images[data.external_id] = img
                 
-                    if let cell = cell {
-                        cell.mapView.image = img
-                        cell.mapView.contentMode = .scaleAspectFill
-                        cell.mapView.layer.borderColor = nil
-                        cell.mapView.layer.borderWidth = 0
-                    }
-            
+                if let cell = cell {
+                    cell.mapView.image = img
+                    cell.mapView.contentMode = .scaleAspectFill
+                    cell.mapView.layer.borderColor = nil
+                    cell.mapView.layer.borderWidth = 0
+                }
+                
             }
             
         } else {
-           
+            
             cell.mapView.image = model.images[data.external_id]
             cell.mapView.contentMode = .scaleAspectFill
-
+            
         }
         
     }
@@ -164,7 +164,7 @@ class MainTableViewController : UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
+        
         self.tabBarController?.selectedIndex = 1
         let navigationSibling = self.tabBarController?.viewControllers![1] as! UINavigationController
         let mapController = navigationSibling.topViewController as! MapViewController
@@ -191,16 +191,58 @@ extension MainTableViewController : NYCBikeUIDelegate {
             self.tableView.reloadData()
             self.refreshed.endRefreshing()
         }
-
+        
         
     }
     
     func inCooldown(str:String?) {
         refreshed.endRefreshing()
         if let message = str {
-             toastDelegate?.flyToast(str: message)
+            toastDelegate?.flyToast(str: message)
         }
-       
+        
+    }
+    
+    func distancesUpdated(nearestStations: [Nearest]) {
+        
+        
+        
+        
+        guard let favourites = self.model.favourites, let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
+            return
+        }
+        
+        DispatchQueue.global().async {
+            
+                for visible in visibleCellIndexPaths{
+                    
+                    if !favourites.indices.contains(visible.row){
+                        continue
+                    }
+                    
+                    let favourite = favourites[visible.row]
+                    
+                    guard let matchedStation:Nearest = nearestStations.first(where: { (nearest) -> Bool in
+                        nearest.externalID == favourite.external_id
+                    }) else {
+                        DispatchQueue.main.async {
+                            let cell = self.tableView.cellForRow(at: visible) as! DetailBikeKitViewCell
+                            cell.updateDistance(data: favourite, distanceString: nil)
+                        }
+                        continue
+                    }
+                    
+                    
+                    DispatchQueue.main.async {
+                        let cell = self.tableView.cellForRow(at: visible) as! DetailBikeKitViewCell
+                        cell.updateDistance(data: favourite, distanceString: matchedStation.distanceString)
+                    }
+                    
+                    
+                    
+                }
+            
+        }
     }
     
 }

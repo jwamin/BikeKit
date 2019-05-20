@@ -11,7 +11,7 @@ import MapKit
 import BikeKit
 import BikeKitUI
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate {
 
     let model = AppDelegate.mainBikeModel
     let location = AppDelegate.locationManager
@@ -30,13 +30,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         map.autoresizingMask = [.flexibleWidth,.flexibleWidth]
         view.addSubview(map)
         
-        
         map.delegate = self
         map.register(MKPointAnnotation.self, forAnnotationViewWithReuseIdentifier: "id")
         map.showsUserLocation = true
-        location.delegate = self
-        location.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        location.startUpdatingLocation()
         
         addPins()
         // Do any additional setup after loading the view.
@@ -44,7 +40,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func addPins(){
 
-        //update existing pins, if any
+        //this is basically all wrong, manage a list of annotations and let mapkit delegation handle the drawing
 
         for (index,pin) in pins.enumerated().reversed(){
             let point = MKMapPoint(pin.coordinate)
@@ -156,15 +152,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         addPins()
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
-        
-        
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-    }
     
     /*
     // MARK: - Navigation

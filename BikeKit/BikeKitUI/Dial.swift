@@ -36,8 +36,8 @@ public class DialView : UIView{
     }
     var anticlockwise:Bool = true
     
-    let startAngle:CGFloat = degreesToRadians(degrees: 140)
-    let endAngle:CGFloat = degreesToRadians(degrees: 400)
+    let startAngle:CGFloat = degreesToRadians(degrees: 180)
+    let endAngle:CGFloat = degreesToRadians(degrees: 360)
     let radius:CGFloat = 14
     let lineWidth:CGFloat = 7
     

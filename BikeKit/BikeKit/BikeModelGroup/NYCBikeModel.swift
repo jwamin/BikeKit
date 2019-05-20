@@ -8,17 +8,21 @@
 
 import CoreLocation
 
-public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
+public class NYCBikeModel : NSObject{
     
     public static var groupedUserDefaults:UserDefaults? = nil
     
-    private let networking:NYCBikeNetworking!
+    internal let networking:NYCBikeNetworking!
     
     public var favourites:[NYCBikeStationInfo]?
     public var locations = [String:CLLocation]()
+    public var distanceManager:NYCBikeStationDistanceManager?
     public var images = [String:UIImage]()
+
     
     public var delegate:NYCBikeUIDelegate?
+    
+    internal var previouslyReportedUserLocation:CLLocation?
     
     public override init() {
         networking = NYCBikeNetworking()
@@ -39,7 +43,9 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
                         locations[station.external_id] = CLLocation(latitude: CLLocationDegrees(station.lat), longitude: CLLocationDegrees(station.lon))
                     }
                 }
-                
+                distanceManager = NYCBikeStationDistanceManager(stationLocations: locations)
+                distanceManager?.delegate = self
+                updateLocation(userLocation: nil)
             } else {
                 print("station data updated")
             }
@@ -47,63 +53,7 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
         }
     }
     
-    func setStations(stationsData: Data) {
-        
-        // reminder - this is how to wind up with [String:Any] from json data
-        //let jsonObj = try! JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
-        
-        do{
-            let stationInfoData = try JSONDecoder().decode(NYCStationInfoWrapper.self, from: stationsData)
-            guard let stations = stationInfoData.data["stations"] else {
-                return
-            }
-            self.stationData = stations
-            networking.getNYCBikeAPIData(task: .status)
-        } catch {
-            print(error)
-        }
-        
-    }
-    
-    func setStationsStatus(statusData: Data) {
-        var stationStatusData:[NYCBikeStationStatus]?
-    
-        do{
-            let stationInfoData = try JSONDecoder().decode(NYCStationStatusWrapper.self, from: statusData)
-            stationStatusData = stationInfoData.data["stations"]!
-        } catch {
-            print(error)
-            fatalError(error.localizedDescription)
-        }
-        
-        guard let stationData = stationStatusData else {
-            return
-        }
-        
-        let stationIDs = self.stationData!.map {
-            $0.station_id
-        }
-        
-        var updatedStations = self.stationData
-        
-        stationData.forEach{ (updatedStation) in
-            
-            for (index,savedStationID) in stationIDs.enumerated(){
-                if updatedStation.station_id == savedStationID {
-                    updatedStations![index].status = updatedStation
-                }
-            }
-            
-            
-        }
-        
-        self.stationData = updatedStations
-        
-        refreshFavourites()
-        DispatchQueue.main.async {
-            self.delegate?.updated()
-        }
-    }
+
     
     
 
@@ -211,6 +161,7 @@ public class NYCBikeModel : NSObject, NYCBikeNetworkingDelegate{
     
     public func refresh(){
         refreshFavourites()
+        updateLocation(userLocation: previouslyReportedUserLocation)
         self.networking.getNYCBikeAPIData(task: .status)
     }
     

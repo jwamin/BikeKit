@@ -175,7 +175,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
     public func configureCell(indexPath:IndexPath, with data:NYCBikeStationInfo) -> DetailBikeKitViewCell{
         let cell = self
         cell.nameLabel.text = data.name
-        cell.distanceLabel.text = "\(data.capacity) docks."
+        updateDistance(data: data, distanceString: nil)
         cell.distanceLabel.sizeToFit()
         
         
@@ -205,6 +205,15 @@ public class DetailBikeKitViewCell: UITableViewCell {
         cell.layoutIfNeeded()
         
         return self
+        
+    }
+    
+    public func updateDistance(data:NYCBikeStationInfo,distanceString:String?){
+        if let distanceComputed = distanceString{
+            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed)"
+        } else {
+            self.distanceLabel.text = "\(data.capacity) docks"
+        }
         
     }
     

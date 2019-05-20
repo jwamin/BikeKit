@@ -150,4 +150,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         return
     }
     
+    func distancesUpdated(nearestStations: [Nearest]) {
+        return
+    }
+    
 }

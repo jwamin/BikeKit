@@ -177,7 +177,7 @@ class MainTableViewController : UITableViewController {
             
         }
         DispatchQueue.main.async {
-            self.distancesUpdated(nearestStations: self.model.nearestStations)
+            self.updateDistanceForCell(at: indexPath)
         }
         
     }
@@ -258,40 +258,50 @@ extension MainTableViewController : NYCBikeUIDelegate {
         cell.updateDistance(data: data, distanceString: distanceString,query: dockStatus)
     }
     
+    
+    func updateDistanceForCell(at indexPath:IndexPath){
+        
+        guard let favourites = self.model.favourites, model.nearestStations.count > 0 else {
+            return
+        }
+        
+        let favourite = favourites[indexPath.row]
+        let nearestStations = model.nearestStations
+        
+        guard let matchedStation:Nearest = nearestStations.first(where: { (nearest) -> Bool in
+            nearest.externalID == favourite.external_id
+        }) else {
+            DispatchQueue.main.async {
+                self.updateCellWithDistance(indexPath: indexPath, data: favourite, distanceString: nil)
+            }
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.updateCellWithDistance(indexPath: indexPath, data: favourite, distanceString: matchedStation.distanceString)
+        }
+        
+    }
+    
+    
+    //fix this, it's called too many times
     func distancesUpdated(nearestStations: [Nearest]) {
         
         if(nearestStations.count == 0){
             return
         }
         
-        guard let favourites = self.model.favourites, let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
+        guard let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
             return
         }
+        
         print("updating distances for \(visibleCellIndexPaths.count)")
         DispatchQueue.global().async {
             
                 for visible in visibleCellIndexPaths{
                     
-                    if !favourites.indices.contains(visible.row){
-                        continue
-                    }
                     
-                    let favourite = favourites[visible.row]
-                    
-                    guard let matchedStation:Nearest = nearestStations.first(where: { (nearest) -> Bool in
-                        nearest.externalID == favourite.external_id
-                    }) else {
-                        DispatchQueue.main.async {
-                            self.updateCellWithDistance(indexPath: visible, data: favourite, distanceString: nil)
-                        }
-                        continue
-                    }
-                    
-                    
-                    DispatchQueue.main.async {
-                        self.updateCellWithDistance(indexPath: visible, data: favourite, distanceString: matchedStation.distanceString)
-                    }
-                    
+                    self.updateDistanceForCell(at: visible)
                     
                     
                 }

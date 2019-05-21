@@ -30,28 +30,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         
         locationManager.requestAlwaysAuthorization()
-        print(CLLocationManager.significantLocationChangeMonitoringAvailable())
         let authorizationStatus = CLLocationManager.authorizationStatus()
         
-        switch authorizationStatus {
-        case .authorizedAlways:
-            print("always")
-            locationManager.pausesLocationUpdatesAutomatically = true
-            locationManager.startMonitoringSignificantLocationChanges()
+        if(launchOptions?[UIApplication.LaunchOptionsKey.location] != nil){
+            //we are in a background launch mode
             location = locationManager
-        case .authorizedWhenInUse:
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.activityType = .otherNavigation
             locationManager.startUpdatingLocation()
-            location = locationManager
-        default:
-            break
+            return true
         }
         
+        startAppropriateLocationManager(locationManager: locationManager, authorizationStatus: authorizationStatus)
         
+        
+        //setup user defaults
         sharedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
         
         NYCBikeModel.groupedUserDefaults = sharedUserDefaults
+        
+        //Start Window
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
@@ -79,9 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         tabViewController.viewControllers = [primaryNavigation,secondaryNavigation]
         
-        
-
-        
         //AppDelegate.mainBikeModel.updateLocation(userLocation: locationManager.location)
         
         window?.rootViewController = mainToastView
@@ -102,7 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         print("backgrounded")
 
-        location?.stopUpdatingLocation()
         location?.startMonitoringSignificantLocationChanges()
         
     }
@@ -127,11 +119,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
         
         location?.stopUpdatingLocation()
-        location?.stopMonitoringSignificantLocationChanges()
+        
         
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func startAppropriateLocationManager(locationManager:CLLocationManager,authorizationStatus:CLAuthorizationStatus){
+        switch authorizationStatus {
+        case .authorizedAlways:
+            locationManager.pausesLocationUpdatesAutomatically = true
+            locationManager.startMonitoringSignificantLocationChanges()
+            location = locationManager
+        case .authorizedWhenInUse:
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.activityType = .otherNavigation
+            locationManager.startUpdatingLocation()
+            location = locationManager
+        default:
+            break
+        }
+    }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {

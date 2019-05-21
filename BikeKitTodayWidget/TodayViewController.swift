@@ -48,10 +48,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         ]
         NSLayoutConstraint.activate(constraints)
         
-        self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
-        
-        print(self.extensionContext!.widgetActiveDisplayMode == .compact)
-        
         bikeShareModel.delegate = self
         label = self.view.subviews[0] as? UILabel
         label.text = Constants.strings.loadingLabelText
@@ -61,7 +57,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
 //NCWidgetProviding
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
-        print("admchange")
+        print("admchange", activeDisplayMode.rawValue)
         let expanded = activeDisplayMode == .expanded
         var maxTableSize = tableView.contentSize
         maxTableSize.height += 20
@@ -99,6 +95,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
+    override func viewDidLayoutSubviews() {
+        if !tableView.contentSize.equalTo(.zero){
+            self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+        }
+    }
+    
     //BikeUIDelegate
     
     func error(str: String?) {
@@ -116,6 +118,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
             self.tableView.isHidden = false
             self.label.removeFromSuperview()
             self.tableView.reloadData()
+            
         }
     }
     

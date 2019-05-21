@@ -15,12 +15,14 @@ extension NYCBikeStationInfo {
         guard let status = self.status else {
             return 0
         }
-        let capacity = Float(self.capacity);
+        
+        let capacity = Float(self.capacity - self.status!.num_bikes_disabled);
+        
         switch type {
-        case .bikes:
-            return Float(status.num_bikes_available) / capacity
-        case .docks:
-            return Float(status.num_docks_available) / capacity
+            case .bikes:
+                return Float(status.num_bikes_available) / capacity
+            case .docks:
+                return Float(status.num_docks_available) / capacity
         }
         
     }
@@ -38,27 +40,28 @@ extension NYCBikeStationInfo {
 }
 
 public enum NYCBikeStationCapacityQuery : String{
-    case bikes = "bikes"
-    case docks = "docks"
+    case bikes = "bike"
+    case docks = "dock"
 }
 
 public enum NYCStationCapacityAssessment{
     case good
+    case ok
     case low
     case empty
     case unknown
     static func calculateResponse(type:NYCBikeStationCapacityQuery,indicativeFloat:Float)->(String,NYCStationCapacityAssessment){
         switch indicativeFloat {
         case 0.0:
-            return ("Bad for \(type.rawValue.capitalized)",.empty)
-        case _ where indicativeFloat > 0.50:
-            return ("Good for \(type.rawValue.capitalized)",.good)
+            return ("This station is out of \(type.rawValue)s",.empty)
+        case _ where indicativeFloat > 0.75:
+            return ("Good for \(type.rawValue.capitalized)s",.good)
         case _ where indicativeFloat > 0.25:
-            return ("Not Great for \(type.rawValue.capitalized)",.low)
+            return ("You'll probably find a \(type.rawValue)",.ok)
         case _ where indicativeFloat < 0.25:
-            return ("Try another station for \(type.rawValue.capitalized)",.low)
+            return ("Try another station for \(type.rawValue)s",.low)
         default:
-            return ("Unknown for \(type.rawValue.capitalized)",.unknown)
+            return ("Unknown for \(type.rawValue.capitalized)s",.unknown)
         }
     }
     

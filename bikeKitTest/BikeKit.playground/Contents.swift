@@ -44,12 +44,22 @@ class TestObject : NSObject, NYCBikeUIDelegate {
         
         let str = "\nNearest stations\n----------------\n"
         print(str)
-        for station in nearestStations.enumerated(){
-            print("\(station.offset+1). \(station.element.info.name) \(station.element.distanceString) \n\(station.element.info.smartCapacityAssesmentString(type: .bikes).0) \n\(station.element.info.smartCapacityAssesmentString(type: .docks).0)\n\n")
+        for (index,station) in nearestStations.enumerated(){
+            print("\(index+1). \(station.info.name) \(station.distanceString) \n\(station.info.smartCapacityAssesmentString(type: .bikes).0) \n\(station.info.smartCapacityAssesmentString(type: .docks).0)\n\n")
+        }
+        
+        print("Smart ordering for bikes\n")
+        for reordered in NYCBikeModel.smartOrderingOfNearestStations(nearestStations,query:.bikes) {
+            print(reordered.info.name+" \(reordered.distanceString) \(reordered.info.status!.num_bikes_available) bikes available\n")
+        }
+        print("\n\n")
+        print("Smart ordering for docks\n")
+        for reordered in NYCBikeModel.smartOrderingOfNearestStations(nearestStations,query:.docks) {
+            print(reordered.info.name+" \(reordered.distanceString) \(reordered.info.status!.num_docks_available) / \(reordered.info.capacity - reordered.info.status!.num_bikes_disabled) docks available \n")
         }
         
         //model.refresh()
-        if let first = nearestStations.first, let status = first.info.status{
+        if let first = nearestStations.first, let _ = first.info.status{
             PlaygroundPage.current.finishExecution()
         }
 

@@ -85,6 +85,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
         nameLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         
         distanceLabel = UILabel()
+        distanceLabel.numberOfLines = 0
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         distanceLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         
@@ -226,13 +227,15 @@ public class DetailBikeKitViewCell: UITableViewCell {
                 case .empty:
                     label?.backgroundColor = .red
                 case .good:
+                    label?.backgroundColor = .cyan
+                case .ok:
                     label?.backgroundColor = .green
                 case .low:
                     label?.backgroundColor = .orange
                 case .unknown:
                     label?.backgroundColor = .lightGray
             }
-            
+            label?.sizeToFit()
         } else {
             self.distanceLabel.text = "\(data.capacity) docks"
             self.distanceLabel.backgroundColor = .clear

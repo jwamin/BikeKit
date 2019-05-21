@@ -11,24 +11,14 @@ import NotificationCenter
 import BikeKit
 import BikeKitUI
 
-class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegate,UITableViewDelegate,UITableViewDataSource {
+let maxRows = 3
 
-    
-    
+class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegate {
+
     var tableView:UITableView!
     
     let bikeShareModel = NYCBikeModel()
     var label:UILabel!
-    
-    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
-        let expanded = activeDisplayMode == .expanded
-        var size = maxSize
-        if let cellIsPresent = tableView.visibleCells.first{
-            size = cellIsPresent.bounds.size
-        }
-        preferredContentSize = expanded ? tableView.contentSize : size
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,55 +50,22 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
+        print(self.extensionContext!.widgetActiveDisplayMode == .compact)
+        
         bikeShareModel.delegate = self
         label = self.view.subviews[0] as? UILabel
         label.text = Constants.strings.loadingLabelText
         
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bikeShareModel.favourites?.count ?? 0
-    }
+//NCWidgetProviding
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier, for: indexPath) as! DetailBikeKitViewCell
-        guard let favorites = bikeShareModel.favourites else {
-            fatalError("errorrr")
-        }
-        let data = favorites[indexPath.row]
-       
-        let configured = cell.configureCell(indexPath: indexPath, with: data)
-        
-        return configured
-        
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        let cell = cell as! DetailBikeKitViewCell
-        
-        //load map image
-        
-        let data = bikeShareModel.favourites![indexPath.row]
-        
-        if(bikeShareModel.images[data.external_id] == nil){
-            
-            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: bikeShareModel.locations[data.external_id]!) { (img) -> Void in
-                
-                self.bikeShareModel.images[data.external_id] = img
-                
-                if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
-                    cell.mapView.image = img
-                    cell.layer.borderWidth = 0
-                }
-                
-            }
-            
-        } else {
-            
-            cell.mapView.image = bikeShareModel.images[data.external_id]
-        }
-        
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        print("admchange")
+        let expanded = activeDisplayMode == .expanded
+        var maxTableSize = tableView.contentSize
+        maxTableSize.height += 20
+        preferredContentSize = expanded ? maxTableSize : maxSize
     }
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
@@ -142,21 +99,24 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
+    //BikeUIDelegate
+    
     func error(str: String?) {
         bikeShareModel.restartAfterError()
     }
     
     func uiUpdatesAreReady() {
-
-        tableView.isHidden = false
-        label.removeFromSuperview()
-        tableView.reloadData()
-        self.widgetActiveDisplayModeDidChange(self.extensionContext!.widgetActiveDisplayMode, withMaximumSize: tableView.contentSize)
+        bikeShareModel.refreshFavourites()
         
     }
     
     func statusUpdatesAreReady() {
-        tableView.reloadData()
+        print("status refresh notified")
+        DispatchQueue.main.async {
+            self.tableView.isHidden = false
+            self.label.removeFromSuperview()
+            self.tableView.reloadData()
+        }
     }
     
     func inCooldown(str: String?) {

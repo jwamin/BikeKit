@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5705C1C222945E9D00861C9C /* TodayViewController+TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5705C1C122945E9D00861C9C /* TodayViewController+TableViewDelegate.swift */; };
 		57069F87228B261F00E714FD /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
 		57069F88228B261F00E714FD /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; };
 		57069F8A228B26A800E714FD /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -66,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5705C1C122945E9D00861C9C /* TodayViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
 		578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BikeKitTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		578676332286F9C600AA0072 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		578676362286F9C600AA0072 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				578676442286FEFE00AA0072 /* BikeKitTodayWidget.entitlements */,
 				578676362286F9C600AA0072 /* TodayViewController.swift */,
+				5705C1C122945E9D00861C9C /* TodayViewController+TableViewDelegate.swift */,
 				578676382286F9C600AA0072 /* MainInterface.storyboard */,
 				5786763B2286F9C600AA0072 /* Info.plist */,
 			);
@@ -293,6 +296,7 @@
 			files = (
 				578676372286F9C600AA0072 /* TodayViewController.swift in Sources */,
 				57CF8C012290A20200C9D96F /* Constants.swift in Sources */,
+				5705C1C222945E9D00861C9C /* TodayViewController+TableViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

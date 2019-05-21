@@ -65,11 +65,9 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         }
         
         self.stationData = updatedStations
-        
-        refreshFavourites()
-        DispatchQueue.main.async {
-            self.delegate?.updated()
-        }
+        print("status set")
+//        refreshFavourites()
+        delegate?.statusUpdatesAreReady()
     }
 
 }

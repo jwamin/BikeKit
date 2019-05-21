@@ -12,10 +12,12 @@ import BikeKit
 import BikeKitUI
 
 class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegate,UITableViewDelegate,UITableViewDataSource {
+
+    
     
     var tableView:UITableView!
     
-    let bikeNetworking = NYCBikeModel()
+    let bikeShareModel = NYCBikeModel()
     var label:UILabel!
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
@@ -33,7 +35,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         print("view did load")
         
         //setup User defaults
-        NYCBikeModel.groupedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
+        
+        if let userDefaults = UserDefaults(suiteName: Constants.identifiers.sharedUserDefaultsSuite){
+            bikeShareModel.setUserDefaultsSuite(suite: userDefaults)
+        }
         
         tableView = UITableView(frame: self.view.bounds)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,19 +60,19 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
         self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
-        bikeNetworking.delegate = self
+        bikeShareModel.delegate = self
         label = self.view.subviews[0] as? UILabel
         label.text = Constants.strings.loadingLabelText
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bikeNetworking.favourites?.count ?? 0
+        return bikeShareModel.favourites?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier, for: indexPath) as! DetailBikeKitViewCell
-        guard let favorites = bikeNetworking.favourites else {
+        guard let favorites = bikeShareModel.favourites else {
             fatalError("errorrr")
         }
         let data = favorites[indexPath.row]
@@ -84,13 +89,13 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
         //load map image
         
-        let data = bikeNetworking.favourites![indexPath.row]
+        let data = bikeShareModel.favourites![indexPath.row]
         
-        if(bikeNetworking.images[data.external_id] == nil){
+        if(bikeShareModel.images[data.external_id] == nil){
             
-            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: bikeNetworking.locations[data.external_id]!) { (img) -> Void in
+            cell.screenshotHandler = Locator.snapshotterForLocation(size: nil, location: bikeShareModel.locations[data.external_id]!) { (img) -> Void in
                 
-                self.bikeNetworking.images[data.external_id] = img
+                self.bikeShareModel.images[data.external_id] = img
                 
                 if let cell = tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell {
                     cell.mapView.image = img
@@ -101,7 +106,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
             
         } else {
             
-            cell.mapView.image = bikeNetworking.images[data.external_id]
+            cell.mapView.image = bikeShareModel.images[data.external_id]
         }
         
     }
@@ -109,7 +114,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
         print("widget perform update")
-        bikeNetworking.refreshFavourites{ error in
+        bikeShareModel.refreshFavourites{ error in
             
             if let error = error{
                 switch(error){
@@ -124,7 +129,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
                 }
             }
             
-            self.updated()
+            self.uiUpdatesAreReady()
             
             completionHandler(NCUpdateResult.newData)
             
@@ -138,16 +143,20 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     }
     
     func error(str: String?) {
-        bikeNetworking.restartAfterError()
+        bikeShareModel.restartAfterError()
     }
     
-    func updated() {
+    func uiUpdatesAreReady() {
 
         tableView.isHidden = false
         label.removeFromSuperview()
         tableView.reloadData()
         self.widgetActiveDisplayModeDidChange(self.extensionContext!.widgetActiveDisplayMode, withMaximumSize: tableView.contentSize)
         
+    }
+    
+    func statusUpdatesAreReady() {
+        tableView.reloadData()
     }
     
     func inCooldown(str: String?) {

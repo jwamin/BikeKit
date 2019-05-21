@@ -2,11 +2,41 @@ import UIKit
 import BikeKit
 import BikeKitUI
 
+protocol FavouritesUpdatesDelegate {
+    func added()
+    func removed()
+}
 
-extension MainTableViewController : UISearchControllerDelegate{
+extension MainTableViewController : UISearchControllerDelegate, FavouritesUpdatesDelegate{
+    
+    func added() {
+        let ip = IndexPath(row: updates.count, section: 0)
+        updates.append(ip)
+    }
+    
+    func removed() {
+        if(updates.count>0){
+            updates.remove(at: updates.endIndex-1)
+        }
+    }
+    
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        self.refresh()
+        
+        // ok so here, work out the difference between arrays and insert the new favourites animated
+        print(updates)
+        
+        
+        let startCount = tableView.numberOfRows(inSection: 0)
+
+        let indexPaths = updates.enumerated().map { (index,_) in
+            return IndexPath(row: index+startCount, section: 0)
+        }
+        updates.removeAll()
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        
+        //self.refresh()
+        
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -50,7 +80,7 @@ class SearchTableViewController : UITableViewController {
     
     private var stationInfoSubset = [NYCBikeStationInfo]()
     private var favourites = [String]()
-    
+    public var delegate:FavouritesUpdatesDelegate?
     
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){
         stationInfoSubset = newSet
@@ -63,9 +93,7 @@ class SearchTableViewController : UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        guard let userDefaults = NYCBikeModel.groupedUserDefaults else {
-            fatalError()
-        }
+        let userDefaults = NYCBikeModel.groupedUserDefaults 
         
         favourites = userDefaults.array(forKey: "favourites") as? [String] ?? []
     }
@@ -146,7 +174,11 @@ class SearchTableViewController : UITableViewController {
         
         let id = stationInfoSubset[indexPath.row].station_id
         
-        cell.accessoryType = (AppDelegate.mainBikeModel.toggleFavouriteForId(id: id)) ? .checkmark : .none
+        let update = AppDelegate.mainBikeModel.toggleFavouriteForId(id: id)
+        
+        cell.accessoryType = (update) ? .checkmark : .none
+        
+        (update) ? delegate?.added() : delegate?.removed()
         
         
     }

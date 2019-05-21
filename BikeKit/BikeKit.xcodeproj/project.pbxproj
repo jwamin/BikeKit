@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5705C1C022942B3F00861C9C /* NYCBikeModel+Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5705C1BF22942B3F00861C9C /* NYCBikeModel+Favourites.swift */; };
 		57069F8C228CB40200E714FD /* NYCBikeCodableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57069F8B228CB40200E714FD /* NYCBikeCodableData.swift */; };
 		57069F8E228CB43700E714FD /* NYCBikeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57069F8D228CB43700E714FD /* NYCBikeModel.swift */; };
 		57069F90228CB46100E714FD /* NYCBikeDebugConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57069F8F228CB46100E714FD /* NYCBikeDebugConstants.swift */; };
@@ -16,8 +17,8 @@
 		5738D37B228A3C2100DAA2AE /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5738D37A228A3C2100DAA2AE /* DetailCell.swift */; };
 		57CF8C032292FAE600C9D96F /* NYCBikeStationDistanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */; };
 		57CF8C062293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */; };
-		57CF8C08229304DE00C9D96F /* NYCBikeModelDistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C07229304DE00C9D96F /* NYCBikeModelDistanceManager.swift */; };
-		57CF8C0A2293225700C9D96F /* NYCStationCapacityAssessment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C092293225700C9D96F /* NYCStationCapacityAssessment.swift */; };
+		57CF8C08229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */; };
+		57CF8C0A2293225700C9D96F /* NYCStation+CapacityAssessment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C092293225700C9D96F /* NYCStation+CapacityAssessment.swift */; };
 		57F193DD2289B28D000941A8 /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F193D42289B28D000941A8 /* BikeKitUI.framework */; };
 		57F193E22289B28D000941A8 /* BikeKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F193E12289B28D000941A8 /* BikeKitUITests.swift */; };
 		57F193E42289B28D000941A8 /* BikeKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F193D62289B28D000941A8 /* BikeKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5705C1BE22941E6100861C9C /* BikeKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = BikeKit.playground; path = ../bikeKitTest/BikeKit.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5705C1BF22942B3F00861C9C /* NYCBikeModel+Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+Favourites.swift"; sourceTree = "<group>"; };
 		57069F8B228CB40200E714FD /* NYCBikeCodableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeCodableData.swift; sourceTree = "<group>"; };
 		57069F8D228CB43700E714FD /* NYCBikeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeModel.swift; sourceTree = "<group>"; };
 		57069F8F228CB46100E714FD /* NYCBikeDebugConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeDebugConstants.swift; sourceTree = "<group>"; };
@@ -57,8 +60,8 @@
 		5738D37A228A3C2100DAA2AE /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeStationDistanceModel.swift; sourceTree = "<group>"; };
 		57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+NetworkingDelegate.swift"; sourceTree = "<group>"; };
-		57CF8C07229304DE00C9D96F /* NYCBikeModelDistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeModelDistanceManager.swift; sourceTree = "<group>"; };
-		57CF8C092293225700C9D96F /* NYCStationCapacityAssessment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCStationCapacityAssessment.swift; sourceTree = "<group>"; };
+		57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+DistanceManager.swift"; sourceTree = "<group>"; };
+		57CF8C092293225700C9D96F /* NYCStation+CapacityAssessment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCStation+CapacityAssessment.swift"; sourceTree = "<group>"; };
 		57F193D42289B28D000941A8 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57F193D62289B28D000941A8 /* BikeKitUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BikeKitUI.h; sourceTree = "<group>"; };
 		57F193D72289B28D000941A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,8 +120,9 @@
 			isa = PBXGroup;
 			children = (
 				57069F8D228CB43700E714FD /* NYCBikeModel.swift */,
-				57CF8C07229304DE00C9D96F /* NYCBikeModelDistanceManager.swift */,
-				57CF8C092293225700C9D96F /* NYCStationCapacityAssessment.swift */,
+				5705C1BF22942B3F00861C9C /* NYCBikeModel+Favourites.swift */,
+				57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */,
+				57CF8C092293225700C9D96F /* NYCStation+CapacityAssessment.swift */,
 				57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */,
 			);
 			path = BikeModelGroup;
@@ -157,6 +161,7 @@
 		57FF729C228335B5006F63E8 = {
 			isa = PBXGroup;
 			children = (
+				5705C1BE22941E6100861C9C /* BikeKit.playground */,
 				57FF72A8228335B5006F63E8 /* BikeKit */,
 				57FF72B3228335B5006F63E8 /* BikeKitTests */,
 				57F193D52289B28D000941A8 /* BikeKitUI */,
@@ -402,12 +407,13 @@
 				57FF72CA228335F4006F63E8 /* NYCBikeNetworking.swift in Sources */,
 				57CF8C062293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift in Sources */,
 				57CF8C032292FAE600C9D96F /* NYCBikeStationDistanceModel.swift in Sources */,
+				5705C1C022942B3F00861C9C /* NYCBikeModel+Favourites.swift in Sources */,
 				57069F92228CB4F500E714FD /* NYCBikeDelegation.swift in Sources */,
 				57069F94228CBB1F00E714FD /* NYCBikeConstaints.swift in Sources */,
-				57CF8C08229304DE00C9D96F /* NYCBikeModelDistanceManager.swift in Sources */,
+				57CF8C08229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift in Sources */,
 				57069F8E228CB43700E714FD /* NYCBikeModel.swift in Sources */,
 				57069F90228CB46100E714FD /* NYCBikeDebugConstants.swift in Sources */,
-				57CF8C0A2293225700C9D96F /* NYCStationCapacityAssessment.swift in Sources */,
+				57CF8C0A2293225700C9D96F /* NYCStation+CapacityAssessment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //setup user defaults
         sharedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
         
-        NYCBikeModel.groupedUserDefaults = sharedUserDefaults
+        AppDelegate.mainBikeModel.setUserDefaultsSuite(suite: sharedUserDefaults)
         
         //Start Window
         
@@ -125,19 +125,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func startAppropriateLocationManager(locationManager:CLLocationManager,authorizationStatus:CLAuthorizationStatus){
-        switch authorizationStatus {
-        case .authorizedAlways:
-            locationManager.pausesLocationUpdatesAutomatically = true
-            locationManager.startMonitoringSignificantLocationChanges()
-            location = locationManager
-        case .authorizedWhenInUse:
+//        switch authorizationStatus {
+//        case .authorizedAlways:
+//            locationManager.pausesLocationUpdatesAutomatically = true
+//            locationManager.startMonitoringSignificantLocationChanges()
+//            location = locationManager
+//        case .authorizedWhenInUse:
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.activityType = .otherNavigation
             locationManager.startUpdatingLocation()
             location = locationManager
-        default:
-            break
-        }
+//        default:
+//            break
+//        }
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

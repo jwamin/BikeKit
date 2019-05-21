@@ -10,10 +10,7 @@ import CoreLocation
 
 class NYCBikeNetworking : NSObject {
     
-    //URLs
-    static let ALL_DATA_URL = URL(string:"https://gbfs.citibikenyc.com/gbfs/gbfs.json")!
-    static let STATION_INFO_URL = URL(string:"https://gbfs.citibikenyc.com/gbfs/en/station_information.json")!
-    static let STATION_STATUS_URL = URL(string:"https://gbfs.citibikenyc.com/gbfs/en/station_status.json")!
+
     
     fileprivate(set) var refreshThrottle:Date = Date() + TimeInterval(-65) {
         didSet{
@@ -35,12 +32,12 @@ class NYCBikeNetworking : NSObject {
         
         switch task{
             case .info:
-                url = NYCBikeNetworking.STATION_INFO_URL
+                url = NYCBikeConstants.URLS.STATION_INFO_URL
             case .status:
                 if(!checkTimeoutHasExpired()){
                     return
                 }
-                url = NYCBikeNetworking.STATION_STATUS_URL
+                url = NYCBikeConstants.URLS.STATION_STATUS_URL
         }
         
         let callback:(NYCBikeRequest,Data)->Void = self.handleRequest
@@ -89,8 +86,7 @@ class NYCBikeNetworking : NSObject {
     
     private func checkTimeoutHasExpired()->Bool{
         let now = Date()
-        let timeout = refreshThrottle + TIMEOUT_THROTTLE
-        print(now,timeout,timeout>now)
+        let timeout = refreshThrottle + NYCBikeConstants.TIMEOUT_THROTTLE
         if(now<timeout){
             let formatter = DateComponentsFormatter()
             formatter.allowedUnits = [.second]

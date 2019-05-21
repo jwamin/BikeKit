@@ -17,7 +17,8 @@ protocol NYCBikeNetworkingDelegate{
 }
 
 public protocol NYCBikeUIDelegate{
-    func updated()
+    func uiUpdatesAreReady()
+    func statusUpdatesAreReady()
     func distancesUpdated(nearestStations:[Nearest])
     func inCooldown(str:String?)
     func error(str:String?)

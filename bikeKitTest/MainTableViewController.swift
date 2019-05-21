@@ -18,6 +18,8 @@ class MainTableViewController : UITableViewController {
     var dockLabel:UILabel!
     var dockStatus:NYCBikeStationCapacityQuery = .bikes
     
+    var updates = [IndexPath]()
+    
     //let editButtonItem:UIBarButtonItem!
     var doneButtonItem:UIBarButtonItem!
     
@@ -58,6 +60,7 @@ class MainTableViewController : UITableViewController {
         //Basic Searching
         let searchTable = SearchTableViewController()
         searchTable.restorationIdentifier = Constants.identifiers.searchRestoration
+        searchTable.delegate = self
         let searchController = UISearchController(searchResultsController: searchTable)
         searchController.delegate = self
         searchController.searchResultsUpdater = self
@@ -190,10 +193,9 @@ class MainTableViewController : UITableViewController {
             }
             let favouriteToBeDeleted = favourites[indexPath.row]
             if(!model.toggleFavouriteForId(id: favouriteToBeDeleted.station_id)){
-                model.favourites?.remove(at: indexPath.row)
+                //model.favourites?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
-            
         default:
             break
         }
@@ -228,7 +230,7 @@ extension MainTableViewController : NYCBikeUIDelegate {
     }
     
     
-    func updated() {
+    func uiUpdatesAreReady() {
         
         guard let _ = model.favourites else {
             return
@@ -239,7 +241,6 @@ extension MainTableViewController : NYCBikeUIDelegate {
             self.refreshed.endRefreshing()
         }
         
-        
     }
     
     func inCooldown(str:String?) {
@@ -248,6 +249,12 @@ extension MainTableViewController : NYCBikeUIDelegate {
             toastDelegate?.flyToast(str: message)
         }
         
+    }
+    
+    func statusUpdatesAreReady(){
+        print("status")
+        model.refreshFavourites()
+        model.updateLocation(userLocation: nil)
     }
     
     func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){

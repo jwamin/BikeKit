@@ -10,7 +10,12 @@ import CoreLocation
 
 public class NYCBikeModel : NSObject{
     
-    public static var groupedUserDefaults:UserDefaults? = nil
+    public private(set) static var groupedUserDefaults:UserDefaults = UserDefaults.standard
+    
+    public func setUserDefaultsSuite(suite:UserDefaults){
+        NYCBikeModel.groupedUserDefaults = suite
+        getUserLocationFromDefaults()
+    }
     
     internal let networking:NYCBikeNetworking!
     
@@ -23,7 +28,42 @@ public class NYCBikeModel : NSObject{
     
     public var delegate:NYCBikeUIDelegate?
     
-    internal var previouslyReportedUserLocation:CLLocation?
+    internal var previouslyReportedUserLocation:CLLocation? {
+        didSet{
+            if let gotUserLocation = self.previouslyReportedUserLocation {
+                
+                //check the updated location isnt jsut the same location
+                if let oldvalue = oldValue, let currentValue = self.previouslyReportedUserLocation{
+                   
+                    if(oldvalue.distance(from: currentValue) < 2.0){
+                        return
+                    }
+                    
+                }
+                
+                //Save backgrounded location to userdefaults for use later
+                let lat = gotUserLocation.coordinate.latitude
+                let lng = gotUserLocation.coordinate.longitude
+                let dict = NSDictionary(dictionary: ["lat":lat,"lng":lng])
+                NYCBikeModel.groupedUserDefaults.set(dict, forKey: "lastLocation")
+            }
+        }
+    }
+    
+    private func getUserLocationFromDefaults(){
+    
+        if let dictionary = NYCBikeModel.groupedUserDefaults.dictionary(forKey: "lastLocation"){
+            
+            let lat = dictionary["lat"] as! Double
+            let lng = dictionary["lng"] as! Double
+            
+            let location = CLLocation(latitude: lat, longitude: lng)
+            
+            previouslyReportedUserLocation = location
+            
+        }
+    
+    }
     
     public override init() {
         networking = NYCBikeNetworking()
@@ -46,7 +86,6 @@ public class NYCBikeModel : NSObject{
                 }
                 distanceManager = NYCBikeStationDistanceManager(stationLocations: locations)
                 distanceManager?.delegate = self
-                updateLocation(userLocation: nil)
             } else {
                 print("station data updated")
             }
@@ -58,109 +97,6 @@ public class NYCBikeModel : NSObject{
         if(stationData==nil){
             networking.getNYCBikeAPIData(task: .info)
         }
-    }
-    
-    public func refreshFavourites(_ callback:((BikeNetworkingError?)->Void)? = nil) {
-        
-        guard let stationData = self.stationData else {
-            
-            if let callback = callback{
-                callback(.failed)
-            }
-            
-            return
-        }
-        
-        var matches = [NYCBikeStationInfo]()
-        
-        let savedFavourites = NYCBikeModel.groupedUserDefaults!.array(forKey: "favourites") as? [String] ?? []
-        
-        for id in savedFavourites{
-            
-            if let stationHit = stationData.first(where: { (info) -> Bool in
-                info.station_id == id }) {
-                matches.append(stationHit)
-                images.removeValue(forKey: id)
-            }
-            
-        }
-        
-        //order by saved favourites
-        self.favourites = matches
-        
-        guard let callback = callback else {
-            DispatchQueue.main.async {
-                self.delegate?.updated()
-            }
-            return
-        }
-        
-        callback(nil)
-        
-    }
-    
-    public func toggleFavouriteForId(id:String)->Bool{
-        
-        guard let groupDefaults = NYCBikeModel.groupedUserDefaults else {
-            fatalError()
-        }
-        
-        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
-        var newFavourites = favourites
-        var add = false
-        if(favourites.contains(id)){
-            //we are removing favourite
-            for (index,fav) in favourites.enumerated().reversed(){
-                if fav == id{
-                    newFavourites.remove(at: index)
-                }
-            }
-            
-        } else {
-            //we are adding a favourite
-            newFavourites.append(id)
-            add = true
-        }
-        
-        
-        groupDefaults.set(newFavourites, forKey: "favourites")
-        groupDefaults.synchronize()
-        
-        refreshFavourites { (error) in
-            print("success?")
-        }
-        
-        return add
-        
-    }
-    
-    public func updateFavouriteToRow(id:String,newRowIndex:Int)->Bool{
-        
-        guard let groupDefaults = NYCBikeModel.groupedUserDefaults else {
-            fatalError()
-        }
-        
-        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
-        var newFavourites = favourites
-        guard let index = newFavourites.firstIndex(of: id) else {
-            return false
-        }
-        
-        newFavourites.remove(at: index)
-        
-        newFavourites.insert(id, at: newRowIndex)
-        
-        groupDefaults.set(newFavourites, forKey: "favourites")
-        groupDefaults.synchronize()
-        
-        print(favourites, id)
-        print(newFavourites)
-        
-        refreshFavourites { (error) in
-            print("success?")
-        }
-        
-        return true
     }
     
     public func refresh(){
@@ -180,7 +116,7 @@ public class NYCBikeModel : NSObject{
         }
         
         //updated succeeded... now what?
-        delegate?.updated()
+        delegate?.uiUpdatesAreReady()
         
     }
     

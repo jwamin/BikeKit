@@ -7,6 +7,9 @@ import BikeKitUI
 
 class MainTableViewController : UITableViewController {
     
+    var prefetchData:[String]?
+    
+    
     let model = AppDelegate.mainBikeModel
     let mapNotification = Notification(name: Notification.Name.init(rawValue: Constants.identifiers.mapNotification))
     
@@ -43,6 +46,7 @@ class MainTableViewController : UITableViewController {
         tableView.refreshControl = refreshed
         tableView.estimatedRowHeight = 85.0
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.prefetchDataSource = self
         
         //Reordering of table view
         self.editButtonItem.action = #selector(beginEditing)
@@ -135,6 +139,8 @@ class MainTableViewController : UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
+    //MARK: TableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -233,8 +239,15 @@ extension MainTableViewController : NYCBikeUIDelegate {
         }
         
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            //fix refresh flicker? (caused by reloadData + endRefreshing)
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(1.0)
+            CATransaction.setCompletionBlock({
+                self.tableView.reloadData()
+            })
             self.refreshed.endRefreshing()
+            CATransaction.commit()
+
         }
         
     }
@@ -333,5 +346,25 @@ extension MainTableViewController : NYCBikeUIDelegate {
         
     }
 
+    
+}
+
+
+extension MainTableViewController : UITableViewDataSourcePrefetching{
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        //test
+        let defaults = model.userDefaults
+        let favouritesArray = defaults.array(forKey: NYCBikeConstants.favouritesUserDefaultsKey) as? [String] ?? []
+        
+        for value in favouritesArray{
+            prefetchData?.append(value)
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        
+    }
     
 }

@@ -1,6 +1,7 @@
 import UIKit
 import BikeKit
 import BikeKitUI
+import MapKit
 
 protocol FavouritesUpdatesDelegate {
     func added()
@@ -28,7 +29,7 @@ extension MainTableViewController : UISearchControllerDelegate, FavouritesUpdate
         
         
         let startCount = tableView.numberOfRows(inSection: 0)
-
+        
         let indexPaths = updates.enumerated().map { (index,_) in
             return IndexPath(row: index+startCount, section: 0)
         }
@@ -50,7 +51,7 @@ extension MainTableViewController : UISearchResultsUpdating{
     
     func updateSearchResults(for searchController: UISearchController) {
         
-       
+        
         
         guard let stationData = model.stationData,  let resultsController = (searchController.searchResultsController as? SearchTableViewController) else {
             return
@@ -63,7 +64,7 @@ extension MainTableViewController : UISearchResultsUpdating{
             return
         }
         
-       
+        
         
         let filtered = model.stationData!.filter {
             $0.name.lowercased().contains(searchString)
@@ -82,6 +83,8 @@ class SearchTableViewController : UITableViewController {
     private var favourites = [String]()
     public var delegate:FavouritesUpdatesDelegate?
     
+    var screenshotters = [String:MKMapSnapshotter]()
+    
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){
         stationInfoSubset = newSet
         tableView.reloadData()
@@ -90,6 +93,7 @@ class SearchTableViewController : UITableViewController {
     override func viewDidLoad() {
         tableView.register(BikeKitViewCell.self, forCellReuseIdentifier: Constants.identifiers.basicCellIdentifier)
         tableView.dataSource = self
+        tableView.prefetchDataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -108,6 +112,10 @@ class SearchTableViewController : UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let model = AppDelegate.mainBikeModel
+        
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.basicCellIdentifier, for: indexPath) as! BikeKitViewCell
         let data = stationInfoSubset[indexPath.row]
         cell.textLabel!.text = data.name
@@ -116,7 +124,11 @@ class SearchTableViewController : UITableViewController {
             cell.accessoryType = .checkmark
         }
         
-        cell.imageView?.image = UIImage(named: Constants.identifiers.bikeImageName)
+        let image:UIImage? = {
+            return model.images[data.external_id]
+        }()
+        
+        cell.imageView?.image = image ?? UIImage(named: Constants.identifiers.bikeImageName)
         cell.imageView?.bounds.size = Locator.squareSize
         cell.detailTextLabel?.text = "\(data.capacity) docks in total."
         
@@ -124,46 +136,37 @@ class SearchTableViewController : UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cell = cell as! BikeKitViewCell
-        
-        //load map image
-        
-        let data = stationInfoSubset[indexPath.row]
-        let model = AppDelegate.mainBikeModel
-        if(model.images[data.external_id] == nil){
-            
-            cell.screenshotter = Locator.snapshotterForLocation(size: Locator.squareSize, location: model.locations[data.external_id]!) { [weak cell] (img) -> Void in
-                
-                model.images[data.external_id] = img
-                
-                if let cell = cell {
-                    
-                    cell.imageView?.image = img
-                    
-                    cell.setNeedsLayout()
-                    cell.layoutIfNeeded()
-                }
-                
-            }
-            
-        } else {
-            cell.imageView?.image = model.images[data.external_id]
-            
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-          
-        }
-        
-        
+        override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            let cell = cell as! BikeKitViewCell
     
-        
-    }
+            //load map image
+            let model = AppDelegate.mainBikeModel
+            let data = stationInfoSubset[indexPath.row]
+            let imagePresent = model.images[data.external_id]
+            
+            if(imagePresent == nil){
+    
+                if(screenshotters[data.external_id] == nil){
+                    startScreenShotterForIndexPath(indexPath: indexPath)
+                }
+                return
+    
+            } else {
+                
+                cell.imageView?.image = imagePresent
+                cell.setNeedsLayout()
+                cell.layoutIfNeeded()
+    
+            }
+    
+    
+        }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cancelScreenshotterForIndexPath(path: indexPath)
         cell.prepareForReuse()
     }
- 
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -183,5 +186,83 @@ class SearchTableViewController : UITableViewController {
         
     }
     
+    
+}
+
+
+
+extension SearchTableViewController : UITableViewDataSourcePrefetching {
+    
+    func getData(for indexPath:IndexPath)->NYCBikeStationInfo?{
+        if(stationInfoSubset.indices.contains(indexPath.row)){
+            let data = stationInfoSubset[indexPath.row]
+            return data
+        }
+        return nil
+    }
+    
+    func startScreenShotterForIndexPath(indexPath:IndexPath){
+        let model = AppDelegate.mainBikeModel
+        if let data = getData(for: indexPath){
+            
+            if(model.images[data.external_id] != nil){
+                print("skipping screenshotter")
+                return
+            }
+            
+            let locator = Locator.snapshotterForLocation(size: Locator.squareSize, location: model.locations[data.external_id]!) {  (img) -> Void in
+                
+                model.images[data.external_id] = img
+                
+                if let cell = self.tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
+                    
+                    cell.imageView?.image = img
+                    
+                    cell.setNeedsLayout()
+                    cell.layoutIfNeeded()
+                    
+                }
+                
+            }
+            
+            screenshotters[data.external_id] = locator
+        }
+    }
+    
+    func cancelScreenshotterForIndexPath(path:IndexPath){
+        if let data = getData(for: path){
+            
+            if let locator = screenshotters[data.external_id]{
+                locator.cancel()
+                screenshotters.removeValue(forKey: data.external_id)
+            }
+            
+        }
+    }
+    
+    //do image prefecthing here
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        
+        print("prefetching for \(indexPaths)")
+        
+        
+        for path in indexPaths{
+
+            startScreenShotterForIndexPath(indexPath: path)
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        
+        print("cancelling for \(indexPaths)")
+        
+        for path in indexPaths{
+            
+            cancelScreenshotterForIndexPath(path: path)
+            
+        }
+        
+    }
     
 }

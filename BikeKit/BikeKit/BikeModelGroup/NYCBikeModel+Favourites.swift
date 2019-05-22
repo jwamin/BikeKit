@@ -55,7 +55,7 @@ extension NYCBikeModel {
         
         let groupDefaults = NYCBikeModel.groupedUserDefaults
         
-        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
+        let favourites:[String] = groupDefaults.array(forKey: NYCBikeConstants.favouritesUserDefaultsKey) as? [String] ?? []
         var newFavourites = favourites
         var add = false
         
@@ -74,7 +74,7 @@ extension NYCBikeModel {
         }
         
         
-        groupDefaults.set(newFavourites, forKey: "favourites")
+        groupDefaults.set(newFavourites, forKey: NYCBikeConstants.favouritesUserDefaultsKey)
         groupDefaults.synchronize()
         
         refreshFavourites { (error) in
@@ -89,7 +89,7 @@ extension NYCBikeModel {
         
         let groupDefaults = NYCBikeModel.groupedUserDefaults
         
-        let favourites:[String] = groupDefaults.array(forKey: "favourites") as? [String] ?? []
+        let favourites:[String] = groupDefaults.array(forKey: NYCBikeConstants.favouritesUserDefaultsKey) as? [String] ?? []
         var newFavourites = favourites
         guard let index = newFavourites.firstIndex(of: id) else {
             return false
@@ -99,7 +99,7 @@ extension NYCBikeModel {
         newFavourites.remove(at: index)
         newFavourites.insert(id, at: newRowIndex)
         
-        groupDefaults.set(newFavourites, forKey: "favourites")
+        groupDefaults.set(newFavourites, forKey: NYCBikeConstants.favouritesUserDefaultsKey)
         groupDefaults.synchronize()
         
         print(favourites, id)

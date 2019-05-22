@@ -12,6 +12,10 @@ public class NYCBikeModel : NSObject{
     
     public private(set) static var groupedUserDefaults:UserDefaults = UserDefaults.standard
     
+    public var userDefaults:UserDefaults{
+        return NYCBikeModel.groupedUserDefaults
+    }
+    
     public func setUserDefaultsSuite(suite:UserDefaults){
         NYCBikeModel.groupedUserDefaults = suite
         getUserLocationFromDefaults()

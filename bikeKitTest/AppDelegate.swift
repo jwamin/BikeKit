@@ -10,6 +10,8 @@ import UIKit
 import BikeKit
 import CoreLocation
 
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
@@ -18,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     static var locationManager = CLLocationManager()
     private var sharedUserDefaults:UserDefaults!
     private var location:CLLocationManager?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
         [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -37,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             location = locationManager
             locationManager.startUpdatingLocation()
             return true
+        } else {
+            print("not in background launch")
         }
         
         startAppropriateLocationManager(locationManager: locationManager, authorizationStatus: authorizationStatus)
@@ -125,19 +129,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func startAppropriateLocationManager(locationManager:CLLocationManager,authorizationStatus:CLAuthorizationStatus){
-        switch authorizationStatus {
-        case .authorizedAlways:
-            locationManager.pausesLocationUpdatesAutomatically = true
-            locationManager.startMonitoringSignificantLocationChanges()
-            location = locationManager
-        case .authorizedWhenInUse:
+//        switch authorizationStatus {
+//        case .authorizedAlways:
+//            locationManager.pausesLocationUpdatesAutomatically = true
+//            locationManager.startMonitoringSignificantLocationChanges()
+//            location = locationManager
+//        case .authorizedWhenInUse:
+            print("starting location")
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.activityType = .otherNavigation
             locationManager.startUpdatingLocation()
             location = locationManager
-        default:
-            break
-        }
+//        default:
+//            break
+//        }
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

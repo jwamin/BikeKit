@@ -221,7 +221,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             
             let (str,status) = data.smartCapacityAssesmentString(type: query)
             let label = self.distanceLabel
-            self.distanceLabel.text =  "\(data.capacity) docks - \(distanceComputed) \(str)"
+            self.distanceLabel.text =  "\(data.capacity) docks \(distanceComputed)\n\(str)"
             
             switch(status){
                 case .empty:

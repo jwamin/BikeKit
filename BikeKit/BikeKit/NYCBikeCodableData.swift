@@ -8,17 +8,6 @@
 
 import Foundation
 
-public enum BikeNetworkingError : Error{
-    case throttled
-    case newData
-    case failed
-}
-
-public enum NYCBikeRequest{
-    case status
-    case info
-}
-
 struct NYCStationInfoWrapper : Codable {
     let last_updated:Date
     let data:[String:[NYCBikeStationInfo]]

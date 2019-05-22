@@ -10,14 +10,7 @@ import CoreLocation
 
 class NYCBikeNetworking : NSObject {
     
-
-    
-    fileprivate(set) var refreshThrottle:Date = Date() + TimeInterval(-65) {
-        didSet{
-            print("changed from \(oldValue) to \(refreshThrottle)")
-            print("changed time")
-        }
-    }
+    fileprivate(set) var refreshThrottle:Date = Date() + TimeInterval(-65) 
 
     var delegate:NYCBikeNetworkingDelegate?
     
@@ -44,6 +37,7 @@ class NYCBikeNetworking : NSObject {
         
         let stationInfoTask:URLSessionDataTask = URLSession.shared.dataTask(with: url, completionHandler:{
             (data,request,error) in
+            
             if (error != nil){
                 self.delegate?.error(description: error!.localizedDescription)
             }

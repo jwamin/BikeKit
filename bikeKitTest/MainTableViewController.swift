@@ -8,6 +8,8 @@ import BikeKitUI
 class MainTableViewController : UITableViewController {
     
     let model = AppDelegate.mainBikeModel
+    let mapNotification = Notification(name: Notification.Name.init(rawValue: Constants.identifiers.mapNotification))
+    
     var refreshed:UIRefreshControl!
     
     let locator = Locator()
@@ -22,6 +24,8 @@ class MainTableViewController : UITableViewController {
     
     //let editButtonItem:UIBarButtonItem!
     var doneButtonItem:UIBarButtonItem!
+    
+    //MARK: Lifecycle
     
     override func viewDidLoad() {
         
@@ -70,7 +74,7 @@ class MainTableViewController : UITableViewController {
         
     }
     
-    //UI Actions
+    //MARK: UI Actions
     
     @objc func refresh(){
         refreshed.beginRefreshing()
@@ -108,7 +112,7 @@ class MainTableViewController : UITableViewController {
         
     }
     
-    //Table View Datasource and delegate methods
+    //MARK: Table View Datasource and delegate methods
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -219,16 +223,8 @@ class MainTableViewController : UITableViewController {
 }
 
 extension MainTableViewController : NYCBikeUIDelegate {
-    func error(str: String?) {
-        let errorView = UIAlertController(title: "Network Error", message: str, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Retry", style: .default) { (action) in
-            self.model.restartAfterError()
-        }
-        errorView.addAction(action)
-        self.present(errorView, animated: true, completion: nil)
-        
-    }
     
+    //Delegate updates for Bike Model Data updates
     
     func uiUpdatesAreReady() {
         
@@ -243,6 +239,19 @@ extension MainTableViewController : NYCBikeUIDelegate {
         
     }
     
+    //Networking failed, so show retry dialog
+    func error(str: String?) {
+        
+        let errorView = UIAlertController(title: "Network Error", message: str, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Retry", style: .default) { (action) in
+            self.model.restartAfterError()
+        }
+        errorView.addAction(action)
+        self.present(errorView, animated: true, completion: nil)
+        
+    }
+    
+    
     func inCooldown(str:String?) {
         refreshed.endRefreshing()
         if let message = str {
@@ -255,17 +264,38 @@ extension MainTableViewController : NYCBikeUIDelegate {
         print("status")
         model.refreshFavourites()
         model.updateLocation(userLocation: nil)
+        
+        NotificationCenter.default.post(mapNotification)
+        
     }
     
-    func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){
+   
+    
+    //Notification that nearest sites are available
+    func distancesUpdated(nearestStations: [Nearest]) {
         
-        guard let cell = self.tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell else {
+        if(nearestStations.count == 0){
             return
         }
-        cell.updateDistance(data: data, distanceString: distanceString,query: dockStatus)
+        
+        guard let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
+            return
+        }
+        
+        print("updating distances for \(visibleCellIndexPaths.count) rows")
+        
+        DispatchQueue.global().async {
+            
+            for visible in visibleCellIndexPaths{
+                self.updateDistanceForCell(at: visible)
+            }
+            
+        }
+        
     }
     
-    
+     //MARK: Async tablecell updates
+    // for each visible index path, check if it matches a station in the model.favourites
     func updateDistanceForCell(at indexPath:IndexPath){
         
         guard let favourites = self.model.favourites, model.nearestStations.count > 0 else {
@@ -279,41 +309,29 @@ extension MainTableViewController : NYCBikeUIDelegate {
             nearest.externalID == favourite.external_id
         }) else {
             DispatchQueue.main.async {
+                //if it doesnt, reset the info label to basic info
                 self.updateCellWithDistance(indexPath: indexPath, data: favourite, distanceString: nil)
             }
             return
         }
         
         DispatchQueue.main.async {
+            //if we get a match, update the cell with the processed info
             self.updateCellWithDistance(indexPath: indexPath, data: favourite, distanceString: matchedStation.distanceString)
         }
         
     }
     
-    
-    //fix this, it's called too many times
-    func distancesUpdated(nearestStations: [Nearest]) {
+    //call method on cell to update itself, if it is present
+    func updateCellWithDistance(indexPath:IndexPath,data:NYCBikeStationInfo,distanceString:String?){
         
-        if(nearestStations.count == 0){
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? DetailBikeKitViewCell else {
             return
         }
         
-        guard let visibleCellIndexPaths = self.tableView.indexPathsForVisibleRows else {
-            return
-        }
+        cell.updateDistance(data: data, distanceString: distanceString,query: dockStatus)
         
-        print("updating distances for \(visibleCellIndexPaths.count)")
-        DispatchQueue.global().async {
-            
-                for visible in visibleCellIndexPaths{
-                    
-                    
-                    self.updateDistanceForCell(at: visible)
-                    
-                    
-                }
-            
-        }
     }
+
     
 }

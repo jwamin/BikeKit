@@ -16,6 +16,7 @@ struct Constants {
         static let basicCellIdentifier:String = "cell"
         static let searchRestoration:String = "searchTable"
         static let bikeImageName = "Bike"
+        static let mapNotification = "statusReady"
     }
     
     struct strings{

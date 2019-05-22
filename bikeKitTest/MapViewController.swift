@@ -17,6 +17,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     let location = AppDelegate.locationManager
     var map:MKMapView!
 
+    private var initialPinsSet:Bool = false
+    public var pendingUpdates:Bool = false
+    
     var zoomToLocation = false
     
     private var userInitialZoomSet:Bool = false
@@ -31,25 +34,27 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         view.addSubview(map)
         
         map.delegate = self
-        map.register(MKPointAnnotation.self, forAnnotationViewWithReuseIdentifier: "id")
+        //map.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Annotation")
         map.showsUserLocation = true
+        
+        //liwten for updates on the other viewController
+        let notificationName = Notification.Name(rawValue: Constants.identifiers.mapNotification)
+        NotificationCenter.default.addObserver(self, selector: #selector(setUpdatesReady), name: notificationName, object: nil)
         
         addPins()
         // Do any additional setup after loading the view.
     }
     
+    @objc func setUpdatesReady(){
+        print("setUpdatesready in map")
+        pendingUpdates = true
+    }
+    
     func addPins(){
-
-        //this is basically all wrong, manage a list of annotations and let mapkit delegation handle the drawing
-
-        for (index,pin) in pins.enumerated().reversed(){
-            let point = MKMapPoint(pin.coordinate)
-            if(!map.visibleMapRect.contains(point)){
-                pins.remove(at: index)
-                map.removeAnnotation(pin)
-            }
-        }
         
+        guard model.locations.count > 0 else {
+            return
+        }
         
         for station in model.locations{
             
@@ -64,22 +69,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
             }
             
-            //Skip as often as possible!
-            
-            //if the point is outside of the map rect, skip!
             let point = MKMapPoint(station.value.coordinate)
-            if(!map.visibleMapRect.contains(point)){
-                continue
-            }
-            
-            //if the existing pin coordinate is the same as the loop variable, skip
-            if pins.contains(where: { (pin) -> Bool in
-                MKMapPointEqualToPoint(point, MKMapPoint(pin.coordinate))
-            }){
-                continue
-            }
-            
-            
+
             let annotation = MKPointAnnotation()
             annotation.coordinate = point.coordinate
 
@@ -90,18 +81,47 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
             
             annotation.title = stationObjectForPoint.name
-          
-            
             annotation.subtitle = stationObjectForPoint.statusString()
-            
             
             pins.append(annotation)
            
-            
-            
         }
         
          map.addAnnotations(pins)
+         initialPinsSet = true
+        
+    }
+    
+    func updatePins(){
+        
+        if(pendingUpdates){
+        
+            for pin in pins{
+                
+                //TODO: update pins with new info
+                
+                pin.subtitle = "updated"
+                
+            }
+            pendingUpdates = false
+        }
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation is MKPointAnnotation else { return nil }
+        
+        let identifier = "Annotation"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView!.canShowCallout = true
+        } else {
+            annotationView!.annotation = annotation
+        }
+        
+        return annotationView
         
     }
     
@@ -133,6 +153,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             zoomToUser()
         }
         zoomToLocation = false
+        
+        if(!initialPinsSet){
+            addPins()
+        } else {
+            updatePins()
+        }
+    
     }
     
     
@@ -149,7 +176,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         print("region changed")
-        addPins()
+        //addPins()
     }
     
 

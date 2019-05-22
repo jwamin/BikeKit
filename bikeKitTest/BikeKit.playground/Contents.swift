@@ -18,6 +18,7 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     
     override init() {
         model = NYCBikeModel()
+        model.setUserDefaultsSuite(suite: userDefaults)
         location = CLLocation(latitude: lat, longitude: lng)
         super.init()
         model.delegate = self

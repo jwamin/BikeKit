@@ -11,6 +11,8 @@ import MapKit
 import BikeKit
 import BikeKitUI
 
+let annotationString = "Annotation"
+
 class MapViewController: UIViewController, MKMapViewDelegate {
 
     let model = AppDelegate.mainBikeModel
@@ -24,7 +26,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     private var userInitialZoomSet:Bool = false
     
-    var pins = [MKPointAnnotation]()
+    var pins = [BKPinAnnotation]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +36,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         view.addSubview(map)
         
         map.delegate = self
-        //map.register(MKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Annotation")
+        //map.register(BKPinAnnotationView.self, forAnnotationViewWithReuseIdentifier: annotationString)
         map.showsUserLocation = true
         
         //liwten for updates on the other viewController
@@ -71,7 +73,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
             let point = MKMapPoint(station.value.coordinate)
 
-            let annotation = MKPointAnnotation()
+            let annotation = BKPinAnnotation()
+            
             annotation.coordinate = point.coordinate
 
             
@@ -82,6 +85,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
             annotation.title = stationObjectForPoint.name
             annotation.subtitle = stationObjectForPoint.statusString()
+            annotation.id = stationObjectForPoint.external_id
+            annotation.isFavourite = isFavourite(extID: stationObjectForPoint.external_id)
+            
             
             pins.append(annotation)
            
@@ -92,6 +98,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    //maybe break this out elsewhere!
+    func isFavourite(extID:String)->Bool{
+        
+        if let _ = model.favourites?.first(where: { (info) -> Bool in
+            info.external_id == extID
+        }) {
+            return true
+        }
+        return false
+    }
+    
     func updatePins(){
         
         if(pendingUpdates){
@@ -100,7 +117,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
                 //TODO: update pins with new info
                 
-                pin.subtitle = "updated"
+                guard let data = model.stationData?.first(where: { (info) -> Bool in
+                    info.external_id == pin.id
+                }) else {
+                    continue
+                }
+                
+                pin.subtitle = "updated "+data.statusString()
                 
             }
             pendingUpdates = false
@@ -108,20 +131,39 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print(view)
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is MKPointAnnotation else { return nil }
+        guard let annotation = annotation as? BKPinAnnotation else {
+            return nil
+        }
         
-        let identifier = "Annotation"
+        let identifier = annotationString
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = BKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView!.canShowCallout = true
         } else {
-            annotationView!.annotation = annotation
+            if let pin = annotationView as? BKPinAnnotationView{
+                pin.annotation = annotation
+            }
         }
         
-        return annotationView
+        guard let customPin = annotationView as? BKPinAnnotationView else {
+            return nil
+        }
+        
+        if let favourite = annotation.isFavourite{
+            if(favourite){
+                customPin.pinTintColor = .purple
+            }
+        }
+        
+        
+        return customPin
         
     }
     

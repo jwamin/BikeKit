@@ -17,6 +17,7 @@ struct Constants {
         static let searchRestoration:String = "searchTable"
         static let bikeImageName = "Bike"
         static let mapNotification = "statusReady"
+        static let pin = "pin"
     }
     
     struct strings{

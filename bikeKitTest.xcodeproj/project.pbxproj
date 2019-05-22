@@ -17,6 +17,7 @@
 		5786763A2286F9C600AA0072 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 578676382286F9C600AA0072 /* MainInterface.storyboard */; };
 		5786763E2286F9C600AA0072 /* BikeKitTodayWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		578CDADF2295BDC0006ED6D4 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578CDADE2295BDC0006ED6D4 /* SearchTableViewController.swift */; };
+		57B246382295D11C00141F19 /* BKPinAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B246372295D11C00141F19 /* BKPinAnnotationView.swift */; };
 		57CF8C002290A20200C9D96F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8BFF2290A20200C9D96F /* Constants.swift */; };
 		57CF8C012290A20200C9D96F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8BFF2290A20200C9D96F /* Constants.swift */; };
 		57D67CCF228B085C003166A1 /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
@@ -77,6 +78,7 @@
 		578676442286FEFE00AA0072 /* BikeKitTodayWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BikeKitTodayWidget.entitlements; sourceTree = "<group>"; };
 		578676452286FFC600AA0072 /* BikeKitTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BikeKitTest.entitlements; path = BikeKitTest/BikeKitTest.entitlements; sourceTree = "<group>"; };
 		578CDADE2295BDC0006ED6D4 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		57B246372295D11C00141F19 /* BKPinAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKPinAnnotationView.swift; sourceTree = "<group>"; };
 		57CF8BFF2290A20200C9D96F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		57D67CCE228B085C003166A1 /* BikeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57D67CD1228B085C003166A1 /* BikeKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BikeKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,33 @@
 			path = BikeKitTodayWidget;
 			sourceTree = "<group>";
 		};
+		57B246342295D09600141F19 /* TableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				57FF728C22821544006F63E8 /* MainTableViewController.swift */,
+				57FF72D922836ADF006F63E8 /* TableCollectionSearch.swift */,
+				578CDADE2295BDC0006ED6D4 /* SearchTableViewController.swift */,
+			);
+			path = TableViewController;
+			sourceTree = "<group>";
+		};
+		57B246352295D0B000141F19 /* PresentingViews */ = {
+			isa = PBXGroup;
+			children = (
+				57FF72DB2283848B006F63E8 /* ToastViewController.swift */,
+			);
+			path = PresentingViews;
+			sourceTree = "<group>";
+		};
+		57B246362295D0D700141F19 /* MapViews */ = {
+			isa = PBXGroup;
+			children = (
+				57FF72D222833BD1006F63E8 /* MapViewController.swift */,
+				57B246372295D11C00141F19 /* BKPinAnnotationView.swift */,
+			);
+			path = MapViews;
+			sourceTree = "<group>";
+		};
 		57FF727E22821544006F63E8 = {
 			isa = PBXGroup;
 			children = (
@@ -158,11 +187,9 @@
 			children = (
 				57FF728A22821544006F63E8 /* AppDelegate.swift */,
 				57CF8BFF2290A20200C9D96F /* Constants.swift */,
-				57FF72D222833BD1006F63E8 /* MapViewController.swift */,
-				57FF72DB2283848B006F63E8 /* ToastViewController.swift */,
-				57FF728C22821544006F63E8 /* MainTableViewController.swift */,
-				57FF72D922836ADF006F63E8 /* TableCollectionSearch.swift */,
-				578CDADE2295BDC0006ED6D4 /* SearchTableViewController.swift */,
+				57B246352295D0B000141F19 /* PresentingViews */,
+				57B246342295D09600141F19 /* TableViewController */,
+				57B246362295D0D700141F19 /* MapViews */,
 				57FF72D822835C78006F63E8 /* README.md */,
 				57FF729122821546006F63E8 /* Assets.xcassets */,
 				57FF729322821546006F63E8 /* LaunchScreen.storyboard */,
@@ -313,6 +340,7 @@
 				578CDADF2295BDC0006ED6D4 /* SearchTableViewController.swift in Sources */,
 				57FF72D322833BD1006F63E8 /* MapViewController.swift in Sources */,
 				57FF728B22821544006F63E8 /* AppDelegate.swift in Sources */,
+				57B246382295D11C00141F19 /* BKPinAnnotationView.swift in Sources */,
 				57CF8C002290A20200C9D96F /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -90,11 +90,11 @@ class MainTableViewController : UITableViewController {
         if(!tableView.isEditing){
             tableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem = doneButtonItem
-            
+            tableView.setNeedsDisplay()
         } else {
             tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem = editButtonItem
-            
+            tableView.setNeedsDisplay()
         }
         
     }

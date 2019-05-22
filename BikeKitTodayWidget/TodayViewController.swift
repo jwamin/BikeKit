@@ -41,12 +41,14 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         let safeArea = self.view.safeAreaLayoutGuide
         
         let constraints:[NSLayoutConstraint] = [
-        tableView.leftAnchor.constraint(equalToSystemSpacingAfter: safeArea.leftAnchor, multiplier: 1.0),
-        tableView.topAnchor.constraint(equalToSystemSpacingBelow: safeArea.topAnchor, multiplier: 1.0),
-        self.view.trailingAnchor.constraint(equalToSystemSpacingAfter: tableView!.trailingAnchor, multiplier: 1.0),
-        self.view.bottomAnchor.constraint(equalToSystemSpacingBelow: tableView!.bottomAnchor, multiplier: 1.0)
+        tableView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+        tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+        safeArea.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+        safeArea.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+        
+        extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         
         bikeShareModel.delegate = self
         label = self.view.subviews[0] as? UILabel
@@ -54,14 +56,35 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        print("will transition")
+        coordinator.animate(alongsideTransition: { (context) in
+            
+            
+            
+        }, completion: nil)
+        
+    }
+    
 //NCWidgetProviding
     
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
         print("admchange", activeDisplayMode.rawValue)
-        let expanded = activeDisplayMode == .expanded
-        var maxTableSize = tableView.contentSize
-        maxTableSize.height += 20
-        preferredContentSize = expanded ? maxTableSize : maxSize
+        
+        var size:CGSize = .zero
+        switch activeDisplayMode {
+        case .compact:
+            size = maxSize
+        case .expanded:
+            let maxTableSize = tableView.systemLayoutSizeFitting(tableView.contentSize)
+            size = CGSize(width: .zero, height: maxTableSize.height)
+        default:
+            break
+        }
+        let dtime:DispatchTime = DispatchTime.now() + 0.1
+        DispatchQueue.main.asyncAfter(deadline: dtime) {
+            self.preferredContentSize = size
+        }
     }
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
@@ -81,6 +104,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
                     break
                 }
             }
+            
+            self.widgetActiveDisplayModeDidChange(.compact, withMaximumSize: .zero)
             
             self.uiUpdatesAreReady()
             
@@ -115,6 +140,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
     func statusUpdatesAreReady() {
         print("status refresh notified")
         DispatchQueue.main.async {
+            
             self.tableView.isHidden = false
             self.label.removeFromSuperview()
             self.tableView.reloadData()

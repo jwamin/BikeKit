@@ -11,12 +11,12 @@ import BikeKit
 import BikeKitUI
 
 extension TodayViewController : UITableViewDelegate, UITableViewDataSource{
+    
+    //Limit table view max rows tp top three favorites
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let tableRows = bikeShareModel.favourites?.count {
-            return (tableRows>maxRows) ? maxRows : tableRows // limit to 4
-        }
-        return 0
+        return numberOfRowsToDisplay()
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.detailCellIdentifier, for: indexPath) as! DetailBikeKitViewCell
@@ -55,7 +55,23 @@ extension TodayViewController : UITableViewDelegate, UITableViewDataSource{
         } else {
             
             cell.mapView.image = bikeShareModel.images[data.external_id]
+            
         }
         
     }
+    
+    func numberOfRowsToDisplay()->Int{
+        if let tableRows = bikeShareModel.favourites?.count {
+        
+            switch extensionContext!.widgetActiveDisplayMode {
+        case .expanded:
+            return (tableRows>maxRows) ? maxRows : tableRows // limit to 4
+        default:
+            return 1
+        }
+        
+    }
+        return 0
+}
+    
 }

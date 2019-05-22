@@ -15,6 +15,8 @@ public class Locator : NSObject{
     public static let squareSize:CGSize = CGSize(width: 60, height: 60)
     public static let smallSquareSize:CGSize = CGSize(width: 50, height: 50)
     
+    var indexPath:IndexPath?
+    
     //return screenshotter then call stop in prepare for reuse
     public static func snapshotterForLocation(size:CGSize?,location:CLLocation,_ data:NYCBikeStationInfo? = nil,callback:(@escaping (UIImage)->Void)) -> MKMapSnapshotter{
         

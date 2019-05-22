@@ -3,79 +3,6 @@ import BikeKit
 import BikeKitUI
 import MapKit
 
-protocol FavouritesUpdatesDelegate {
-    func added()
-    func removed()
-}
-
-extension MainTableViewController : UISearchControllerDelegate, FavouritesUpdatesDelegate{
-    
-    func added() {
-        let ip = IndexPath(row: updates.count, section: 0)
-        updates.append(ip)
-    }
-    
-    func removed() {
-        if(updates.count>0){
-            updates.remove(at: updates.endIndex-1)
-        }
-    }
-    
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        
-        // ok so here, work out the difference between arrays and insert the new favourites animated
-        print(updates)
-        
-        
-        let startCount = tableView.numberOfRows(inSection: 0)
-        
-        let indexPaths = updates.enumerated().map { (index,_) in
-            return IndexPath(row: index+startCount, section: 0)
-        }
-        updates.removeAll()
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        
-        //self.refresh()
-        
-    }
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
-    }
-    
-}
-
-extension MainTableViewController : UISearchResultsUpdating{
-    
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        
-        
-        
-        guard let stationData = model.stationData,  let resultsController = (searchController.searchResultsController as? SearchTableViewController) else {
-            return
-        }
-        
-        let searchString = searchController.searchBar.text!.lowercased()
-        
-        if searchString.count == 0{
-            resultsController.setStationInfoSubset(newSet: stationData)
-            return
-        }
-        
-        
-        
-        let filtered = model.stationData!.filter {
-            $0.name.lowercased().contains(searchString)
-        }
-        
-        resultsController.setStationInfoSubset(newSet: filtered)
-        
-        
-    }
-    
-}
 
 class SearchTableViewController : UITableViewController {
     
@@ -83,7 +10,18 @@ class SearchTableViewController : UITableViewController {
     private var favourites = [String]()
     public var delegate:FavouritesUpdatesDelegate?
     
-    var screenshotters = [String:MKMapSnapshotter]()
+    var screenshotters = [IndexPath:MKMapSnapshotter](){
+        didSet{
+            if (screenshotters.count==0){
+                print("no screenshotters left on stack!")
+            } else if(screenshotters.count<3){
+                screenshotters.forEach{
+                    print("\($0.value.description) \($0.key.description)")
+                }
+                print("\n")
+            } 
+        }
+    }
     
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){
         stationInfoSubset = newSet
@@ -114,8 +52,6 @@ class SearchTableViewController : UITableViewController {
         
         let model = AppDelegate.mainBikeModel
         
-        
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifiers.basicCellIdentifier, for: indexPath) as! BikeKitViewCell
         let data = stationInfoSubset[indexPath.row]
         cell.textLabel!.text = data.name
@@ -129,7 +65,6 @@ class SearchTableViewController : UITableViewController {
         }()
         
         cell.imageView?.image = image ?? UIImage(named: Constants.identifiers.bikeImageName)
-//        cell.imageView?.bounds.size = Locator.squareSize
         cell.detailTextLabel?.text = "\(data.capacity) docks in total."
         
         return cell
@@ -146,7 +81,7 @@ class SearchTableViewController : UITableViewController {
             
             if(imagePresent == nil){
     
-                if(screenshotters[data.external_id] == nil){
+                if(screenshotters[indexPath] == nil){
                     print("starting screenshotter for indexpath \(indexPath)")
                     startScreenShotterForIndexPath(indexPath: indexPath)
                 } else {
@@ -216,6 +151,8 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
                 
                 model.images[data.external_id] = img
                 
+                self.cancelScreenshotterForIndexPath(path: indexPath)
+                
                 if let cell = self.tableView.cellForRow(at: indexPath) as? BikeKitViewCell {
                     
                     cell.imageView?.image = img
@@ -227,16 +164,16 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
                 
             }
             
-            screenshotters[data.external_id] = locator
+            screenshotters[indexPath] = locator
         }
     }
     
     func cancelScreenshotterForIndexPath(path:IndexPath){
         if let data = getData(for: path){
             
-            if let locator = screenshotters[data.external_id]{
+            if let locator = screenshotters[path]{
                 locator.cancel()
-                screenshotters.removeValue(forKey: data.external_id)
+                screenshotters.removeValue(forKey: path)
             }
             
         }

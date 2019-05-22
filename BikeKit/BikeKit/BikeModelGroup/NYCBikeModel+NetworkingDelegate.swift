@@ -27,7 +27,7 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
             self.stationData = stations
             networking.getNYCBikeAPIData(task: .status)
         } catch {
-            print(error)
+            delegate?.error(str: error.localizedDescription)
         }
         
     }
@@ -39,8 +39,7 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
             let stationInfoData = try JSONDecoder().decode(NYCStationStatusWrapper.self, from: statusData)
             stationStatusData = stationInfoData.data["stations"]!
         } catch {
-            print(error)
-            fatalError(error.localizedDescription)
+            delegate?.error(str: error.localizedDescription)
         }
         
         guard let stationData = stationStatusData else {

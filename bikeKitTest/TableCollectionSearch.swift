@@ -129,7 +129,7 @@ class SearchTableViewController : UITableViewController {
         }()
         
         cell.imageView?.image = image ?? UIImage(named: Constants.identifiers.bikeImageName)
-        cell.imageView?.bounds.size = Locator.squareSize
+//        cell.imageView?.bounds.size = Locator.squareSize
         cell.detailTextLabel?.text = "\(data.capacity) docks in total."
         
         return cell
@@ -147,7 +147,10 @@ class SearchTableViewController : UITableViewController {
             if(imagePresent == nil){
     
                 if(screenshotters[data.external_id] == nil){
+                    print("starting screenshotter for indexpath \(indexPath)")
                     startScreenShotterForIndexPath(indexPath: indexPath)
+                } else {
+                    print("there is already a screenshotter for \(indexPath)")
                 }
                 return
     
@@ -176,7 +179,6 @@ class SearchTableViewController : UITableViewController {
         }
         
         let id = stationInfoSubset[indexPath.row].station_id
-        
         let update = AppDelegate.mainBikeModel.toggleFavouriteForId(id: id)
         
         cell.accessoryType = (update) ? .checkmark : .none
@@ -206,7 +208,7 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
         if let data = getData(for: indexPath){
             
             if(model.images[data.external_id] != nil){
-                print("skipping screenshotter")
+                print("skipping screenshotter for \(indexPath)")
                 return
             }
             
@@ -245,22 +247,18 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
         
         print("prefetching for \(indexPaths)")
         
-        
-        for path in indexPaths{
-
-            startScreenShotterForIndexPath(indexPath: path)
-            
+        indexPaths.forEach{
+            startScreenShotterForIndexPath(indexPath: $0)
         }
+        
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         
         print("cancelling for \(indexPaths)")
         
-        for path in indexPaths{
-            
-            cancelScreenshotterForIndexPath(path: path)
-            
+        indexPaths.forEach{
+            cancelScreenshotterForIndexPath(path: $0)
         }
         
     }

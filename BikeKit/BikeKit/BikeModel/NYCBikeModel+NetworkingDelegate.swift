@@ -64,9 +64,9 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         }
         
         self.stationData = updatedStations
-        print("status set")
-//        refreshFavourites()
+
         delegate?.statusUpdatesAreReady()
+        
     }
 
 }

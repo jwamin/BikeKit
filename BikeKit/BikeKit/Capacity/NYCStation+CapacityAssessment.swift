@@ -10,13 +10,13 @@ import Foundation
 
 extension NYCBikeStationInfo {
     
-    internal func smartCapacityAssessment(type:NYCBikeStationCapacityQuery)->Float{
+    internal func smartCapacityAssessmentFloat(type:NYCBikeStationCapacityQuery,meanSpaces:Int? = nil)->Float{
         
         guard let status = self.status else {
             return 0
         }
         
-        let capacity = Float(self.capacity - self.status!.num_bikes_disabled);
+        let capacity = (meanSpaces != nil) ? Float(meanSpaces!) : Float(self.capacity - self.status!.num_bikes_disabled);
         
         switch type {
             case .bikes:
@@ -28,9 +28,14 @@ extension NYCBikeStationInfo {
     }
     
     
-    public func smartCapacityAssesmentString(type:NYCBikeStationCapacityQuery)->(String,NYCStationCapacityAssessment){
+    public func smartCapacityAssesment(type:NYCBikeStationCapacityQuery,set:[Nearest]? = nil)->(String,NYCStationCapacityAssessment){
         
-        let indicativeFloat = smartCapacityAssessment(type: type)
+        var meanValue:Int?
+        if let set = set{
+            meanValue = average(set: set)
+        }
+        
+        let indicativeFloat = smartCapacityAssessmentFloat(type: type, meanSpaces: meanValue)
     
         return NYCStationCapacityAssessment.calculateResponse(type: type, indicativeFloat: indicativeFloat)
         

@@ -28,8 +28,6 @@
 	<array>
 		<string>MKDirectionsModeBike</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Granting always location usage will trigger the &apos;low power&apos; significant change system. Alternatively, we can use up to date information when  you use the app. No location information is shared.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>If you please...</string>
 	<key>UILaunchStoryboardName</key>
@@ -50,10 +48,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
 	</array>
 </dict>
 </plist>

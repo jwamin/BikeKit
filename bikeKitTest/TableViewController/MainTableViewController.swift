@@ -295,8 +295,6 @@ extension MainTableViewController : NYCBikeUIDelegate {
             return
         }
         
-        print("updating distances for \(visibleCellIndexPaths.count) rows")
-        
         DispatchQueue.global().async {
             
             for visible in visibleCellIndexPaths{

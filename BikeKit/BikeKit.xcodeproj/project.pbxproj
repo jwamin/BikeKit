@@ -145,13 +145,29 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
+		57B246392296DE8600141F19 /* Capacity */ = {
+			isa = PBXGroup;
+			children = (
+				57CF8C092293225700C9D96F /* NYCStation+CapacityAssessment.swift */,
+			);
+			path = Capacity;
+			sourceTree = "<group>";
+		};
+		57B2463A2296DEB700141F19 /* Distance */ = {
+			isa = PBXGroup;
+			children = (
+				57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */,
+				57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */,
+			);
+			name = Distance;
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		57CF8C042293036200C9D96F /* BikeModel */ = {
 			isa = PBXGroup;
 			children = (
 				57069F8D228CB43700E714FD /* NYCBikeModel.swift */,
 				5705C1BF22942B3F00861C9C /* NYCBikeModel+Favourites.swift */,
-				57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */,
-				57CF8C092293225700C9D96F /* NYCStation+CapacityAssessment.swift */,
 				57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */,
 			);
 			path = BikeModel;
@@ -218,8 +234,9 @@
 				57B246332295CFA700141F19 /* Constants */,
 				57B246322295CF8A00141F19 /* Structures */,
 				57CF8C042293036200C9D96F /* BikeModel */,
+				57B2463A2296DEB700141F19 /* Distance */,
+				57B246392296DE8600141F19 /* Capacity */,
 				57069F91228CB4F500E714FD /* NYCBikeDelegation.swift */,
-				57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */,
 				57FF72A9228335B5006F63E8 /* BikeKit.h */,
 				57FF72AA228335B5006F63E8 /* Info.plist */,
 			);

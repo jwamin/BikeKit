@@ -26,25 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Override point for customization after application launch.
         
         
+        let authorizationStatus = CLLocationManager.authorizationStatus()
         let locationManager = AppDelegate.locationManager
         locationManager.delegate = self
-        locationManager.allowsBackgroundLocationUpdates = true
-        
-        
-        locationManager.requestAlwaysAuthorization()
-        let authorizationStatus = CLLocationManager.authorizationStatus()
-        
-        if(launchOptions?[UIApplication.LaunchOptionsKey.location] != nil){
-            //we are in a background launch mode
-            location = locationManager
-            locationManager.startUpdatingLocation()
-            return true
-        } else {
-            print("not in background launch")
-        }
-        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.stopMonitoringSignificantLocationChanges()
         startAppropriateLocationManager(locationManager: locationManager, authorizationStatus: authorizationStatus)
-        
         
         //setup user defaults
         sharedUserDefaults = UserDefaults.init(suiteName: Constants.identifiers.sharedUserDefaultsSuite)
@@ -91,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         print("resigning active")
+        location?.stopUpdatingLocation()
 
     }
 
@@ -99,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         print("backgrounded")
 
-        location?.startMonitoringSignificantLocationChanges()
+        location?.stopUpdatingLocation()
         
     }
 
@@ -112,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
 
-        location?.stopUpdatingLocation()
+        location?.startUpdatingLocation()
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -135,11 +123,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //            locationManager.startMonitoringSignificantLocationChanges()
 //            location = locationManager
 //        case .authorizedWhenInUse:
+        if(authorizationStatus == .authorizedWhenInUse){
             print("starting location")
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.activityType = .otherNavigation
+            locationManager.pausesLocationUpdatesAutomatically = true
+            //locationManager.allowDeferredLocationUpdates(untilTraveled: CLLocationDistance(), timeout: <#T##TimeInterval#>)
             locationManager.startUpdatingLocation()
             location = locationManager
+        }
 //        default:
 //            break
 //        }
@@ -151,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             print("always")
         case .authorizedWhenInUse:
             print("when in use")
+        case .denied:
+            print("noooooo")
         default:
             print("something else \(status.rawValue)")
         }
@@ -158,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        print("significant location changed")
+        print("location update changed")
         
         guard let mostRecentLocation = locations.last else {
             return

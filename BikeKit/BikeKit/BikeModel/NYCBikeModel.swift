@@ -63,6 +63,7 @@ public class NYCBikeModel : NSObject{
             
             let location = CLLocation(latitude: lat, longitude: lng)
             
+            print("loading previous location", location)
             previouslyReportedUserLocation = location
             
         }

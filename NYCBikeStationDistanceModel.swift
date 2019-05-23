@@ -103,3 +103,24 @@ public class NYCBikeStationDistanceModel : NSObject, NYCBikeDistanceModelProtoco
     }
     
 }
+
+
+func average(set:[Nearest]) -> Int{
+    
+    let mean:Int = {
+        
+        var total = 0
+        
+        for element in set{
+            total += element.info.capacity - element.info.status!.num_bikes_disabled
+        }
+        
+        let fl = (total / set.count)
+        
+        return Int(fl)
+        
+    }()
+    
+    return mean
+    
+}

@@ -156,11 +156,19 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             return nil
         }
         
+        let calloutButton = UIButton(type: .system)
+        calloutButton.setTitle("Add To Fav", for: .normal)
+        calloutButton.addTarget(customPin, action: #selector(customPin.addFavAction), for: .touchUpInside)
+        
+        customPin.leftCalloutAccessoryView = calloutButton
+        
         if let favourite = annotation.isFavourite{
             if(favourite){
                 customPin.pinTintColor = .purple
+                calloutButton.setTitle("remove", for: .normal)
             }
         }
+        calloutButton.sizeToFit()
         
         
         return customPin

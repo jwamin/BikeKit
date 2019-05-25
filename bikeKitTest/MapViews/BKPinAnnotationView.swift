@@ -30,7 +30,29 @@ class BKPinAnnotationView: MKPinAnnotationView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.leftCalloutAccessoryView = nil
         self.pinTintColor = .red
+    }
+    
+    @objc
+    func addFavAction(_ sender:UIButton){
+        guard let annotation = self.annotation as? BKPinAnnotation, let externalIdString = annotation.id else {
+            return
+        }
+        
+        DispatchQueue.global().async {
+        let isFavourite = AppDelegate.mainBikeModel.toggleFavouriteWithExternalId(extId: externalIdString)
+           DispatchQueue.main.async {
+        (isFavourite) ? {
+            sender.setTitle("remove", for: .normal)
+            self.pinTintColor = .purple
+            }() : {
+                sender.setTitle("add Fav", for: .normal)
+                self.pinTintColor = .red
+        }()
+        sender.sizeToFit()
+        }
+        }
     }
     
 }

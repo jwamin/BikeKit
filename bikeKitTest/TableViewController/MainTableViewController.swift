@@ -78,6 +78,17 @@ class MainTableViewController : UITableViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        guard let favourites = model.favourites else {
+            return
+        }
+        
+        if(favourites.count>0){
+            model.refreshFavourites()
+        }
+        
+    }
+    
     //MARK: UI Actions
     
     @objc func refresh(){
@@ -309,7 +320,7 @@ extension MainTableViewController : NYCBikeUIDelegate {
     // for each visible index path, check if it matches a station in the model.favourites
     func updateDistanceForCell(at indexPath:IndexPath){
         
-        guard let favourites = self.model.favourites, model.nearestStations.count > 0 else {
+        guard let favourites = self.model.favourites, model.nearestStations.count > 0, favourites.indices.contains(indexPath.row) else {
             return
         }
         

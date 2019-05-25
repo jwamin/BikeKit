@@ -51,6 +51,18 @@ extension NYCBikeModel {
         
     }
     
+    public func toggleFavouriteWithExternalId(extId:String)->Bool{
+        
+        guard let match = stationData?.first(where: { (info) -> Bool in
+            return info.external_id == extId
+        }) else {
+            return false
+        }
+        
+        return toggleFavouriteForId(id: match.station_id)
+        
+    }
+    
     public func toggleFavouriteForId(id:String)->Bool{
         
         let groupDefaults = NYCBikeModel.groupedUserDefaults
@@ -80,7 +92,7 @@ extension NYCBikeModel {
         refreshFavourites { (error) in
             print("success?")
         }
-        
+        print("\(id) \((add) ? "added":"removed")")
         return add
         
     }

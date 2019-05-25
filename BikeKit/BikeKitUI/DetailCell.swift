@@ -219,7 +219,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
     public func updateDistance(data:NYCBikeStationInfo,distanceString:String?,query:NYCBikeStationCapacityQuery){
         if let distanceComputed = distanceString{
             
-            let (str,status) = data.smartCapacityAssesmentString(type: query)
+            let (str,status) = data.smartCapacityAssesment(type: query)
             let label = self.distanceLabel
             self.distanceLabel.text =  "\(data.capacity) docks \(distanceComputed)\n\(str)"
             

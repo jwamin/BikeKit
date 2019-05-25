@@ -47,6 +47,16 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        for annotation in map.selectedAnnotations{
+             map.deselectAnnotation(annotation, animated: true)
+        }
+        
+       
+        
+    }
+    
     @objc func setUpdatesReady(){
         print("setUpdatesready in map")
         pendingUpdates = true

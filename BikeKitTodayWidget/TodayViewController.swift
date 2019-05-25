@@ -56,14 +56,33 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         
     }
     
+    /// - Tag: ViewWillTransitionToSizeWithCoordinator
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        print("will transition")
-        coordinator.animate(alongsideTransition: { (context) in
-            
-            
-            
-        }, completion: nil)
+        super.viewWillTransition(to: size, with: coordinator)
         
+        let updatedVisibleCellCount = numberOfRowsToDisplay()
+        let currentVisibleCellCount = self.tableView.visibleCells.count
+        let cellCountDifference = updatedVisibleCellCount - currentVisibleCellCount
+        print(updatedVisibleCellCount)
+        // If the number of visible cells has changed, animate them in/out along with the resize animation.
+        if cellCountDifference != 0 {
+            coordinator.animate(alongsideTransition: { [unowned self] (UIViewControllerTransitionCoordinatorContext) in
+                self.tableView.performBatchUpdates({ [unowned self] in
+                    // Build an array of IndexPath objects representing the rows to be inserted or deleted.
+                    let range = (1...abs(cellCountDifference))
+                    let indexPaths = range.map({ (index) -> IndexPath in
+                        return IndexPath(row: index, section: 0)
+                    })
+                    
+                    // Animate the insertion or deletion of the rows.
+                    if cellCountDifference > 0 {
+                        self.tableView.insertRows(at: indexPaths, with: .fade)
+                    } else {
+                        self.tableView.deleteRows(at: indexPaths, with: .fade)
+                    }
+                    }, completion: nil)
+                }, completion: nil)
+        }
     }
     
 //NCWidgetProviding
@@ -76,8 +95,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         case .compact:
             size = maxSize
         case .expanded:
-            let maxTableSize = tableView.systemLayoutSizeFitting(tableView.contentSize)
-            size = CGSize(width: .zero, height: maxTableSize.height)
+            guard (tableView.visibleCells.indices.contains(0) == true), let cell = tableView.visibleCells[0] as? DetailBikeKitViewCell else {
+                return
+            }
+            let maxTableSize = cell.bounds.height * CGFloat(numberOfRowsToDisplay())
+            size = CGSize(width: .zero, height: maxTableSize)
         default:
             break
         }
@@ -105,8 +127,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
                 }
             }
             
-            self.widgetActiveDisplayModeDidChange(.compact, withMaximumSize: .zero)
-            
             self.uiUpdatesAreReady()
             
             completionHandler(NCUpdateResult.newData)
@@ -118,12 +138,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         // If there's an update, use NCUpdateResult.NewData
         
         
-    }
-    
-    override func viewDidLayoutSubviews() {
-        if !tableView.contentSize.equalTo(.zero){
-            self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
-        }
     }
     
     //BikeUIDelegate

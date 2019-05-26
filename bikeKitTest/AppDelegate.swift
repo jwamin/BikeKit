@@ -52,6 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let table = MainTableViewController()
         table.toastDelegate = mainToastView
         
+        let nearest = NearestViewController(nibName: "NearestViewController", bundle: Bundle.main)
+        
+        
         //Map view initialisation
         let map = MapViewController()
         map.loadViewIfNeeded()
@@ -59,12 +62,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         let primaryNavigation = UINavigationController(rootViewController: table)
         let secondaryNavigation = UINavigationController(rootViewController: map)
+        let tertiaryNavigation = UINavigationController(rootViewController: nearest)
         
         //System Tabs for tab bar
         table.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         map.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
+        nearest.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 2)
         
-        tabViewController.viewControllers = [primaryNavigation,secondaryNavigation]
+        tabViewController.viewControllers = [primaryNavigation,secondaryNavigation,tertiaryNavigation]
         
         //AppDelegate.mainBikeModel.updateLocation(userLocation: locationManager.location)
         

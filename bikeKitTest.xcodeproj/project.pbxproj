@@ -11,6 +11,8 @@
 		57069F87228B261F00E714FD /* BikeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CCE228B085C003166A1 /* BikeKit.framework */; };
 		57069F88228B261F00E714FD /* BikeKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; };
 		57069F8A228B26A800E714FD /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		571820A0229B07AB00FFCF4E /* NearestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5718209E229B07AB00FFCF4E /* NearestViewController.swift */; };
+		571820A1229B07AB00FFCF4E /* NearestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5718209F229B07AB00FFCF4E /* NearestViewController.xib */; };
 		5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72D422833CBC006F63E8 /* MapKit.framework */; };
 		578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 578676332286F9C600AA0072 /* NotificationCenter.framework */; };
 		578676372286F9C600AA0072 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578676362286F9C600AA0072 /* TodayViewController.swift */; };
@@ -70,6 +72,8 @@
 
 /* Begin PBXFileReference section */
 		5705C1C122945E9D00861C9C /* TodayViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
+		5718209E229B07AB00FFCF4E /* NearestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestViewController.swift; sourceTree = "<group>"; };
+		5718209F229B07AB00FFCF4E /* NearestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NearestViewController.xib; sourceTree = "<group>"; };
 		578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BikeKitTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		578676332286F9C600AA0072 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		578676362286F9C600AA0072 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +125,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		571820A2229B07CE00FFCF4E /* NearestView */ = {
+			isa = PBXGroup;
+			children = (
+				5718209E229B07AB00FFCF4E /* NearestViewController.swift */,
+				5718209F229B07AB00FFCF4E /* NearestViewController.xib */,
+			);
+			path = NearestView;
+			sourceTree = "<group>";
+		};
 		578676352286F9C600AA0072 /* BikeKitTodayWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +201,7 @@
 				57FF728A22821544006F63E8 /* AppDelegate.swift */,
 				57CF8BFF2290A20200C9D96F /* Constants.swift */,
 				57B246352295D0B000141F19 /* PresentingViews */,
+				571820A2229B07CE00FFCF4E /* NearestView */,
 				57B246342295D09600141F19 /* TableViewController */,
 				57B246362295D0D700141F19 /* MapViews */,
 				57FF72D822835C78006F63E8 /* README.md */,
@@ -314,6 +328,7 @@
 			files = (
 				57FF729522821546006F63E8 /* LaunchScreen.storyboard in Resources */,
 				57FF729222821546006F63E8 /* Assets.xcassets in Resources */,
+				571820A1229B07AB00FFCF4E /* NearestViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +355,7 @@
 				578CDADF2295BDC0006ED6D4 /* SearchTableViewController.swift in Sources */,
 				57FF72D322833BD1006F63E8 /* MapViewController.swift in Sources */,
 				57FF728B22821544006F63E8 /* AppDelegate.swift in Sources */,
+				571820A0229B07AB00FFCF4E /* NearestViewController.swift in Sources */,
 				57B246382295D11C00141F19 /* BKPinAnnotationView.swift in Sources */,
 				57CF8C002290A20200C9D96F /* Constants.swift in Sources */,
 			);

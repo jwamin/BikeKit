@@ -308,6 +308,8 @@ extension MainTableViewController : NYCBikeUIDelegate {
         
         DispatchQueue.global().async {
             
+            NotificationCenter.default.post(name: Notification.Name.init(rawValue: "location"), object: nil)
+            
             for visible in visibleCellIndexPaths{
                 self.updateDistanceForCell(at: visible)
             }

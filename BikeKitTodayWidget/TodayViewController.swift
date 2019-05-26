@@ -61,7 +61,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
         super.viewWillTransition(to: size, with: coordinator)
         
         let updatedVisibleCellCount = numberOfRowsToDisplay()
-        let currentVisibleCellCount = self.tableView.visibleCells.count
+        let currentVisibleCellCount = (extensionContext!.widgetActiveDisplayMode == .compact) ? 1 : 3
         let cellCountDifference = updatedVisibleCellCount - currentVisibleCellCount
         print(updatedVisibleCellCount)
         // If the number of visible cells has changed, animate them in/out along with the resize animation.
@@ -127,7 +127,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, NYCBikeUIDelegat
                 }
             }
             
-            self.uiUpdatesAreReady()
             
             completionHandler(NCUpdateResult.newData)
             

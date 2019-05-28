@@ -8,8 +8,9 @@
 
 import UIKit
 import BikeKit
+import BikeKitUI
 
-class NearestViewController: UIViewController {
+class NearestViewController: UIViewController, DockSwitchProtocol {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var textArea:UITextView?
@@ -42,6 +43,8 @@ class NearestViewController: UIViewController {
         }
     }
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,10 +52,16 @@ class NearestViewController: UIViewController {
         
         collectionView.register(UINib(nibName: "NearestCell", bundle: Bundle.main), forCellWithReuseIdentifier: "Cell")
         
-        //let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        //Left bar button item
+        dockSwitch = UISwitch()
+        dockSwitch.addTarget(self, action: #selector(dockSwitchUpdated(_:)), for: .valueChanged)
+        dockLabel = UILabel()
+        dockLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        dockLabel.text = "Bikes"
         
-//        layout.estimatedItemSize = CGSize(width: 50, height: 50)
-//        layout.itemSize = UICollectionViewFlowLayout.automaticSize
+        let customView = UIStackView(arrangedSubviews: [dockSwitch,dockLabel])
+        customView.spacing = 8
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: customView)
         
         
         self.title = "Nearest Stations"
@@ -60,11 +69,30 @@ class NearestViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    var dockSwitch:UISwitch!
+    var dockLabel:UILabel!
+    var dockStatus: NYCBikeStationCapacityQuery = .bikes
+    
+    @objc func dockSwitchUpdated(_ sender:Any){
+        
+        switch dockSwitch.isOn {
+        case true:
+            dockLabel.text = "Docks"
+            dockStatus = .docks
+        default:
+            dockLabel.text = "Bikes"
+            dockStatus = .bikes
+        }
+
+        update()
+        
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateNearest), name: Notification.Name.init(rawValue: "location"), object: nil)
         
-        updateNearest()
+        update()
         
         
         
@@ -97,7 +125,9 @@ extension NearestViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MyCell
         let index = indexPath.row
         let nearestInfo = datasource[index]
-        cell.text = "\(index+1). \(nearestInfo.info.name)\n\(nearestInfo.info.status!.num_bikes_available) bikes available -  \(nearestInfo.distanceString)\n\n"
+        let itemString = (dockStatus == .bikes) ? "bikes" : "docks"
+        let unitNumber = (dockStatus == .bikes) ? nearestInfo.info.status!.num_bikes_available : nearestInfo.info.status!.num_docks_available
+        cell.text = "\(index+1). \(nearestInfo.info.name)\n\(unitNumber) \(itemString) available -  \(nearestInfo.distanceString)\n\n"
         
         return cell
         
@@ -162,9 +192,14 @@ extension NearestViewController : UICollectionViewDataSource {
     @objc
     func updateNearest(){
         
-        nearest = NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.nearestStations, query: .bikes)
+        update()
         
     }
+    
+    func update(){
+        nearest = NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.nearestStations, query: dockStatus)
+    }
+    
     
     private func performUpdates(inserted:[IndexPath],deleted:[IndexPath],moved:[(from:IndexPath,to:IndexPath)]){
         updating = true
@@ -278,7 +313,13 @@ extension NearestViewController {
             
             if(AppDelegate.mainBikeModel.nearestStations.count>0){
                 for (index,nearest) in NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.nearestStations, query: .bikes).enumerated() {
-                    textArea.text += "\(index+1). \(nearest.info.name)\n\(nearest.info.status!.num_bikes_available) bikes available -  \(nearest.distanceString)\n\n"
+                    switch self.dockStatus{
+                        case .bikes:
+                            textArea.text += "\(index+1). \(nearest.info.name)\n\(nearest.info.status!.num_bikes_available) \(self.dockStatus.rawValue) available -  \(nearest.distanceString)\n\n"
+                        case .docks:
+                            textArea.text += "\(index+1). \(nearest.info.name)\n\(nearest.info.status!.num_docks_available) \(self.dockStatus.rawValue) available -  \(nearest.distanceString)\n\n"
+                    }
+                    
                 }
             }
             

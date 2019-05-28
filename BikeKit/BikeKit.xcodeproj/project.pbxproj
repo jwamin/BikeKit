@@ -19,6 +19,7 @@
 		575F13F3229D9E4F0047BB1D /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F13F2229D9E4F0047BB1D /* TestData.swift */; };
 		5767C6DC229DA5E600069C9B /* NYCBikeModel+Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5767C6DB229DA5E600069C9B /* NYCBikeModel+Locations.swift */; };
 		5767C6DE229DA7A400069C9B /* NYCBikeNetworking+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5767C6DD229DA7A400069C9B /* NYCBikeNetworking+Parsing.swift */; };
+		5767C6E2229DC03A00069C9B /* DockSwitchProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5767C6E1229DC03A00069C9B /* DockSwitchProtocol.swift */; };
 		57CF8C032292FAE600C9D96F /* NYCBikeStationDistanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */; };
 		57CF8C062293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */; };
 		57CF8C08229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */; };
@@ -66,6 +67,7 @@
 		575F13F2229D9E4F0047BB1D /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		5767C6DB229DA5E600069C9B /* NYCBikeModel+Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+Locations.swift"; sourceTree = "<group>"; };
 		5767C6DD229DA7A400069C9B /* NYCBikeNetworking+Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeNetworking+Parsing.swift"; sourceTree = "<group>"; };
+		5767C6E1229DC03A00069C9B /* DockSwitchProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockSwitchProtocol.swift; sourceTree = "<group>"; };
 		57CF8C022292FAE600C9D96F /* NYCBikeStationDistanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCBikeStationDistanceModel.swift; sourceTree = "<group>"; };
 		57CF8C052293038A00C9D96F /* NYCBikeModel+NetworkingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+NetworkingDelegate.swift"; sourceTree = "<group>"; };
 		57CF8C07229304DE00C9D96F /* NYCBikeModel+DistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NYCBikeModel+DistanceManager.swift"; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		57F193D52289B28D000941A8 /* BikeKitUI */ = {
 			isa = PBXGroup;
 			children = (
+				5767C6E1229DC03A00069C9B /* DockSwitchProtocol.swift */,
 				57F193EB2289B2BA000941A8 /* BikeKitViewCell.swift */,
 				5738D37A228A3C2100DAA2AE /* DetailCell.swift */,
 				57F194042289F0F8000941A8 /* Dial.swift */,
@@ -449,6 +452,7 @@
 				57F193FB2289C939000941A8 /* NYCLocatorMap.swift in Sources */,
 				57F194052289F0F8000941A8 /* Dial.swift in Sources */,
 				5738D37B228A3C2100DAA2AE /* DetailCell.swift in Sources */,
+				5767C6E2229DC03A00069C9B /* DockSwitchProtocol.swift in Sources */,
 				57F193EC2289B2BA000941A8 /* BikeKitViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

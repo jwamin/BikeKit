@@ -5,7 +5,7 @@ import BikeKitUI
 
 //Test UI View
 
-class MainTableViewController : UITableViewController {
+class MainTableViewController : UITableViewController, DockSwitchProtocol {
     
     var prefetchData:[String]?
     

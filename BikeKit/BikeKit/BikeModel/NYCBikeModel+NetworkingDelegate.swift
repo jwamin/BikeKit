@@ -20,6 +20,10 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         
     }
     
+    
+    /// setStationStatus with data from networking object
+    /// take the opportunity to merge the status data with the existing stationData
+    /// - Parameter statusData: parsed and structured status data from Networking Stack
     func setStationsStatus(statusData: [NYCBikeStationStatus]) {
         
         let stationStatusData:[NYCBikeStationStatus] = statusData

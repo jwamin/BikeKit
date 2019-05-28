@@ -19,27 +19,37 @@ extension NYCBikeNetworking {
         }
     }
     
-//    func parseData(task:NYCBikeRequestType,data:Data){
+//    func genericParseData(task:NYCBikeRequestType,data:Data){
 //
 //
 //        // reminder - this is how to wind up with [String:Any] from json data
 //        //let jsonObj = try! JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
 //
 //        var decoderClass:Decodable.Type
+//        var callback:(Decodable)->Void
 //
 //        switch task {
 //            case .info:
 //                decoderClass = NYCStationInfoWrapper.self
+//                callback = { structure in
+//                    let castStructure = structure as! NYCStationInfoWrapper
+//                    guard let stations = castStructure.data["stations"] else {
+//                        return
+//                    }
+//                    self.delegate?.setStations(stationsData: stations)
+//                }
 //            case .status:
 //                decoderClass = NYCStationStatusWrapper.self
+//                callback = { structure in
+//                    let castStructure = structure as! NYCStationStatusWrapper
+//                    let stationStatusData = castStructure.data["stations"]!
+//                    self.delegate?.setStationsStatus(statusData: stationStatusData)
+//                }
 //        }
 //
 //        do{
 //            let stationInfoData = try decodeStationData(data: data,decoderClass: decoderClass)
-//            guard let stations = stationInfoData.data["stations"] else {
-//                return
-//            }
-//            self.stationData = stations
+//            callback(stationInfoData)
 //        } catch {
 //            delegate?.error(description: error.localizedDescription)
 //        }

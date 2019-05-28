@@ -16,6 +16,11 @@ class NYCBikeNetworking : NSObject {
     
     var dispatchG:DispatchGroup!
     
+    internal var stationInfo:[NYCBikeStationInfo]?
+    internal var stationStatus:[NYCBikeStationStatus]?
+    
+    internal var initial = true
+    
     override init() {
         super.init()
         
@@ -23,8 +28,20 @@ class NYCBikeNetworking : NSObject {
         self.getNYCBikeAPIData(task: .info)
         self.getNYCBikeAPIData(task: .status)
         
-        dispatchG.notify(queue: .global()) {
-            print("done")
+        dispatchG!.notify(queue: .global()) {
+            
+            print("requests and parsing done, notifying delegate...")
+            
+            guard let stationData = self.stationInfo, let stationStatus = self.stationStatus, let delegate = self.delegate else {
+                fatalError("this shouldnt happen")
+            }
+            
+            delegate.setStations(stationsData: stationData)
+            delegate.setStationsStatus(statusData: stationStatus)
+            self.initial = false
+            self.stationInfo = nil
+            self.stationStatus = nil
+            
         }
         
     }
@@ -69,7 +86,6 @@ class NYCBikeNetworking : NSObject {
                 self.refreshThrottle = Date()
             }
             
-            self.dispatchG.leave()
             callback(task,data)
             
         })

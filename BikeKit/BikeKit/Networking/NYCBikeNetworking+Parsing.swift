@@ -70,7 +70,8 @@ extension NYCBikeNetworking {
                 guard let stations = stationInfoData.data["stations"] else {
                     return
                 }
-                delegate?.setStations(stationsData: stations)
+                self.stationInfo = stations
+                self.dispatchG.leave()
             } catch {
                 delegate?.error(description: error.localizedDescription)
             }
@@ -79,7 +80,14 @@ extension NYCBikeNetworking {
             do{
                 let stationInfoData = try decodeStationData(data: data, decoderClass: NYCStationStatusWrapper.self)
                 let stationStatusData = stationInfoData.data["stations"]!
-                delegate?.setStationsStatus(statusData: stationStatusData)
+                self.stationStatus = stationStatusData
+                
+                if(initial){
+                    self.dispatchG.leave()
+                } else {
+                    delegate?.setStationsStatus(statusData: stationStatusData)
+                }
+                
             } catch {
                 delegate?.error(description: error.localizedDescription)
             }

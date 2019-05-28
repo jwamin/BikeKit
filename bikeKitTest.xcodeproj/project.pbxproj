@@ -13,7 +13,10 @@
 		57069F8A228B26A800E714FD /* BikeKitUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D67CD1228B085C003166A1 /* BikeKitUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		571820A0229B07AB00FFCF4E /* NearestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5718209E229B07AB00FFCF4E /* NearestViewController.swift */; };
 		571820A1229B07AB00FFCF4E /* NearestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5718209F229B07AB00FFCF4E /* NearestViewController.xib */; };
+		571820A4229C144400FFCF4E /* NearestCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 571820A3229C144300FFCF4E /* NearestCell.xib */; };
+		571820A6229C4C1A00FFCF4E /* biketest.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 571820A5229C4C1A00FFCF4E /* biketest.gpx */; };
 		5738D372228A1C7200DAA2AE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FF72D422833CBC006F63E8 /* MapKit.framework */; };
+		575F13F1229D72880047BB1D /* NearesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F13F0229D72880047BB1D /* NearesCell.swift */; };
 		578676342286F9C600AA0072 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 578676332286F9C600AA0072 /* NotificationCenter.framework */; };
 		578676372286F9C600AA0072 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578676362286F9C600AA0072 /* TodayViewController.swift */; };
 		5786763A2286F9C600AA0072 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 578676382286F9C600AA0072 /* MainInterface.storyboard */; };
@@ -74,6 +77,9 @@
 		5705C1C122945E9D00861C9C /* TodayViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
 		5718209E229B07AB00FFCF4E /* NearestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestViewController.swift; sourceTree = "<group>"; };
 		5718209F229B07AB00FFCF4E /* NearestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NearestViewController.xib; sourceTree = "<group>"; };
+		571820A3229C144300FFCF4E /* NearestCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NearestCell.xib; sourceTree = "<group>"; };
+		571820A5229C4C1A00FFCF4E /* biketest.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = biketest.gpx; path = ../../../../Downloads/biketest.gpx; sourceTree = "<group>"; };
+		575F13F0229D72880047BB1D /* NearesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearesCell.swift; sourceTree = "<group>"; };
 		578676322286F9C600AA0072 /* BikeKitTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BikeKitTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		578676332286F9C600AA0072 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		578676362286F9C600AA0072 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 			isa = PBXGroup;
 			children = (
 				5718209E229B07AB00FFCF4E /* NearestViewController.swift */,
+				575F13F0229D72880047BB1D /* NearesCell.swift */,
+				571820A3229C144300FFCF4E /* NearestCell.xib */,
 				5718209F229B07AB00FFCF4E /* NearestViewController.xib */,
 			);
 			path = NearestView;
@@ -176,6 +184,7 @@
 		57FF727E22821544006F63E8 = {
 			isa = PBXGroup;
 			children = (
+				571820A5229C4C1A00FFCF4E /* biketest.gpx */,
 				57D67CD1228B085C003166A1 /* BikeKitUI.framework */,
 				57D67CCE228B085C003166A1 /* BikeKit.framework */,
 				578676452286FFC600AA0072 /* BikeKitTest.entitlements */,
@@ -328,6 +337,8 @@
 			files = (
 				57FF729522821546006F63E8 /* LaunchScreen.storyboard in Resources */,
 				57FF729222821546006F63E8 /* Assets.xcassets in Resources */,
+				571820A4229C144400FFCF4E /* NearestCell.xib in Resources */,
+				571820A6229C4C1A00FFCF4E /* biketest.gpx in Resources */,
 				571820A1229B07AB00FFCF4E /* NearestViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57FF72DC2283848B006F63E8 /* ToastViewController.swift in Sources */,
+				575F13F1229D72880047BB1D /* NearesCell.swift in Sources */,
 				57FF72DA22836ADF006F63E8 /* TableCollectionSearch.swift in Sources */,
 				57FF728D22821544006F63E8 /* MainTableViewController.swift in Sources */,
 				578CDADF2295BDC0006ED6D4 /* SearchTableViewController.swift in Sources */,

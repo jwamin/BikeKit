@@ -11,7 +11,7 @@ import Foundation
 public struct NYCBikeConstants {
 
     public static let TIMEOUT_THROTTLE:TimeInterval = 20
-    public static let calculateNearestMax:Int = 5
+    public static let calculateNearestMax:Int = 4
 
     public static let favouritesUserDefaultsKey = "favourites"
     

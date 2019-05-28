@@ -32,7 +32,7 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
     
     public func orderedArrayUpdated(orderedStations: [NYCBikeStationDistanceModel]) {
         var nearestStations = [Nearest]()
-        for index in 0...3{
+        for index in 0...NYCBikeConstants.calculateNearestMax{
             if orderedStations.indices.contains(index){
                 let orderedStation = orderedStations[index]
                 

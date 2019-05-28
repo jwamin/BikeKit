@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NearestViewController" customModule="BikeKitTest" customModuleProvider="target">
             <connections>
-                <outlet property="textArea" destination="nPE-ez-mVX" id="SkM-jc-lfm"/>
+                <outlet property="collectionView" destination="3Fc-3z-eCQ" id="Vi8-X1-pcq"/>
                 <outlet property="view" destination="kOe-MH-wvE" id="xyj-U2-uqS"/>
             </connections>
         </placeholder>
@@ -21,20 +21,27 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nPE-ez-mVX">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="3Fc-3z-eCQ">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z6I-ke-YuO">
+                        <size key="itemSize" width="200" height="100"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="4" minY="4" maxX="4" maxY="4"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="ige-7v-zai"/>
+                        <outlet property="delegate" destination="-1" id="Ryk-WW-iQp"/>
+                    </connections>
+                </collectionView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="SJb-9n-pqY" firstAttribute="trailing" secondItem="nPE-ez-mVX" secondAttribute="trailing" id="3aj-bn-sbX"/>
-                <constraint firstItem="nPE-ez-mVX" firstAttribute="leading" secondItem="SJb-9n-pqY" secondAttribute="leading" id="OPR-pO-Xxm"/>
-                <constraint firstItem="nPE-ez-mVX" firstAttribute="top" secondItem="SJb-9n-pqY" secondAttribute="top" id="QdU-vc-cgY"/>
-                <constraint firstItem="SJb-9n-pqY" firstAttribute="bottom" secondItem="nPE-ez-mVX" secondAttribute="bottom" id="kPK-iI-sg5"/>
+                <constraint firstItem="3Fc-3z-eCQ" firstAttribute="leading" secondItem="SJb-9n-pqY" secondAttribute="leading" id="MGK-fw-I5I"/>
+                <constraint firstItem="SJb-9n-pqY" firstAttribute="bottom" secondItem="3Fc-3z-eCQ" secondAttribute="bottom" id="bEn-h9-mUZ"/>
+                <constraint firstItem="3Fc-3z-eCQ" firstAttribute="top" secondItem="SJb-9n-pqY" secondAttribute="top" id="c19-ef-QAH"/>
+                <constraint firstItem="SJb-9n-pqY" firstAttribute="trailing" secondItem="3Fc-3z-eCQ" secondAttribute="trailing" id="vO2-OS-2Uq"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SJb-9n-pqY"/>
         </view>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyCell" customModule="BikeKitTest" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="ZNL-2K-zYS" customClass="MyCell" customModule="BikeKitTest" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="182" height="77"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                <rect key="frame" x="0.0" y="0.0" width="182" height="77"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mvv-MS-Unc">
+                        <rect key="frame" x="6" y="1" width="170" height="75"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <color key="backgroundColor" red="0.87191146610000003" green="0.8867228627" blue="0.89070737359999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="mvv-MS-Unc" firstAttribute="leading" secondItem="ZNL-2K-zYS" secondAttribute="leading" constant="6" id="6hl-Cc-w0n"/>
+                <constraint firstAttribute="bottom" secondItem="mvv-MS-Unc" secondAttribute="bottom" constant="1" id="czX-Wj-kyq"/>
+                <constraint firstItem="mvv-MS-Unc" firstAttribute="top" secondItem="ZNL-2K-zYS" secondAttribute="top" constant="1" id="diV-tK-AtA"/>
+                <constraint firstAttribute="trailing" secondItem="mvv-MS-Unc" secondAttribute="trailing" constant="6" id="plt-am-JFz"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="WmK-fE-fYo"/>
+            <size key="customSize" width="182" height="77"/>
+            <connections>
+                <outlet property="label" destination="mvv-MS-Unc" id="8pI-3k-IhL"/>
+            </connections>
+            <point key="canvasLocation" x="-346.37681159420293" y="126.22767857142857"/>
+        </collectionViewCell>
+    </objects>
+</document>

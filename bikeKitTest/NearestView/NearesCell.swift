@@ -13,7 +13,12 @@ class MyCell : UICollectionViewCell{
     
     @IBOutlet weak var label: UILabel!
     
-    
+    var text:String = ""{
+        didSet{
+            label.text = text
+            label.sizeToFit()
+        }
+    }
     
     
     //    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

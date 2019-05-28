@@ -97,7 +97,7 @@ extension NearestViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MyCell
         let index = indexPath.row
         let nearestInfo = datasource[index]
-        cell.label.text = "\(index+1). \(nearestInfo.info.name)\n\(nearestInfo.info.status!.num_bikes_available) bikes available -  \(nearestInfo.distanceString)\n\n"
+        cell.text = "\(index+1). \(nearestInfo.info.name)\n\(nearestInfo.info.status!.num_bikes_available) bikes available -  \(nearestInfo.distanceString)\n\n"
         
         return cell
         

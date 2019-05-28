@@ -14,7 +14,14 @@ public enum BikeNetworkingError : Error{
     case failed
 }
 
-public enum NYCBikeRequest{
+public enum NYCBikeRequestType{
     case status
     case info
+}
+
+public enum NYCModelDataRequest{
+    case locations
+    case stationInfo
+    case nearest
+    case images
 }

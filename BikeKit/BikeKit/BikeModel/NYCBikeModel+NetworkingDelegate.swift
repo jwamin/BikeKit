@@ -14,37 +14,15 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         delegate?.error(str: description)
     }
     
-    func setStations(stationsData: Data) {
+    func setStations(stationsData: [NYCBikeStationInfo]) {
         
-        // reminder - this is how to wind up with [String:Any] from json data
-        //let jsonObj = try! JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
-        
-        do{
-            let stationInfoData = try JSONDecoder().decode(NYCStationInfoWrapper.self, from: stationsData)
-            guard let stations = stationInfoData.data["stations"] else {
-                return
-            }
-            self.stationData = stations
-            networking.getNYCBikeAPIData(task: .status)
-        } catch {
-            delegate?.error(str: error.localizedDescription)
-        }
+        self.stationData = stationsData
         
     }
     
-    func setStationsStatus(statusData: Data) {
-        var stationStatusData:[NYCBikeStationStatus]?
+    func setStationsStatus(statusData: [NYCBikeStationStatus]) {
         
-        do{
-            let stationInfoData = try JSONDecoder().decode(NYCStationStatusWrapper.self, from: statusData)
-            stationStatusData = stationInfoData.data["stations"]!
-        } catch {
-            delegate?.error(str: error.localizedDescription)
-        }
-        
-        guard let stationData = stationStatusData else {
-            return
-        }
+        let stationStatusData:[NYCBikeStationStatus] = statusData
         
         let stationIDs = self.stationData!.map {
             $0.station_id
@@ -52,7 +30,7 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         
         var updatedStations = self.stationData
         
-        stationData.forEach{ (updatedStation) in
+        stationStatusData.forEach{ (updatedStation) in
             
             for (index,savedStationID) in stationIDs.enumerated(){
                 if updatedStation.station_id == savedStationID {
@@ -64,7 +42,7 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         }
         
         self.stationData = updatedStations
-
+        
         delegate?.statusUpdatesAreReady()
         
     }

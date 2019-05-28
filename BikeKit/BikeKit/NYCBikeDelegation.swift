@@ -8,12 +8,11 @@
 
 import Foundation
 
-@objc
 protocol NYCBikeNetworkingDelegate{
     func updated(didUpdate:Bool,str:String?)
     func error(description:String)
-    @objc optional func setStations(stationsData:Data)
-    @objc optional func setStationsStatus(statusData:Data)
+    func setStations(stationsData:[NYCBikeStationInfo])
+    func setStationsStatus(statusData:[NYCBikeStationStatus])
 }
 
 public protocol NYCBikeUIDelegate{

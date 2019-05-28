@@ -10,6 +10,8 @@ import CoreLocation
 
 public class NYCBikeModel : NSObject{
     
+    
+    /// Shared User Defaults Suite
     public private(set) static var groupedUserDefaults:UserDefaults = UserDefaults.standard
     
     public var userDefaults:UserDefaults{
@@ -21,16 +23,19 @@ public class NYCBikeModel : NSObject{
         getUserLocationFromDefaults()
     }
     
+    
+    /// Networking Stack
     internal let networking:NYCBikeNetworking!
     
     public var favourites:[NYCBikeStationInfo]?
     public var locations = [String:CLLocation]()
-    public var distanceManager:NYCBikeStationDistanceManager?
     public var images = [String:UIImage]()
-
     public var nearestStations = [Nearest]()
     
+    
     public var delegate:NYCBikeUIDelegate?
+    
+    internal var distanceManager:NYCBikeStationDistanceManager?
     
     internal var previouslyReportedUserLocation:CLLocation? {
         didSet{
@@ -38,44 +43,18 @@ public class NYCBikeModel : NSObject{
                 
                 //check the updated location isnt jsut the same location
                 if let oldvalue = oldValue, let currentValue = self.previouslyReportedUserLocation{
-                   
+                    
                     if(oldvalue.distance(from: currentValue) < 2.0){
                         return
                     }
                     
                 }
                 
-                //Save backgrounded location to userdefaults for use later
-                let lat = gotUserLocation.coordinate.latitude
-                let lng = gotUserLocation.coordinate.longitude
-                let dict = NSDictionary(dictionary: ["lat":lat,"lng":lng])
-                NYCBikeModel.groupedUserDefaults.set(dict, forKey: "lastLocation")
+                setUserLocation(location: gotUserLocation)
+                
             }
         }
     }
-    
-    private func getUserLocationFromDefaults(){
-    
-        if let dictionary = NYCBikeModel.groupedUserDefaults.dictionary(forKey: "lastLocation"){
-            
-            let lat = dictionary["lat"] as! Double
-            let lng = dictionary["lng"] as! Double
-            
-            let location = CLLocation(latitude: lat, longitude: lng)
-            
-            print("loading previous location", location)
-            previouslyReportedUserLocation = location
-            
-        }
-    
-    }
-    
-    public override init() {
-        networking = NYCBikeNetworking()
-        super.init()
-        networking.delegate = self
-    }
-    
     
     public var stationData:[NYCBikeStationInfo]?{
         didSet{
@@ -97,6 +76,15 @@ public class NYCBikeModel : NSObject{
             
         }
     }
+    
+    public override init() {
+        networking = NYCBikeNetworking()
+        super.init()
+        networking.delegate = self
+    }
+    
+    
+
     
     public func restartAfterError(){
         if(stationData==nil){

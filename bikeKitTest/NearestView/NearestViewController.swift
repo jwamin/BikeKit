@@ -102,8 +102,7 @@ extension NearestViewController : UICollectionViewDataSource {
         return cell
         
     }
-    
-    
+
     private func calculateDifferences(old:[Nearest],new:[Nearest])->(inserted:[IndexPath],deleted:[IndexPath],moved:[(from:IndexPath,to:IndexPath)]){
         
         var deleted = [IndexPath]()

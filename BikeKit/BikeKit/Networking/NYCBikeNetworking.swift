@@ -14,12 +14,22 @@ class NYCBikeNetworking : NSObject {
 
     var delegate:NYCBikeNetworkingDelegate?
     
+    var dispatchG:DispatchGroup!
+    
     override init() {
         super.init()
+        
+        dispatchG = DispatchGroup()
         self.getNYCBikeAPIData(task: .info)
+        self.getNYCBikeAPIData(task: .status)
+        
+        dispatchG.notify(queue: .global()) {
+            print("done")
+        }
+        
     }
     
-    func getNYCBikeAPIData(task:NYCBikeRequest){
+    func getNYCBikeAPIData(task:NYCBikeRequestType){
         
         let url:URL
         
@@ -33,16 +43,24 @@ class NYCBikeNetworking : NSObject {
                 url = NYCBikeConstants.URLS.STATION_STATUS_URL
         }
         
-        let callback:(NYCBikeRequest,Data)->Void = self.handleRequest
+        let callback:(NYCBikeRequestType,Data)->Void = self.parseData(task:data:)
         
-        let stationInfoTask:URLSessionDataTask = URLSession.shared.dataTask(with: url, completionHandler:{
+        let stationInfoTask:URLRequest = createRequest(url: url)
+
+        let datatask = createTask(infoTask: stationInfoTask, task: task,callback: callback)
+
+        dispatchG.enter()
+        datatask.resume()
+        
+    }
+    
+    public func createTask(infoTask:URLRequest,task:NYCBikeRequestType,callback:@escaping (NYCBikeRequestType,Data)->Void)->URLSessionDataTask{
+        
+        return URLSession.shared.dataTask(with: infoTask, completionHandler:{
             (data,request,error) in
             
-            if (error != nil){
+            guard let data = data, error == nil else {
                 self.delegate?.error(description: error!.localizedDescription)
-            }
-            
-            guard let data = data else {
                 return
             }
             
@@ -51,24 +69,15 @@ class NYCBikeNetworking : NSObject {
                 self.refreshThrottle = Date()
             }
             
+            self.dispatchG.leave()
             callback(task,data)
-
             
         })
         
-        stationInfoTask.resume()
-        
     }
     
-    func handleRequest(requestType:NYCBikeRequest,data:Data){
-        
-        switch requestType {
-        case .info:
-             delegate?.setStations?(stationsData: data)
-        case .status:
-             delegate?.setStationsStatus?(statusData: data)
-        }
-        
+    public func createRequest(url:URL)->URLRequest{
+        return URLRequest(url: url)
     }
     
     func handleError(error:Error){

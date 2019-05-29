@@ -16,7 +16,7 @@ extension NYCBikeStationInfo {
             return 0
         }
         
-        let capacity = (meanSpaces != nil) ? Float(meanSpaces!) : Float(self.capacity - self.status!.num_bikes_disabled);
+        let capacity = (meanSpaces != nil) ? Float(meanSpaces!) : Float((self.capacity ?? 0) - (self.status!.num_bikes_disabled ?? 0));
         
         switch type {
             case .bikes:

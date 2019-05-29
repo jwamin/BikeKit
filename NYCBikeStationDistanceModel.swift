@@ -112,7 +112,12 @@ func average(set:[Nearest]) -> Int{
         var total = 0
         
         for element in set{
-            total += element.info.capacity - element.info.status!.num_bikes_disabled
+            
+            guard let disabledBikes = element.info.status!.num_bikes_disabled, let capacity = element.info.capacity else {
+                fatalError()
+            }
+            
+            total += capacity - disabledBikes
         }
         
         let fl = (total / set.count)

@@ -17,20 +17,23 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
         } 
         
         guard let dmanager = distanceManager else {
-            
+            print("no dmanager")
             return
 
             
         }
         
         guard let userlocation = previouslyReportedUserLocation else {
+            print("no user location")
             return
         }
+        print("user location set")
         dmanager.userLocation = userlocation
         
     }
     
     public func orderedArrayUpdated(orderedStations: [NYCBikeStationDistanceModel]) {
+
         var nearestStations = [Nearest]()
         for index in 0...NYCBikeConstants.calculateNearestMax{
             if orderedStations.indices.contains(index){
@@ -60,7 +63,6 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
         var sorted = nearest
         
         let distanceClosest = nearest.first!
-        print(distanceClosest.distance)
         
         let meanValue = average(set: nearest)
         

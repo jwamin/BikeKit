@@ -78,6 +78,8 @@ extension NYCBikeNetworking {
                 return
             case .status:
                 do{
+                    
+                    
                     let stationInfoData = try decodeStationData(data: data, decoderClass: NYCStationStatusWrapper.self)
                     let stationStatusData = stationInfoData.data["stations"]!
                     self.stationStatus = stationStatusData
@@ -86,7 +88,11 @@ extension NYCBikeNetworking {
                         self.dispatchG.leave()
                     } else {
                         delegate?.setStationsStatus(statusData: stationStatusData)
+                        self.delegate?.updated(didUpdate: true, str: nil)
+                        self.refreshThrottle = Date()
                     }
+                    
+                    
                     
                 } catch {
                     delegate?.error(description: error.localizedDescription)

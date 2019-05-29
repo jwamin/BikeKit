@@ -10,7 +10,7 @@ import CoreLocation
 
 class NYCBikeNetworking : NSObject {
     
-    fileprivate(set) var refreshThrottle:Date = Date() + TimeInterval(-65) 
+    internal var refreshThrottle:Date = Date() + TimeInterval(-65) 
 
     var delegate:NYCBikeNetworkingDelegate?
     
@@ -40,6 +40,8 @@ class NYCBikeNetworking : NSObject {
             
             delegate.setStations(stationsData: stationData)
             delegate.setStationsStatus(statusData: stationStatus)
+            self.delegate?.updated(didUpdate: true, str: nil)
+            self.refreshThrottle = Date()
             self.initial = false
             self.stationInfo = nil
             self.stationStatus = nil
@@ -81,11 +83,6 @@ class NYCBikeNetworking : NSObject {
             guard let data = data, error == nil else {
                 self.delegate?.error(description: error!.localizedDescription)
                 return
-            }
-            
-            if(task == .status){
-                self.delegate?.updated(didUpdate: true, str: nil)
-                self.refreshThrottle = Date()
             }
             
             callback(task,data)

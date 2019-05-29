@@ -123,7 +123,7 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
             dockStatus = .bikes
         }
         
-        self.distancesUpdated(nearestStations: model.nearestStations)
+        self.distancesUpdated(nearestStations: model.getNearestStations())
         
     }
     
@@ -143,8 +143,10 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
         
         let success = model.updateFavouriteToRow(id: fav.station_id, newRowIndex: destinationIndexPath.row)
         
-        print("moved row \(sourceIndexPath.row) to \(destinationIndexPath.row), \(success)")
+        //refresh of favourites here
+        model.refreshFavourites()
         
+        print("moved row \(sourceIndexPath.row) to \(destinationIndexPath.row), \(success)")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -213,8 +215,9 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
                 return
             }
             let favouriteToBeDeleted = favourites[indexPath.row]
+            
             if(!model.toggleFavouriteForId(id: favouriteToBeDeleted.station_id)){
-                //model.favourites?.remove(at: indexPath.row)
+                model.refreshFavourites()
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         default:
@@ -322,12 +325,14 @@ extension MainTableViewController : NYCBikeUIDelegate {
     // for each visible index path, check if it matches a station in the model.favourites
     func updateDistanceForCell(at indexPath:IndexPath){
         
-        guard let favourites = self.model.favourites, model.nearestStations.count > 0, favourites.indices.contains(indexPath.row) else {
+         let nearestStations = model.getNearestStations()
+        
+        guard let favourites = self.model.favourites, nearestStations.count > 0, favourites.indices.contains(indexPath.row) else {
             return
         }
         
         let favourite = favourites[indexPath.row]
-        let nearestStations = model.nearestStations
+       
         
         guard let matchedStation:Nearest = nearestStations.first(where: { (nearest) -> Bool in
             nearest.externalID == favourite.external_id

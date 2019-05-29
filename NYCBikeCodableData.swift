@@ -10,17 +10,19 @@ import Foundation
 
 //TODO: update structures to reflect optional attributes on https://github.com/NABSA/gbfs/blob/master/gbfs.md
 
-struct NYCStationInfoWrapper : Codable {
+protocol GBFS : Codable { }
+
+struct NYCStationInfoWrapper : GBFS {
     let last_updated:Date
     let data:[String:[NYCBikeStationInfo]]
 }
 
-struct NYCStationStatusWrapper : Codable{
+struct NYCStationStatusWrapper : GBFS{
     let last_updated:Date
     let data:[String:[NYCBikeStationStatus]]
 }
 
-public struct NYCBikeStationInfo:Codable {
+public struct NYCBikeStationInfo:GBFS {
     
     public let station_id:String
     public let external_id:String
@@ -45,7 +47,7 @@ public struct NYCBikeStationInfo:Codable {
     
 }
 
-public enum RentalMethods : String, Codable {
+public enum RentalMethods : String, GBFS {
     case key = "KEY"
     case creditCard = "CREDITCARD"
     case paypass = "PAYPASS"
@@ -58,7 +60,7 @@ public enum RentalMethods : String, Codable {
 
 //{"station_id":"304","num_bikes_available":6,"num_ebikes_available":0,"num_bikes_disabled":1,"num_docks_available":26,"num_docks_disabled":0,"is_installed":1,"is_renting":1,"is_returning":0,"last_reported":1557248000,"eightd_has_available_keys":true,"eightd_active_station_services":[{"id":"a58d9e34-2f28-40eb-b4a6-c8c01375657a"}]},
 
-public struct NYCBikeStationStatus : Codable{
+public struct NYCBikeStationStatus : GBFS{
     
     public let station_id:String
     public let num_bikes_available:Int

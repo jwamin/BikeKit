@@ -19,8 +19,6 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
         guard let dmanager = distanceManager else {
             print("no dmanager")
             return
-
-            
         }
         
         guard let userlocation = previouslyReportedUserLocation else {
@@ -32,30 +30,20 @@ extension NYCBikeModel : NYCBikeDistanceReportingDelegate {
         
     }
     
-    public func orderedArrayUpdated(orderedStations: [NYCBikeStationDistanceModel]) {
-
-        var nearestStations = [Nearest]()
-        for index in 0...NYCBikeConstants.calculateNearestMax{
-            if orderedStations.indices.contains(index){
-                let orderedStation = orderedStations[index]
-                
-                guard let mainStationInfo = stationData?.filter({ (station) -> Bool in
-                    station.external_id == orderedStation.stationExternalID
-                }).first else {
-                    continue
-                }
-                let distanceString = "\(Int(orderedStation.distance!))m"
-                nearestStations.append(
-                    Nearest(externalID: mainStationInfo.external_id, info: mainStationInfo, distanceString: distanceString, distance: orderedStation.distance!)
-                )
-                
-            }
-            
+    public func nearestStationsUpdated() {
+        delegate?.distancesUpdated(nearestStations: self.getNearestStations())
+    }
+    
+    public func getStationDataForId(extId: String) -> NYCBikeStationInfo {
+        
+        guard let stationData = stationData?.first(where: { (info) -> Bool in
+            info.external_id == extId
+        }) else {
+            fatalError("nothing with the id\(extId)")
         }
-        DispatchQueue.main.async {
-            self.nearestStations = nearestStations
-            self.delegate?.distancesUpdated(nearestStations:nearestStations)
-        }
+        
+        return stationData
+        
     }
     
     public static func smartOrderingOfNearestStations(_ nearest:[Nearest],query:NYCBikeStationCapacityQuery)->[Nearest]{

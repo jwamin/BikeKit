@@ -65,7 +65,7 @@ class SearchTableViewController : UITableViewController {
         }()
         
         cell.imageView?.image = image ?? UIImage(named: Constants.identifiers.bikeImageName)
-        cell.detailTextLabel?.text = "\(data.capacity) docks in total."
+        cell.detailTextLabel?.text = "\(data.capacity ?? 0) docks in total."
         
         return cell
         
@@ -169,7 +169,7 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
     }
     
     func cancelScreenshotterForIndexPath(path:IndexPath){
-        if let data = getData(for: path){
+        if let _ = getData(for: path){
             
             if let locator = screenshotters[path]{
                 locator.cancel()

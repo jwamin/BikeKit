@@ -23,19 +23,22 @@ public protocol NYCBikeDistanceModelProtocol{
 
 public protocol NYCBikeDistanceReportingDelegate {
     
-    func orderedArrayUpdated(orderedStations:[NYCBikeStationDistanceModel])
+    func nearestStationsUpdated()
+    func getStationDataForId(extId:String) -> NYCBikeStationInfo
     
 }
 
 public class NYCBikeStationDistanceManager : NSObject {
     
-    var allStations:[NYCBikeStationDistanceModel]
+    private var allStations:[NYCBikeStationDistanceModel]
+    
+    internal var nearestStations = [Nearest]()
     
     var delegate:NYCBikeDistanceReportingDelegate?
     
-    var stationDistancesOrderedArray:[NYCBikeStationDistanceModel]{
+    private var stationDistancesOrderedArray:[NYCBikeStationDistanceModel]{
         didSet{
-            delegate?.orderedArrayUpdated(orderedStations: stationDistancesOrderedArray)
+            self.orderedArrayUpdated(orderedStations: stationDistancesOrderedArray)
         }
     }
     
@@ -70,6 +73,30 @@ public class NYCBikeStationDistanceManager : NSObject {
         
         stationDistancesOrderedArray = stationsWithDistances
         
+    }
+    
+    private func orderedArrayUpdated(orderedStations: [NYCBikeStationDistanceModel]) {
+        
+        var nearestStations = [Nearest]()
+        for index in 0...NYCBikeConstants.calculateNearestMax{
+            if orderedStations.indices.contains(index){
+                let orderedStation = orderedStations[index]
+                
+                guard let stationData = delegate?.getStationDataForId(extId: orderedStation.stationExternalID) else {
+                    fatalError()
+                }
+                let distanceString = "\(Int(orderedStation.distance!))m"
+                nearestStations.append(
+                    Nearest(externalID: stationData.external_id, info: stationData, distanceString: distanceString, distance: orderedStation.distance!)
+                )
+                
+            }
+            
+        }
+        DispatchQueue.main.async {
+            self.nearestStations = nearestStations
+            self.delegate?.nearestStationsUpdated()
+        }
     }
     
 }

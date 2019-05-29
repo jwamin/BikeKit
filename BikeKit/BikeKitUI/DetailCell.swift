@@ -183,22 +183,22 @@ public class DetailBikeKitViewCell: UITableViewCell {
         
         if let (bikes,docks,electric,disabled) = cell.getarrangedsubviews(), let status = data.status {
             bikes.label.text = "\(status.num_bikes_available)\nBikes"
-            bikes.total = data.capacity
+            bikes.total = data.capacity!
             bikes.current = status.num_bikes_available
             //bikes.layoutMarginsDidChange()
             docks.label.text = "\(status.num_docks_available)\nDocks"
-            docks.total = data.capacity
+            docks.total = data.capacity!
             docks.anticlockwise = false
             docks.current = status.num_docks_available
             //bikes.layoutMarginsDidChange()
             electric.label.text = "\(status.num_ebikes_available)\nElectric"
-            electric.total = data.capacity
+            electric.total = data.capacity!
             electric.current = status.num_ebikes_available
             //bikes.layoutMarginsDidChange()
-            disabled.label.text = "\(status.num_bikes_disabled)\nDisabled"
+            disabled.label.text = "\(status.num_bikes_disabled!)\nDisabled"
             disabled.anticlockwise = false
-            disabled.total = data.capacity
-            disabled.current = status.num_bikes_disabled
+            disabled.total = data.capacity!
+            disabled.current = status.num_bikes_disabled!
             //bikes.layoutMarginsDidChange()
         }
         
@@ -221,7 +221,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             
             let (str,status) = data.smartCapacityAssesment(type: query)
             let label = self.distanceLabel
-            self.distanceLabel.text =  "\(data.capacity) docks \(distanceComputed)\n\(str)"
+            self.distanceLabel.text =  "\(data.capacity ?? 0) docks \(distanceComputed)\n\(str)"
             
             switch(status){
                 case .empty:
@@ -237,7 +237,7 @@ public class DetailBikeKitViewCell: UITableViewCell {
             }
             label?.sizeToFit()
         } else {
-            self.distanceLabel.text = "\(data.capacity) docks"
+            self.distanceLabel.text = "\(data.capacity ?? 0) docks"
             self.distanceLabel.backgroundColor = .clear
         }
         

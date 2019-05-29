@@ -5,7 +5,7 @@
 1. Include `BikeKit` framework
 2. Pass a `UserDefaults` suite to the `NYCBikeModel.groupedUserDefaults`  to persist favourites data.
 3. Make your subclass conform to the  `NYCBikeUIDelegate` to handle calls to `updated:` and `cooldown:`.
-4. The `.stations` and `.favourites` ivars contain  
+4. Pass a `CLLocation` to the `updateLocation` method. On delegate callback, call `getNearestStations()` for array of nearby stations.
 
 ## Test App
 

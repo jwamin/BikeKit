@@ -45,24 +45,28 @@ extension NYCBikeModel {
             return
         }
         
-        
-        
         callback(nil)
         
     }
     
+    
+    /// Toggle favourite with external Id
+    ///
+    /// - Parameter extId: the external
+    /// - Returns: forwarded result of favouriting transaction
     public func toggleFavouriteWithExternalId(extId:String)->Bool{
         
-        guard let match = stationData?.first(where: { (info) -> Bool in
-            return info.external_id == extId
-        }) else {
-            return false
-        }
+        let match = self.getStationDataForId(extId: extId)
         
         return toggleFavouriteForId(id: match.station_id)
-        
     }
     
+    
+    /// Toggle favourite
+    /// Checks for favourite status in userDefaults suite and updates by negating that value
+    ///
+    /// - Parameter id: stationID Int string
+    /// - Returns: Bool status of isFavourite the result of favouriting transaction
     public func toggleFavouriteForId(id:String)->Bool{
         
         let groupDefaults = NYCBikeModel.groupedUserDefaults
@@ -85,13 +89,14 @@ extension NYCBikeModel {
             add = true
         }
         
-        
         groupDefaults.set(newFavourites, forKey: NYCBikeConstants.favouritesUserDefaultsKey)
         groupDefaults.synchronize()
         
-        refreshFavourites { (error) in
-            print("success?")
-        }
+        //Really dont like this, but necessary for search controller updates
+//        refreshFavourites { (error) in
+//            print("success?")
+//        }
+        
         print("\(id) \((add) ? "added":"removed")")
         return add
         
@@ -117,9 +122,9 @@ extension NYCBikeModel {
         print(favourites, id)
         print(newFavourites)
         
-        refreshFavourites { (error) in
-            print("success?")
-        }
+//        refreshFavourites { (error) in
+//            print("success?")
+//        }
         
         return true
     }

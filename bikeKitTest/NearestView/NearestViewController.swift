@@ -197,7 +197,7 @@ extension NearestViewController : UICollectionViewDataSource {
     }
     
     func update(){
-        nearest = NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.nearestStations, query: dockStatus)
+        nearest = NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.getNearestStations(), query: dockStatus)
     }
     
     
@@ -306,13 +306,12 @@ extension NearestViewController {
         DispatchQueue.main.async {
             
             
-            guard let textArea = self.textArea else {
+            guard let textArea = self.textArea, AppDelegate.mainBikeModel.getNearestStations().count > 0 else {
                 return
             }
             textArea.text = ""
-            
-            if(AppDelegate.mainBikeModel.nearestStations.count>0){
-                for (index,nearest) in NYCBikeModel.smartOrderingOfNearestStations(AppDelegate.mainBikeModel.nearestStations, query: .bikes).enumerated() {
+            let nearestStations = AppDelegate.mainBikeModel.getNearestStations()
+                for (index,nearest) in NYCBikeModel.smartOrderingOfNearestStations(nearestStations, query: .bikes).enumerated() {
                     switch self.dockStatus{
                         case .bikes:
                             textArea.text += "\(index+1). \(nearest.info.name)\n\(nearest.info.status!.num_bikes_available) \(self.dockStatus.rawValue) available -  \(nearest.distanceString)\n\n"
@@ -321,7 +320,6 @@ extension NearestViewController {
                     }
                     
                 }
-            }
             
             if (textArea.text.count == 0){
                 textArea.text = "Refresh on main screen to see nearest locations"

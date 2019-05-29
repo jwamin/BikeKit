@@ -35,24 +35,31 @@ class BikeKitNetworkingTests: XCTestCase {
         
     }
     
-    func testStationWrapperParsing() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testRefreshThrottleFails(){
         
-        let jsonData = wrapperJson.data(using: .utf8)!
-        let mockStationWrapper = try networking.decodeStationData(data: jsonData, decoderClass: NYCStationInfoWrapper.self)
-        let directly = NYCStationInfoWrapper(last_updated: Date(timeIntervalSinceReferenceDate: 1559060968), data: ["stations":[]])
+        networking.refreshThrottle = Date()
         
-        XCTAssertEqual(mockStationWrapper.last_updated, directly.last_updated)
-        XCTAssertEqual(mockStationWrapper.data.count , directly.data.count)
+        let response = networking.checkTimeoutHasExpired(now: Date())
+        
+        XCTAssertFalse(response)
+        
+        
     }
-
-    func testStationsParsing() throws{
+ 
+    func testRefreshThrottleSucceeds(){
         
-        let jsonData = stationJson.data(using: .utf8)!
-        let data = try networking.decodeStationData(data: jsonData, decoderClass: [NYCBikeStationInfo].self)
+        networking.refreshThrottle = Date().addingTimeInterval(19)
         
-        XCTAssert(data.count == 2)
+        let response = networking.checkTimeoutHasExpired(now: Date())
+        
+        XCTAssertFalse(response)
+        
+        networking.refreshThrottle = Date().addingTimeInterval(20)
+        
+        let secondTest = networking.checkTimeoutHasExpired(now: Date())
+        
+        XCTAssertFalse(secondTest)
         
     }
     

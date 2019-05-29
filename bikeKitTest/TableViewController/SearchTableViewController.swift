@@ -31,7 +31,7 @@ extension MainTableViewController : UISearchControllerDelegate, FavouritesUpdate
         
         // ok so here, work out the difference between arrays and insert the new favourites animated
         print(updates)
-        
+        model.refreshFavourites()
         
         let startCount = tableView.numberOfRows(inSection: 0)
         

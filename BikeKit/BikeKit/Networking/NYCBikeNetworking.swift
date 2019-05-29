@@ -10,11 +10,11 @@ import CoreLocation
 
 class NYCBikeNetworking : NSObject {
     
-    internal var refreshThrottle:Date = Date() + TimeInterval(-65) 
-
     var delegate:NYCBikeNetworkingDelegate?
     
-    var dispatchG:DispatchGroup!
+    internal var refreshThrottle:Date = Date() + TimeInterval(-65)
+    
+    internal var dispatchG:DispatchGroup!
     
     internal var stationInfo:[NYCBikeStationInfo]?
     internal var stationStatus:[NYCBikeStationStatus]?
@@ -30,7 +30,7 @@ class NYCBikeNetworking : NSObject {
         
         print("started requests")
         
-        dispatchG!.notify(queue: .global()) {
+        dispatchG.notify(queue: .global()) {
             
             print("requests and parsing done, notifying delegate...")
             
@@ -50,6 +50,10 @@ class NYCBikeNetworking : NSObject {
         
     }
     
+    
+    /// Execute request to GBFS endpoint
+    ///
+    /// - Parameter task: enumeration to request either status or info for bikeshare stations
     func getNYCBikeAPIData(task:NYCBikeRequestType){
         
         let url:URL
@@ -58,7 +62,9 @@ class NYCBikeNetworking : NSObject {
             case .info:
                 url = NYCBikeConstants.URLS.STATION_INFO_URL
             case .status:
-                if(!checkTimeoutHasExpired()){
+                let now = Date()
+                if(!checkTimeoutHasExpired(now: now)){
+                    throwTimeoutToast(now: now)
                     return
                 }
                 url = NYCBikeConstants.URLS.STATION_STATUS_URL
@@ -75,7 +81,7 @@ class NYCBikeNetworking : NSObject {
         
     }
     
-    public func createTask(infoTask:URLRequest,task:NYCBikeRequestType,callback:@escaping (NYCBikeRequestType,Data)->Void)->URLSessionDataTask{
+    internal func createTask(infoTask:URLRequest,task:NYCBikeRequestType,callback:@escaping (NYCBikeRequestType,Data)->Void)->URLSessionDataTask{
         
         return URLSession.shared.dataTask(with: infoTask, completionHandler:{
             (data,request,error) in
@@ -91,33 +97,45 @@ class NYCBikeNetworking : NSObject {
         
     }
     
-    public func createRequest(url:URL)->URLRequest{
+    
+    internal func createRequest(url:URL)->URLRequest{
         return URLRequest(url: url)
     }
     
-    func handleError(error:Error){
+    
+    internal func handleError(error:Error){
         
         self.delegate?.error(description: error.localizedDescription)
         
     }
-
     
-    private func checkTimeoutHasExpired()->Bool{
-        let now = Date()
+    /// Decides whether to throttle request to refresh
+    ///
+    /// - Parameter now: current Date
+    /// - Returns: true of false dependent on whether to allow the refresh or not
+    internal func checkTimeoutHasExpired(now:Date)->Bool{
         let timeout = refreshThrottle + NYCBikeConstants.TIMEOUT_THROTTLE
         if(now<timeout){
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.second]
-            formatter.unitsStyle = .full
-            formatter.includesApproximationPhrase = true
-            let datestr =  formatter.string(from: now, to: timeout)!.lowercased()
-            let str = "throttled, try again in \(datestr)"
-            DispatchQueue.main.async {
-                self.delegate?.updated(didUpdate: false,str: str)
-            }
             return false
         }
         return true
+    }
+    
+    
+    /// Notify UI that the update has not occurred
+    ///
+    /// - Parameter now: current Date
+    internal func throwTimeoutToast(now:Date){
+        let timeout = refreshThrottle + NYCBikeConstants.TIMEOUT_THROTTLE
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second]
+        formatter.unitsStyle = .full
+        formatter.includesApproximationPhrase = true
+        let datestr =  formatter.string(from: now, to: timeout)!.lowercased()
+        let str = "throttled, try again in \(datestr)"
+        DispatchQueue.main.async {
+            self.delegate?.updated(didUpdate: false,str: str)
+        }
     }
     
 }

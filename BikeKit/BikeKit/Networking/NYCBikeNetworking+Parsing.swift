@@ -64,34 +64,34 @@ extension NYCBikeNetworking {
         //let jsonObj = try! JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
         
         switch task {
-        case .info:
-            do{
-                let stationInfoData = try decodeStationData(data: data,decoderClass: NYCStationInfoWrapper.self)
-                guard let stations = stationInfoData.data["stations"] else {
-                    return
-                }
-                self.stationInfo = stations
-                self.dispatchG.leave()
-            } catch {
-                delegate?.error(description: error.localizedDescription)
-            }
-            return
-        case .status:
-            do{
-                let stationInfoData = try decodeStationData(data: data, decoderClass: NYCStationStatusWrapper.self)
-                let stationStatusData = stationInfoData.data["stations"]!
-                self.stationStatus = stationStatusData
-                
-                if(initial){
+            case .info:
+                do{
+                    let stationInfoData = try decodeStationData(data: data,decoderClass: NYCStationInfoWrapper.self)
+                    guard let stations = stationInfoData.data["stations"] else {
+                        return
+                    }
+                    self.stationInfo = stations
                     self.dispatchG.leave()
-                } else {
-                    delegate?.setStationsStatus(statusData: stationStatusData)
+                } catch {
+                    delegate?.error(description: error.localizedDescription)
                 }
-                
-            } catch {
-                delegate?.error(description: error.localizedDescription)
-            }
-            return
+                return
+            case .status:
+                do{
+                    let stationInfoData = try decodeStationData(data: data, decoderClass: NYCStationStatusWrapper.self)
+                    let stationStatusData = stationInfoData.data["stations"]!
+                    self.stationStatus = stationStatusData
+                    
+                    if(initial){
+                        self.dispatchG.leave()
+                    } else {
+                        delegate?.setStationsStatus(statusData: stationStatusData)
+                    }
+                    
+                } catch {
+                    delegate?.error(description: error.localizedDescription)
+                }
+                return
         }
         
         

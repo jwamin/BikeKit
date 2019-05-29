@@ -8,6 +8,8 @@
 
 import Foundation
 
+//TODO: update structures to reflect optional attributes on https://github.com/NABSA/gbfs/blob/master/gbfs.md
+
 struct NYCStationInfoWrapper : Codable {
     let last_updated:Date
     let data:[String:[NYCBikeStationInfo]]
@@ -26,7 +28,7 @@ public struct NYCBikeStationInfo:Codable {
     public let short_name:String
     public let lat:Double
     public let lon:Double
-    public let region_id:Int
+    public let region_id:Int?
     public let rental_methods:[RentalMethods]
     public let capacity:Int
     public let rental_url:URL

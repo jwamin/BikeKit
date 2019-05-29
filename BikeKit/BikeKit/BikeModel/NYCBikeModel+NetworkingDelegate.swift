@@ -11,7 +11,9 @@ import Foundation
 extension NYCBikeModel : NYCBikeNetworkingDelegate{
     
     func error(description: String) {
-        delegate?.error(str: description)
+        DispatchQueue.main.async {
+            self.delegate?.error(str: description)
+        }
     }
     
     func setStations(stationsData: [NYCBikeStationInfo]) {
@@ -46,9 +48,9 @@ extension NYCBikeModel : NYCBikeNetworkingDelegate{
         }
         
         self.stationData = updatedStations
-        
-        delegate?.statusUpdatesAreReady()
-        
+        DispatchQueue.main.async {
+            self.delegate?.statusUpdatesAreReady()
+        }
     }
 
 }

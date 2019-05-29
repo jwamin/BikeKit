@@ -28,6 +28,8 @@ class NYCBikeNetworking : NSObject {
         self.getNYCBikeAPIData(task: .info)
         self.getNYCBikeAPIData(task: .status)
         
+        print("started requests")
+        
         dispatchG!.notify(queue: .global()) {
             
             print("requests and parsing done, notifying delegate...")

@@ -111,6 +111,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //maybe break this out elsewhere!
     func isFavourite(extID:String)->Bool{
         
+        //make into function on model
         if let _ = model.favourites?.first(where: { (info) -> Bool in
             info.external_id == extID
         }) {
@@ -127,11 +128,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 
                 //TODO: update pins with new info
                 
-                guard let data = model.stationData?.first(where: { (info) -> Bool in
-                    info.external_id == pin.id
-                }) else {
-                    continue
-                }
+                let data = model.getStationDataForId(extId: pin.id!)
+                
+                pin.isFavourite = isFavourite(extID: data.external_id)
                 
                 pin.subtitle = "updated "+data.statusString()
                 
@@ -166,19 +165,13 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             return nil
         }
         
-        let calloutButton = UIButton(type: .system)
-        calloutButton.setTitle("Add To Fav", for: .normal)
-        calloutButton.addTarget(customPin, action: #selector(customPin.addFavAction), for: .touchUpInside)
-        
-        customPin.leftCalloutAccessoryView = calloutButton
-        
         if let favourite = annotation.isFavourite{
             if(favourite){
                 customPin.pinTintColor = .purple
-                calloutButton.setTitle("remove", for: .normal)
+                customPin.calloutButton.setTitle("remove", for: .normal)
             }
         }
-        calloutButton.sizeToFit()
+        customPin.calloutButton.sizeToFit()
         
         
         return customPin
@@ -209,6 +202,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         if(!zoomToLocation){
             zoomToUser()
         }

@@ -172,13 +172,13 @@
 			path = PresentingViews;
 			sourceTree = "<group>";
 		};
-		57B246362295D0D700141F19 /* MapViews */ = {
+		57B246362295D0D700141F19 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
 				57FF72D222833BD1006F63E8 /* MapViewController.swift */,
 				57B246372295D11C00141F19 /* BKPinAnnotationView.swift */,
 			);
-			path = MapViews;
+			path = MapView;
 			sourceTree = "<group>";
 		};
 		57FF727E22821544006F63E8 = {
@@ -212,7 +212,7 @@
 				57B246352295D0B000141F19 /* PresentingViews */,
 				571820A2229B07CE00FFCF4E /* NearestView */,
 				57B246342295D09600141F19 /* TableViewController */,
-				57B246362295D0D700141F19 /* MapViews */,
+				57B246362295D0D700141F19 /* MapView */,
 				57FF72D822835C78006F63E8 /* README.md */,
 				57FF729122821546006F63E8 /* Assets.xcassets */,
 				57FF729322821546006F63E8 /* LaunchScreen.storyboard */,

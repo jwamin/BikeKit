@@ -20,17 +20,28 @@ class BKPinAnnotation : MKPointAnnotation {
 
 class BKPinAnnotationView: MKPinAnnotationView {
 
+    let calloutButton:UIButton
+    
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        
+        calloutButton = UIButton(type: .system)
+        
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        
+        calloutButton.setTitle("Add To Fav", for: .normal)
+        calloutButton.addTarget(self, action: #selector(addFavAction), for: .touchUpInside)
+        
+        self.leftCalloutAccessoryView = calloutButton
     }
     
     required init?(coder aDecoder: NSCoder) {
+        
         fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {
+        
         super.prepareForReuse()
-        self.leftCalloutAccessoryView = nil
         self.pinTintColor = .red
     }
     

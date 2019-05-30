@@ -105,6 +105,7 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
         } else {
             tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem = editButtonItem
+            NotificationCenter.default.post(mapNotification)
         }
         
         //model.refreshFavourites()
@@ -219,6 +220,7 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
             
             if(!model.toggleFavouriteForId(id: favouriteToBeDeleted.station_id)){
                 model.refreshFavourites()
+                NotificationCenter.default.post(mapNotification)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         default:

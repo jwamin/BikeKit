@@ -91,8 +91,8 @@ public class NYCBikeModel : NSObject{
     }
     
     public func refresh(){
-        refreshFavourites()
-        updateLocation(userLocation: previouslyReportedUserLocation)
+//        refreshFavourites()
+//        updateLocation(userLocation: previouslyReportedUserLocation)
         self.networking.getNYCBikeAPIData(task: .status)
     }
     

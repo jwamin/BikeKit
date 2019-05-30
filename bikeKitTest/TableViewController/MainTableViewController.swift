@@ -19,7 +19,7 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
     
     var toastDelegate:ToastDelegate?
     
-    var dockSwitch:UISwitch!
+    var dockSwitch:SharedSwitch!
     var dockLabel:UILabel!
     var dockStatus:NYCBikeStationCapacityQuery = .bikes
     
@@ -54,7 +54,8 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
         self.navigationItem.rightBarButtonItem = editButtonItem
         
         //Left bar button item
-        dockSwitch = UISwitch()
+        dockSwitch = SharedSwitch()
+        dockSwitch.setSharedId(newId: 1)
         dockSwitch.addTarget(self, action: #selector(dockSwitchUpdated(_:)), for: .valueChanged)
         dockLabel = UILabel()
         dockLabel.font = UIFont.preferredFont(forTextStyle: .body)
@@ -101,13 +102,12 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
         if(!tableView.isEditing){
             tableView.setEditing(true, animated: true)
             self.navigationItem.rightBarButtonItem = doneButtonItem
-            tableView.setNeedsDisplay()
         } else {
             tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem = editButtonItem
-            tableView.setNeedsDisplay()
         }
         
+        //model.refreshFavourites()
     }
     
     
@@ -123,8 +123,9 @@ class MainTableViewController : UITableViewController, DockSwitchProtocol {
             dockStatus = .bikes
         }
         
-        self.distancesUpdated(nearestStations: model.getNearestStations())
+        dockSwitch.postNotification()
         
+        self.distancesUpdated(nearestStations: model.getNearestStations())
     }
     
     //MARK: Table View Datasource and delegate methods
@@ -281,6 +282,7 @@ extension MainTableViewController : NYCBikeUIDelegate {
     
     func inCooldown(str:String?) {
         refreshed.endRefreshing()
+        model.refreshFavourites()
         if let message = str {
             toastDelegate?.flyToast(str: message)
         }

@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         table.toastDelegate = mainToastView
         
         let nearest = NearestViewController(nibName: "NearestViewController", bundle: Bundle.main)
-        
+        nearest.loadViewIfNeeded()
         
         //Map view initialisation
         let map = MapViewController()

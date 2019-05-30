@@ -17,6 +17,7 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     let model:NYCBikeModel
     
     override init() {
+        
         model = NYCBikeModel()
         model.setUserDefaultsSuite(suite: userDefaults)
         location = CLLocation(latitude: lat, longitude: lng)
@@ -25,6 +26,7 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     }
     
     func uiUpdatesAreReady(){
+        
         print("ui updates ready")
         print("\(model.locations.count) stations from \(NYCBikeConstants.URLS.STATION_INFO_URL)\n")
     }
@@ -35,10 +37,12 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     }
     
     func error(str: String?) {
+        
         print(str ?? "error")
     }
     
     func inCooldown(str: String?) {
+        
         print("cooldown \(str ?? "")")
         PlaygroundPage.current.finishExecution()
     }
@@ -61,10 +65,8 @@ class TestObject : NSObject, NYCBikeUIDelegate {
             print(reordered.info.name+" \(reordered.distanceString)  \(reordered.info.status!.num_docks_available) docks available \n")
         }
         
-        Thread.sleep(forTimeInterval: 4)
+        Thread.sleep(forTimeInterval: 2)
         model.refresh()
-
-        
     }
     
 }

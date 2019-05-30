@@ -42,6 +42,7 @@ public class DialView : UIView{
     let lineWidth:CGFloat = 7
     
     init() {
+        
         super.init(frame: .zero)
         self.isOpaque = false
         self.clipsToBounds = false
@@ -52,7 +53,6 @@ public class DialView : UIView{
         label.text = String(0)
         label.center = self.center
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        
     }
     
     public override func layoutMarginsDidChange() {
@@ -66,7 +66,7 @@ public class DialView : UIView{
     
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
-       
+        
         let context = UIGraphicsGetCurrentContext()
         //let drawrect = rect.insetBy(dx: -10, dy: -10)
         let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
@@ -78,7 +78,7 @@ public class DialView : UIView{
         var finalEndAngle:CGFloat = 0
         
         if(!anticlockwise){
-           finalEndAngle = endAngle - (swing * fraction)
+            finalEndAngle = endAngle - (swing * fraction)
         } else {
             finalEndAngle = startAngle + (swing * fraction)
         }
@@ -87,7 +87,6 @@ public class DialView : UIView{
         context?.setLineCap(.round)
         context?.setLineWidth(lineWidth)
         context?.setFillColor(UIColor.white.cgColor)
-        
         
         if(!anticlockwise){
             context?.setStrokeColor(UIColor.red.cgColor)
@@ -98,25 +97,25 @@ public class DialView : UIView{
         }
         
         context?.strokePath()
-    
     }
     
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        //invalidate drawing when
+        
+        //invalidate drawing when orientation changes
         super.traitCollectionDidChange(previousTraitCollection)
         self.setNeedsDisplay()
     }
     
-   public override func updateConstraints() {
+    public override func layoutSubviews() {
+        
+        //this triggers a redraw when setEditing changes
+        super.layoutSubviews()
+        self.setNeedsDisplay()
+    }
     
+    public override func updateConstraints() {
+        
         if(dialConstraints.count == 0){
-            
-//var constraints =             [
-//            self.widthAnchor.constraint(equalToConstant: Locator.squareSize.height),
-//            //self.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0),
-//            label.centerXAnchor.constraint(equalToSystemSpacingAfter: self.centerXAnchor, multiplier: 1.0),
-//            label.centerYAnchor.constraint(equalToSystemSpacingBelow: self.centerYAnchor, multiplier: 1.0)
-//            ]
             
             var constraints = NSLayoutConstraint.constraints(withVisualFormat: "|-0-[label]-0-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[label]-0-|", options: [], metrics: ["height":Locator.squareSize.height], views: ["label":label])
@@ -130,8 +129,7 @@ public class DialView : UIView{
             self.layoutIfNeeded()
         }
         
-    
-    super.updateConstraints()
+        super.updateConstraints()
     }
     
 }

@@ -53,7 +53,8 @@ class NearestViewController: UIViewController, DockSwitchProtocol {
         collectionView.register(UINib(nibName: "NearestCell", bundle: Bundle.main), forCellWithReuseIdentifier: "Cell")
         
         //Left bar button item
-        dockSwitch = UISwitch()
+        dockSwitch = SharedSwitch()
+        dockSwitch.setSharedId(newId: 1)
         dockSwitch.addTarget(self, action: #selector(dockSwitchUpdated(_:)), for: .valueChanged)
         dockLabel = UILabel()
         dockLabel.font = UIFont.preferredFont(forTextStyle: .body)
@@ -69,7 +70,7 @@ class NearestViewController: UIViewController, DockSwitchProtocol {
         // Do any additional setup after loading the view.
     }
     
-    var dockSwitch:UISwitch!
+    var dockSwitch:SharedSwitch!
     var dockLabel:UILabel!
     var dockStatus: NYCBikeStationCapacityQuery = .bikes
     
@@ -84,6 +85,8 @@ class NearestViewController: UIViewController, DockSwitchProtocol {
             dockStatus = .bikes
         }
 
+        dockSwitch.postNotification()
+        
         update()
         
     }

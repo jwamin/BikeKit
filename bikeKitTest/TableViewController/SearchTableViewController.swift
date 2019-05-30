@@ -33,20 +33,25 @@ extension MainTableViewController : UISearchControllerDelegate, FavouritesUpdate
         print(updates)
         model.refreshFavourites()
         
-        let startCount = tableView.numberOfRows(inSection: 0)
-        
-        let indexPaths = updates.enumerated().map { (index,_) in
-            return IndexPath(row: index+startCount, section: 0)
-        }
+//        let startCount = tableView.numberOfRows(inSection: 0)
+//
+//        let indexPaths = updates.enumerated().map { (index,_) in
+//            return IndexPath(row: index+startCount, section: 0)
+//        }
         updates.removeAll()
-        tableView.insertRows(at: indexPaths, with: .automatic)
+//
+//        if indexPaths.count > 0{
+//        tableView.insertRows(at: indexPaths, with: .automatic)
+//        } else {
+            tableView.reloadData()
+//        }
         
-        //self.refresh()
+        NotificationCenter.default.post(mapNotification)
         
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        searchController.searchResultsUpdater?.updateSearchResults(for: searchController)
+        (searchController.searchResultsController as! SearchTableViewController).setStationInfoSubset(newSet: model.stationData!)
     }
     
 }
@@ -56,23 +61,16 @@ extension MainTableViewController : UISearchResultsUpdating{
     
     func updateSearchResults(for searchController: UISearchController) {
         
-        
-        
         guard let stationData = model.stationData,  let resultsController = (searchController.searchResultsController as? SearchTableViewController) else {
             return
         }
         
         let searchString = searchController.searchBar.text!.lowercased()
         
-        if searchString.count == 0{
-            resultsController.setStationInfoSubset(newSet: stationData)
-            return
-        }
-        
         let filtered = model.stationData!.filter {
             $0.name.lowercased().contains(searchString)
         }
-        
+        print(filtered.count)
         resultsController.setStationInfoSubset(newSet: (filtered.count>0) ? filtered : stationData)
         
         

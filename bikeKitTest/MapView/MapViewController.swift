@@ -70,34 +70,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         for station in model.locations{
             
-            var mainStationObject:NYCBikeStationInfo?
-            
-            for savedStation in model.stationData!{
-                
-                if savedStation.external_id == station.key{
-                    mainStationObject = savedStation
-                    break
-                }
-                
-            }
+            let data = model.getStationDataForId(extId: station.key)
             
             let point = MKMapPoint(station.value.coordinate)
 
-            let annotation = BKPinAnnotation()
-            
-            annotation.coordinate = point.coordinate
-
-            
-            guard let stationObjectForPoint = mainStationObject else {
-                print("continuing")
-                continue
-            }
-            
-            annotation.title = stationObjectForPoint.name
-            annotation.subtitle = stationObjectForPoint.statusString()
-            annotation.id = stationObjectForPoint.external_id
-            annotation.isFavourite = isFavourite(extID: stationObjectForPoint.external_id)
-            
+            let annotation = makePin(point: point, data: data)
             
             pins.append(annotation)
            
@@ -108,43 +85,65 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    //maybe break this out elsewhere!
-    func isFavourite(extID:String)->Bool{
+    private func makePin(point:MKMapPoint,data:NYCBikeStationInfo)->BKPinAnnotation{
         
-        //make into function on model
-        if let _ = model.favourites?.first(where: { (info) -> Bool in
-            info.external_id == extID
-        }) {
-            return true
-        }
-        return false
+        let annotation = BKPinAnnotation()
+        
+        annotation.coordinate = point.coordinate
+        
+        annotation.title = data.name
+        annotation.subtitle = data.statusString()
+        annotation.id = data.external_id
+        annotation.isFavourite = model.isFavourite(extID: data.external_id)
+        
+        return annotation
+        
     }
     
     func updatePins(){
         
         if(pendingUpdates){
-        
+        print("updating pins")
             for pin in pins{
                 
                 //TODO: update pins with new info
                 
-                let data = model.getStationDataForId(extId: pin.id!)
+                let data = model.getStationDataForId(extId: pin.id)
                 
-                pin.isFavourite = isFavourite(extID: data.external_id)
+                let modelIsFavourite = model.isFavourite(extID: data.external_id)
                 
-                pin.subtitle = "updated "+data.statusString()
-                
+                if (pin.isFavourite != modelIsFavourite){
+                    print(data.name)
+                    pin.isFavourite = modelIsFavourite
+                    let annotation = annotationForId(extId: data.external_id)!
+                    map.removeAnnotation(annotation)
+                    map.addAnnotation(annotation)
+                }
+
+                pin.subtitle = data.statusString()
             }
+            
             pendingUpdates = false
         }
+    }
+    
+    func annotationForId(extId:String)->BKPinAnnotation?{
         
+        return map.annotations.first(where: { (annotation) -> Bool in
+            if let bkAnnotation = annotation as? BKPinAnnotation{
+                return bkAnnotation.id == extId
+            }
+            return false
+        }) as? BKPinAnnotation
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         print(view)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
         guard let annotation = annotation as? BKPinAnnotation else {
             return nil
         }
@@ -165,20 +164,19 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             return nil
         }
         
-        if let favourite = annotation.isFavourite{
-            if(favourite){
-                customPin.pinTintColor = .purple
-                customPin.calloutButton.setTitle("remove", for: .normal)
-            }
+        let favourite = annotation.isFavourite
+        if(favourite){
+            customPin.pinTintColor = .purple
+            customPin.calloutButton.setTitle("remove", for: .normal)
         }
+    
         customPin.calloutButton.sizeToFit()
         
-        
         return customPin
-        
     }
     
     func zoomToStation(station:NYCBikeStationInfo){
+        
         guard let location = model.locations[station.external_id] else {
             return
         }
@@ -193,12 +191,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func zoomToLocation(location:CLLocationCoordinate2D){
-        //self.loadViewIfNeeded()
+        
         var region = MKCoordinateRegion()
         region.center = location
         region.span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         map.setRegion(region, animated: true)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -213,7 +210,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         } else {
             updatePins()
         }
-    
     }
     
     
@@ -225,24 +221,5 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             zoomToUser()
             
         }
-        
     }
-    
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        print("region changed")
-        //addPins()
-    }
-    
-
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

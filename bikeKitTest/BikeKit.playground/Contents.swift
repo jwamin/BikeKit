@@ -12,7 +12,7 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     let lng = -73.98
     var location:CLLocation
     
-    let userDefaults = UserDefaults.standard
+    let userDefaults = UserDefaults.init(suiteName: "group.jossy.bikekitgroup") ?? .standard
     
     let model:NYCBikeModel
     

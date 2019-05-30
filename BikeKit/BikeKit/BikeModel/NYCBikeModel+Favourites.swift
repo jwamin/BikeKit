@@ -49,6 +49,16 @@ extension NYCBikeModel {
         
     }
     
+    public func isFavourite(extID: String)->Bool{
+    
+        if let _ = self.favourites?.first(where: { (info) -> Bool in
+            info.external_id == extID
+        }) {
+            return true
+        }
+        return false
+    }
+    
     
     /// Toggle favourite with external Id
     ///
@@ -92,11 +102,6 @@ extension NYCBikeModel {
         groupDefaults.set(newFavourites, forKey: NYCBikeConstants.favouritesUserDefaultsKey)
         groupDefaults.synchronize()
         
-        //Really dont like this, but necessary for search controller updates
-//        refreshFavourites { (error) in
-//            print("success?")
-//        }
-        
         print("\(id) \((add) ? "added":"removed")")
         return add
         
@@ -121,10 +126,6 @@ extension NYCBikeModel {
         
         print(favourites, id)
         print(newFavourites)
-        
-//        refreshFavourites { (error) in
-//            print("success?")
-//        }
         
         return true
     }

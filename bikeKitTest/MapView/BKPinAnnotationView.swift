@@ -10,8 +10,8 @@ import MapKit
 
 class BKPinAnnotation : MKPointAnnotation {
     
-    var id:String?
-    var isFavourite:Bool?
+    var id:String = ""
+    var isFavourite:Bool = false
     
     override init() {
         super.init()
@@ -19,7 +19,7 @@ class BKPinAnnotation : MKPointAnnotation {
 }
 
 class BKPinAnnotationView: MKPinAnnotationView {
-
+    
     let calloutButton:UIButton
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
@@ -28,7 +28,7 @@ class BKPinAnnotationView: MKPinAnnotationView {
         
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         
-        calloutButton.setTitle("Add To Fav", for: .normal)
+        calloutButton.setTitle("Add Favourite", for: .normal)
         calloutButton.addTarget(self, action: #selector(addFavAction), for: .touchUpInside)
         
         self.leftCalloutAccessoryView = calloutButton
@@ -43,26 +43,29 @@ class BKPinAnnotationView: MKPinAnnotationView {
         
         super.prepareForReuse()
         self.pinTintColor = .red
+        calloutButton.setTitle("Add Favourite", for: .normal)
     }
     
     @objc
     func addFavAction(_ sender:UIButton){
-        guard let annotation = self.annotation as? BKPinAnnotation, let externalIdString = annotation.id else {
+        
+        guard let annotation = self.annotation as? BKPinAnnotation else {
             return
         }
         
         DispatchQueue.global().async {
-        let isFavourite = AppDelegate.mainBikeModel.toggleFavouriteWithExternalId(extId: externalIdString)
-           DispatchQueue.main.async {
-        (isFavourite) ? {
-            sender.setTitle("remove", for: .normal)
-            self.pinTintColor = .purple
-            }() : {
-                sender.setTitle("add Fav", for: .normal)
-                self.pinTintColor = .red
-        }()
-        sender.sizeToFit()
-        }
+            let externalIdString = annotation.id
+            let isFavourite = AppDelegate.mainBikeModel.toggleFavouriteWithExternalId(extId: externalIdString)
+            DispatchQueue.main.async {
+                (isFavourite) ? {
+                    sender.setTitle("Remove Favourite", for: .normal)
+                    self.pinTintColor = .purple
+                    }() : {
+                        sender.setTitle("Add Favourite", for: .normal)
+                        self.pinTintColor = .red
+                    }()
+                sender.sizeToFit()
+            }
         }
     }
     

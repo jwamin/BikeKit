@@ -26,6 +26,7 @@ class SearchTableViewController : UITableViewController {
     func setStationInfoSubset(newSet:[NYCBikeStationInfo]){
         stationInfoSubset = newSet
         tableView.reloadData()
+        
     }
     
     override func viewDidLoad() {
@@ -72,6 +73,7 @@ class SearchTableViewController : UITableViewController {
     }
     
         override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+            
             let cell = cell as! BikeKitViewCell
     
             //load map image
@@ -96,11 +98,10 @@ class SearchTableViewController : UITableViewController {
                 cell.layoutIfNeeded()
     
             }
-    
-    
         }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
         cancelScreenshotterForIndexPath(path: indexPath)
         cell.prepareForReuse()
     }
@@ -119,8 +120,6 @@ class SearchTableViewController : UITableViewController {
         cell.accessoryType = (update) ? .checkmark : .none
         
         (update) ? delegate?.added() : delegate?.removed()
-        
-        
     }
     
     
@@ -131,10 +130,12 @@ class SearchTableViewController : UITableViewController {
 extension SearchTableViewController : UITableViewDataSourcePrefetching {
     
     func getData(for indexPath:IndexPath)->NYCBikeStationInfo?{
+        
         if(stationInfoSubset.indices.contains(indexPath.row)){
             let data = stationInfoSubset[indexPath.row]
             return data
         }
+        
         return nil
     }
     
@@ -175,7 +176,6 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
                 locator.cancel()
                 screenshotters.removeValue(forKey: path)
             }
-            
         }
     }
     
@@ -187,7 +187,6 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
         indexPaths.forEach{
             startScreenShotterForIndexPath(indexPath: $0)
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
@@ -197,7 +196,6 @@ extension SearchTableViewController : UITableViewDataSourcePrefetching {
         indexPaths.forEach{
             cancelScreenshotterForIndexPath(path: $0)
         }
-        
     }
     
 }

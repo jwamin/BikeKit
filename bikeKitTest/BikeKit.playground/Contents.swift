@@ -40,6 +40,7 @@ class TestObject : NSObject, NYCBikeUIDelegate {
     
     func inCooldown(str: String?) {
         print("cooldown \(str ?? "")")
+        PlaygroundPage.current.finishExecution()
     }
     
     func distancesUpdated(nearestStations: [Nearest]) {
@@ -60,11 +61,10 @@ class TestObject : NSObject, NYCBikeUIDelegate {
             print(reordered.info.name+" \(reordered.distanceString)  \(reordered.info.status!.num_docks_available) docks available \n")
         }
         
-        //model.refresh()
-        if let first = nearestStations.first, let _ = first.info.status{
-            PlaygroundPage.current.finishExecution()
-        }
+        Thread.sleep(forTimeInterval: 4)
+        model.refresh()
 
+        
     }
     
 }
